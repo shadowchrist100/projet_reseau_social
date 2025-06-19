@@ -1,0 +1,11 @@
+# Ignore les fichiers temporaires
+*.log
+*.tmp
+*.bak
+
+# Ignore les fichiers sensibles
+.env
+
+# Ignore les dossiers d'upload (à recréer sur le serveur)
+uploads/
+
