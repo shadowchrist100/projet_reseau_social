@@ -1,3 +1,55 @@
 <?php
 
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="">
+            <label for="name" class="">Nom</label>
+            <div>
+                <span class=""></span>
+                <input type="text" name="name" class="" placeholder="Votre nom ici" required >
+            </div>
+        </div>
+        <div>
+            <label for="pseudo" class="">Pseudo</label>
+            <div>
+                <span class><i class=""></i></span>
+                <input type="text" name="pseudo" class="" placeholder="Votre pseudo ici" required >
+            </div>
+        </div>
+        <div>
+            <label for="email" class="">Email</label>
+            <div>
+                <span class=""><i class=""></i></span>
+                <input type="email" class="" name="email" placeholder="Votre email ici" required >
+            </div>
+        </div>
+        <div>
+            <label for="password" class="">Mot de passe</label>
+            <div>
+                <span class=""><i class=""></i></span>
+                <input type="password" class="" name="password" required >
+            </div>
+        </div>
+        <div>
+            <div>
+                <input type="checkbox" class="" name="remember" required >
+                <label for="remember" class="">Se souvenir de moi?</label>
+                <a href=""class="">Mot de passe oublié?</a>
+            </div>
+        </div>
+        <button type="submit" class="" >Se connecter</button>
+    </form>
+    <div class="">
+        <span class="">Pas encore de compte?</span>
+        <a href="" class="">Créer un compte</a>
+    </div>
+</body>
+</html>
