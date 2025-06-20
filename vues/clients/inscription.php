@@ -1,3 +1,62 @@
 <?php
     
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="post" enctype="multipart/form-data">
+        <div class="">
+            <label for="name" class="">Nom</label>
+            <div>
+                <span class=""></span>
+                <input type="text" name="name" class="" placeholder="Votre nom ici" required >
+            </div>
+        </div>
+        <div>
+            <label for="firstname" class="">Prenom</label>
+            <div>
+                <span class=""></span>
+                <input type="text" class="" name="firstname" placeholder="Votre prenom ici" required >
+            </div>
+        </div>
+        <div>
+            <label for="pseudo" class="">Pseudo</label>
+            <div>
+                <span class><i class=""></i></span>
+                <input type="text" name="pseudo" class="" placeholder="Votre pseudo ici" required >
+            </div>
+        </div>
+        <div>
+            <label for="email" class="">Email</label>
+            <div>
+                <span class=""><i class=""></i></span>
+                <input type="email" class="" name="email" placeholder="Votre email ici" required >
+            </div>
+        </div>
+        <div>
+            <label for="password" class="">Mot de passe</label>
+            <div>
+                <span class=""><i class=""></i></span>
+                <input type="password" class="" name="password" required >
+            </div>
+        </div>
+        <div>
+            <label for="password_confirm" class="">Confirmé Mot de passe</label>
+            <div>
+                <span class=""><i class=""></i></span>
+                <input type="password" class="" name="password_confirm" required >
+            </div>
+        </div>
+        <button type="submit" class="" >S'inscrire</button>
+    </form>
+    <div class="">
+            <span class="">Déjà un compte ?</span>
+            <a href="" class="">Se connecter</a>
+    </div>
+</body>
+</html>
