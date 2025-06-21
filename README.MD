@@ -5,7 +5,7 @@ Un projet collaboratif de création d'un réseau social simple et moderne en PHP
 ## 🧰 Technologies utilisées
 
 - ✅ PHP 8+
-- ✅ MySQL / MariaDB
+- ✅ MySQL 
 - ✅ HTML5
 - ✅ Tailwind CSS
 - ✅ JavaScript (Vanilla JS)
