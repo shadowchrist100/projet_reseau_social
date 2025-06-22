@@ -44,7 +44,7 @@ body
 	height: 100%;
 	background: transparent;
 	padding: 80px;
-	color: #162938;
+	color: 	#cccccc	#b0bec5;
 	display: flex;
 	justify-content: space-between;
 	flex-direction: column;
@@ -92,7 +92,7 @@ body
 	backdrop-filter: blur(20px);
 	border-top-right-radius:10px ;
 	border-bottom-right-radius:10px ;
-	color: #e4e4e4;
+	color:#cde7c7#a0b0c0#f0e6d2#d6d6d6#e4e4e4#b0bec5cc;
 }
 
 .form-box h2
