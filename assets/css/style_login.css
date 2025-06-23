@@ -157,7 +157,11 @@ body
 	display: flex;
 	justify-content: space-between;
 }
-
+.remember-forgot div
+{
+	display: inline-block;
+	justify-content: space-between;
+}
 .remember-forgot label input
 {
 	accent-color: #162938;
@@ -198,6 +202,11 @@ body
 	margin-top: 25px;
 }
 
+.login-register p
+{
+	display: flex;
+	justify-content: space-around;
+}
 .login-register p button
 {
 	color: #162938;

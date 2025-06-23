@@ -1,11 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE-edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Connexion</title>
+        <link rel="stylesheet" href="../../assets/css/style_register.css">
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="form-box login">
+                <h2>Inscription</h2>
+                <form action="" method="post" enctype="multipart/form-data">
+                    <div class="input-box">
+                        <span class="icon"></span>
+                        <input type="text" id="name" name="name" class="name"  required >
+                        <label>Nom</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"></span>
+                        <input type="text" id="firstname" name="firstname" class="firstname"  required >
+                        <label>Prenom</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><i class=""></i></span>
+                        <input type="text" name="pseudo" class="pseudo" id="pseudo"  required >
+                        <label>Pseudo</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><i class=""></i></span>
+                        <input type="email" class="email" id="email" name="email"  required >
+                        <label >Email</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="input-group-text icon"><i class="bi bi-image"></i></span>
+                        <input type="file" class="form-control" id="image" name="image" placeholder="Veillez uploader une image" required>
+                        <!-- <label for="image" class="form-label">Image</label> -->
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><i class=""></i></span>
+                        <input id="password" type="password" class="password" name="password" required >
+                        <label >Mot de passe</label>
+                    </div>
+                    <div class="input-box">
+                        <span class="icon"><i class=""></i></span>
+                        <input id="password_confirm" type="password" class="password" name="password_confirm" required >
+                        <label >Confirmé Mot de passe</label>
+                    </div>
+                    <div class="remember-forgot">
+                        <div>
+                            <label for="remember" class="">
+                                <input type="checkbox" class="" name="remember" required >J'accepte les termes d'usage
+                            </label>
+                        </div>
+                    </div>
+                        <button  class="btn" >S'inscrire</button>
+                    <div class="login-register">
+                        <p>
+                            J'ai déja un compte<button class="login-button">Se connecter</button> 
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
 </html>
