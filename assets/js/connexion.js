@@ -13,7 +13,6 @@
             // ajout d'un écouteur d'évènement pour prévenir la soumission du formulaire
             form.addEventListener("submit", function (event) {
                 event.preventDefault();
-                    console.log(nom);
                 // vérification des champs du formulaire
                 let is_form_valid=true;
 

@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE-edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Connexion</title>
+        <title>Inscription</title>
         <link rel="stylesheet" href="../../assets/css/style_register.css">
     </head>
     <body>
@@ -14,43 +14,48 @@
                 <form action="" method="post" enctype="multipart/form-data">
                     <div class="input-box">
                         <span class="icon"></span>
-                        <input type="text" id="name" name="name" class="name"  required >
+                        <input type="text" id="name" name="name"   required placeholder="" >
                         <label>Nom</label>
+                        <div class="nom error-message"></div>
                     </div>
                     <div class="input-box">
                         <span class="icon"></span>
-                        <input type="text" id="firstname" name="firstname" class="firstname"  required >
+                        <input type="text" id="firstname" name="firstname"  required placeholder="" >
                         <label>Prenom</label>
+                        <div class="prenom error-message"></div>
                     </div>
                     <div class="input-box">
                         <span class="icon"><i class=""></i></span>
-                        <input type="text" name="pseudo" class="pseudo" id="pseudo"  required >
+                        <input type="text" name="pseudo"  id="pseudo"  required placeholder="">
                         <label>Pseudo</label>
+                        <div class="pseudo error-message"></div>
                     </div>
                     <div class="input-box">
                         <span class="icon"><i class=""></i></span>
-                        <input type="email" class="email" id="email" name="email"  required >
+                        <input type="email"  id="email" name="email"  required placeholder="">
                         <label >Email</label>
+                        <div class="mail error-message"></div>
                     </div>
                     <div class="input-box">
                         <span class="input-group-text icon"><i class="bi bi-image"></i></span>
                         <input type="file" class="form-control" id="image" name="image" placeholder="Veillez uploader une image" required>
-                        <!-- <label for="image" class="form-label">Image</label> -->
                     </div>
                     <div class="input-box">
                         <span class="icon"><i class=""></i></span>
-                        <input id="password" type="password" class="password" name="password" required >
+                        <input id="password" type="password"  name="password" required >
                         <label >Mot de passe</label>
+                        <div class="password error-message"></div>
                     </div>
                     <div class="input-box">
                         <span class="icon"><i class=""></i></span>
-                        <input id="password_confirm" type="password" class="password" name="password_confirm" required >
+                        <input id="password_confirm" type="password"  name="password_confirm" required >
                         <label >Confirmé Mot de passe</label>
+                        <div class="password_confirm error-message"></div>
                     </div>
                     <div class="remember-forgot">
                         <div>
                             <label for="remember" class="">
-                                <input type="checkbox" class="" name="remember" required >J'accepte les termes d'usage
+                                <input type="checkbox" class="" name="remember"  >J'accepte les termes d'usage
                             </label>
                         </div>
                     </div>
@@ -63,5 +68,6 @@
                 </form>
             </div>
         </div>
+        <script src="../../assets/js/register.js"></script>
     </body>
 </html>
