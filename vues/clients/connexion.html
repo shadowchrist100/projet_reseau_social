@@ -20,47 +20,52 @@
                     </p>
                 </div>
             </div>
-                <div class="logreg-box">
-                    <div class="form-box login">
-                        <form action="" method="post" enctype="multipart/form-data">
-                            <h2>Connexion</h2>
-                            <div class="input-box">
-                                <span class="icon"></span>
-                                <input type="text" id="name" name="name" class="name"  required >
-                                <label>Nom</label>
+            <div class="logreg-box">
+                <div class="form-box login">
+                    <form action="" method="post" enctype="multipart/form-data">
+                        <h2>Connexion</h2>
+                        <div class="input-box">
+                            <span class="icon"></span>
+                            <input type="text" id="name" name="name" required >
+                            <label for="name">Nom</label>
+                            <div class="nom error-message"></div>
+                        </div>
+                        <div class="input-box">
+                            <span class="icon"><i class=""></i></span>
+                            <input type="text" name="pseudo"  id="pseudo"  required >
+                            <label for="pseudo">Pseudo</label>
+                            <div class="pseudo error-message"></div>
+                        </div>
+                        <div class="input-box">
+                            <span class="icon"><i class=""></i></span>
+                            <input type="email"  id="email" name="email"  required >
+                            <label for="email">Email</label>
+                            <div class="mail error-message"></div>
+                        </div>
+                        <div class="input-box">
+                            <span class="icon"><i class=""></i></span>
+                            <input id="password" type="password"  name="password" required >
+                            <label for="password">Mot de passe</label>
+                            <div class="password error-message"></div>
+                        </div>
+                        <div class="remember-forgot">
+                            <div>
+                                <label for="remember" class="">
+                                    <input type="checkbox" class="" name="remember"  >Se souvenir de moi?
+                                </label>
+                                <button type="button" class="">Mot de passe oublié?</button>
                             </div>
-                            <div class="input-box">
-                                <span class="icon"><i class=""></i></span>
-                                <input type="text" name="pseudo" class="pseudo" id="pseudo"  required >
-                                <label>Pseudo</label>
-                            </div>
-                            <div class="input-box">
-                                <span class="icon"><i class=""></i></span>
-                                <input type="email" class="email" id="email" name="email"  required >
-                                <label >Email</label>
-                            </div>
-                            <div class="input-box">
-                                <span class="icon"><i class=""></i></span>
-                                <input id="password" type="password" class="password" name="password" required >
-                                <label >Mot de passe</label>
-                            </div>
-                            <div class="remember-forgot">
-                                <div>
-                                    <label for="remember" class="">
-                                        <input type="checkbox" class="" name="remember" required >Se souvenir de moi?
-                                    </label>
-                                    <button class="">Mot de passe oublié?</button>
-                                </div>
-                            </div>
-                            <button  class="btn" >Se connecter</button>
-                            <div class="login-register">
-                                <p>
-                                    Don't have an account?<button class="register-button">Créer un compte</button> 
-                                </p>
-                            </div>
-                        </form>
-                    </div>
-                </div> 
-            </div>
+                        </div>
+                        <button id="login" class="btn" type="submit" >Se connecter</button>
+                        <div class="login-register">
+                            <p>
+                                Don't have an account?<button class="register-button">Créer un compte</button> 
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div> 
+        </div>
+        <script src="../../assets/js/connexion.js"></script>
     </body>
 </html>
