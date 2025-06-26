@@ -3,10 +3,34 @@
 
     </div>
     <script>
-        fetch("vues/clients/connexion.html")
-        .then(response=>response.text())
-        .then(html=>{
-            document.body.innerHTML=html;
-        });
+        document.addEventListener("DOMContentLoaded", () => {
+
+            fetch("api/session_check.php")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.authenticated) {
+                        fetch("vues/clients/acceuil.html")
+                            .then(response => response.text())
+                            .then(html => {
+                                document.getElementById("app").innerHTML = html;
+                            })
+                            .catch(err => console.error(err));
+                    }
+                    else {
+                        fetch("vues/clients/connexion.html")
+                            .then(response => response.text())
+                            .then(html => {
+                                document.getElementById("app").innerHTML = html;
+                                const script = document.createElement("script");
+                                    script.src = "assets/js/connexion.js";
+                                    document.getElementById("app").appendChild(script);
+
+                            })
+                            .catch(err => console.error(err));
+                    }
+                })
+                .catch(err => console.error(err));
+
+        })
     </script>
 </body>

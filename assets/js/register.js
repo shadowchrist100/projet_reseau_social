@@ -66,3 +66,5 @@ form.addEventListener("submit", function (event) {
         document.querySelector(".password_confirm").innerHTML="<span>Le mot de passe ne correspond pas </span>"    
     }
 });
+
+console.log("Something")
