@@ -24,6 +24,7 @@
                 <div class="form-box login">
                     <form action="" method="post" enctype="multipart/form-data">
                         <h2>Connexion</h2>
+                        <div id="form-error"></div>
                         <div class="input-box">
                             <span class="icon"></span>
                             <input type="text" id="name" name="name" required placeholder="">
@@ -53,7 +54,7 @@
                                 <label for="remember" class="">
                                     <input type="checkbox" class="" name="remember"  >Se souvenir de moi?
                                 </label>
-                                <button type="button" class="">Mot de passe oublié?</button>
+                                <button type="button" class="" id="mp_forgot" >Mot de passe oublié?</button>
                             </div>
                         </div>
                         <button id="login" class="btn" type="submit" >Se connecter</button>

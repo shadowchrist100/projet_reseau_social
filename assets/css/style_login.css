@@ -219,7 +219,7 @@ body
 	text-decoration: underline;	
 }
 
-.error-message {
+.error-message, #form-error {
     font-size: 13px;
     color: red;
     margin-top: 5px;
