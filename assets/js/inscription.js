@@ -1,5 +1,6 @@
+console.log("Something")
 // récupération des champs du formulaire 
-const form=document.querySelector("form");
+const register_form=document.querySelector("form");
 const nom=document.getElementById("name");
 const prenom=document.getElementById("firstname");
 const pseudo=document.getElementById("pseudo");
@@ -9,7 +10,7 @@ const password_confirm=document.getElementById("password_confirm");
 const remember=document.getElementById("remember");
 
 // ajout d'un écouteur d'évènement pour prévenir la soumission du formulaire
-form.addEventListener("submit", function (event) {
+register_form.addEventListener("submit", function (event) {
     event.preventDefault();
     // vérification des champs du formulaire
     let is_form_valid=true;

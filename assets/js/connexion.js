@@ -1,5 +1,5 @@
 // récupération des champs du formulaire 
-const form=document.querySelector("form");
+const login_form=document.querySelector("form");
 const nom=document.getElementById("name");
 const pseudo=document.getElementById("pseudo");
 const email=document.getElementById("email");
@@ -11,7 +11,7 @@ const div_passw=document.querySelector(".password");
 const mp_forgot=document.getElementById("mp_forgot");
 
 // ajout d'un écouteur d'évènement pour prévenir la soumission du formulaire
-form.addEventListener("submit", function (event) {
+login_form.addEventListener("submit", function (event) {
     event.preventDefault();
     
     // vérification des champs du formulaire
@@ -83,10 +83,14 @@ form.addEventListener("submit", function (event) {
 });
 console.log(document.getElementById("app"));
 
-mp_forgot.addEventListener("click", function(){
+document.getElementById("create_account").addEventListener("click", function(){
     fetch("/vues/clients/inscription.html")
     .then(response=>response.text())
     .then(html=>{
         document.getElementById("app").innerHTML=html;
+        const script=document.createElement("script");
+        script.src="/assets/js/register.js";
+        document.getElementById("app").appendChild(script);
     })
-})
+    .catch(err=>console.error(err));
+});
