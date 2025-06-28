@@ -1,9 +1,9 @@
 // récupération des champs du formulaire 
 const login_form=document.querySelector("form");
-const nom=document.getElementById("name");
-const pseudo=document.getElementById("pseudo");
-const email=document.getElementById("email");
-const password=document.getElementById("password");
+const login_nom=document.getElementById("login-name");
+const login_pseudo=document.getElementById("login-pseudo");
+const login_email=document.getElementById("login-email");
+const login_password=document.getElementById("login-password");
 const div_nom=document.querySelector(".nom");
 const div_pseudo=document.querySelector(".pseudo");
 const div_mail=document.querySelector(".mail");
@@ -22,14 +22,14 @@ login_form.addEventListener("submit", function (event) {
     });
 
     // vérification du champ nom
-    if (nom.value.trim()==="") 
+    if (login_nom.value.trim()==="") 
     {
         div_nom.innerHTML="<span>Entrer votre nom</span>";
         is_form_valid=false;
     }
 
     // vérification du champ pseudo
-    if (pseudo.value.trim()==="") 
+    if (login_pseudo.value.trim()==="") 
     {
         div_pseudo.innerHTML="<span>Entrer votre pseudo</span>";
         is_form_valid=false;  
@@ -37,26 +37,26 @@ login_form.addEventListener("submit", function (event) {
 
     // vérification de l'email
     const regex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(email.value.trim()==="")
+    if(login_email.value.trim()==="")
     {
         div_mail.innerHTML="<span>Entrer votre email</span>";
         is_form_valid=false;
     }
-    else if (!regex.test(email.value.trim())) 
+    else if (!regex.test(login_email.value.trim())) 
     {
         div_mail.innerHTML="<span>Email invalid</span>";
         is_form_valid=false;
     }
 
     // vérification du mot de passe
-    if (password.value.length<6) 
+    if (login_password.value.length<6) 
     {
         div_passw.innerHTML="<span>Le mot de passe doit contenir au moins 6 caractères</span>";
         is_form_valid=false;    
     }
     if (is_form_valid) 
     {
-        // envoi des informations du formulaire a back end
+        // envoi des informations du formulaire au back end
         const form_data = new FormData(form); // form remplit automatiquement form_data avec les valeurs des champs ayant un attribut name
         async function logged(form_data) 
         {
@@ -71,6 +71,10 @@ login_form.addEventListener("submit", function (event) {
                 const resultat=await form_send.json();
                 document.getElementById("form-error").innerHTML=`<span>${resultat['error']}</span>`
                 console.log("Réussite:",resultat);
+                if (!resultat['error']) 
+                {
+                    load_view("acceuil");    
+                }
             }
             catch(error)
             {
@@ -81,16 +85,7 @@ login_form.addEventListener("submit", function (event) {
         logged(form_data);        
     }
 });
-console.log(document.getElementById("app"));
 
 document.getElementById("create_account").addEventListener("click", function(){
-    fetch("/vues/clients/inscription.html")
-    .then(response=>response.text())
-    .then(html=>{
-        document.getElementById("app").innerHTML=html;
-        const script=document.createElement("script");
-        script.src="/assets/js/register.js";
-        document.getElementById("app").appendChild(script);
-    })
-    .catch(err=>console.error(err));
+    load_view("register");
 });
