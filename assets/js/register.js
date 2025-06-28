@@ -65,13 +65,14 @@ register_form.addEventListener("submit", function (event)
     // confirmation du mot de passe
     if (register_password.value!==register_password_confirm.value) 
     {
-        document.querySelector(".password_confirm").innerHTML="<span>Le mot de passe ne correspond pas </span>"    
+        document.querySelector(".password_confirm").innerHTML="<span>Le mot de passe ne correspond pas </span>"  
+        is_form_valid=false;  
     }
-
+        
     // si les informations du formulaire sont valides faire l'envoi des données au Backend
     if (is_form_valid) 
     {
-        const form_data=new FormData(form);
+        const form_data=new FormData(register_form);
         async function registered(form_data) 
         {
             try 
@@ -95,10 +96,13 @@ register_form.addEventListener("submit", function (event)
             {
                 console.error(error);    
             }
-        }
+        };
+        registered(form_data);
     }
 
 });
+
+// si l'utilisateur a déja un compte veut se connecter
 login.addEventListener("click", function () {
     load_view("login");
 });

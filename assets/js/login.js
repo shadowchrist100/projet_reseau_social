@@ -57,7 +57,7 @@ login_form.addEventListener("submit", function (event) {
     if (is_form_valid) 
     {
         // envoi des informations du formulaire au back end
-        const form_data = new FormData(form); // form remplit automatiquement form_data avec les valeurs des champs ayant un attribut name
+        const form_data = new FormData(login_form); // form remplit automatiquement form_data avec les valeurs des champs ayant un attribut name
         async function logged(form_data) 
         {
             try {
