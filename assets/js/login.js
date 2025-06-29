@@ -54,6 +54,8 @@ login_form.addEventListener("submit", function (event) {
         div_passw.innerHTML="<span>Le mot de passe doit contenir au moins 6 caractères</span>";
         is_form_valid=false;    
     }
+
+    // si le formulaire est valide 
     if (is_form_valid) 
     {
         // envoi des informations du formulaire au back end
@@ -86,6 +88,7 @@ login_form.addEventListener("submit", function (event) {
     }
 });
 
+// si l'utilisateur veut créer un compte
 document.getElementById("create_account").addEventListener("click", function(){
     load_view("register");
 });

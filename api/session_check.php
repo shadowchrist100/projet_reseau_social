@@ -3,7 +3,7 @@
     header('Content-Type: application/json');
 
 
-    if (isset($_SESSION["user_id"])) 
+    if (isset($_SESSION["LOGGED_USER"])) 
     {
         echo json_encode(['authenticated'=>true]);
     }

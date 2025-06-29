@@ -87,7 +87,7 @@ register_form.addEventListener("submit", function (event)
                 const resultat=await form_send.json();
                 document.getElementById("form-error").innerHTML=`<span>${resultat['error']}</span>`
                 console.log("Réussite:",resultat);
-                if (resultat['error']) 
+                if (!resultat['error']) 
                 {
                     load_view("login");    
                 }

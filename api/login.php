@@ -34,7 +34,12 @@
                 // vérifier le mot de passe
                 if (password_verify($password,$user['password_hash'])) 
                 {
-                    
+                    $_SESSION["LOGGED_USER"]=[
+                        "name"=>$user["nom"],
+                        "prenom"=>$user["prenom"],
+                        "email"=>$user["email"],
+                        "profile"=>$user["profile_picture"]
+                    ];
                 }
                 else 
                 {
