@@ -24,6 +24,7 @@ function load_view(view_name)
     .then(response=>response.text())
     .then(html=>
     {
+        document.title = "ChatApp | " + view_name.charAt(0).toUpperCase() + view_name.slice(1);
         document.getElementById("app").innerHTML=html;
         const style=document.createElement("link");
         const script=document.createElement("script");
