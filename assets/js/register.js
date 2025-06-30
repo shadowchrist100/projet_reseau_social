@@ -72,7 +72,9 @@ register_form.addEventListener("submit", function (event)
     // si les informations du formulaire sont valides faire l'envoi des données au Backend
     if (is_form_valid) 
     {
-        const form_data=new FormData(register_form);
+        // enregister les données du formulaire dans la variable form_data
+        const form_data=new FormData(register_form); // avec register_form , form_data remplit form_data avec les données des champs du formulaire ayant un name
+        
         async function registered(form_data) 
         {
             try 
@@ -85,11 +87,25 @@ register_form.addEventListener("submit", function (event)
                     body:form_data,
                 });
                 const resultat=await form_send.json();
+                // afficher la réponse du back end si il y a d'erreur
                 document.getElementById("form-error").innerHTML=`<span>${resultat['error']}</span>`
                 console.log("Réussite:",resultat);
+                // si il n'y a  pas d'erreur
                 if (!resultat['error']) 
                 {
-                    load_view("login");    
+                    // on connecte l'utilisateur 
+                    const connect=await fetch("/api/login.php",{
+                    method:"POST",
+                    headers:{
+                        Accept:"application/json"
+                    },
+                    body:form_data,
+                    });
+                    const connect_result=await connect.json();
+                    if (!connect_result['error']) 
+                    {
+                        load_view("acceuil");
+                    }    
                 }
 
             } catch (error) 

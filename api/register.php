@@ -21,6 +21,7 @@
         {
             // échapper les données envoyées du formulaire
             $name=strip_tags($name);
+            $prenom=strip_tags($prenom);
             $pseudo=strip_tags($pseudo);
             $email=strip_tags($email);
             $password=password_hash($password,PASSWORD_DEFAULT);

@@ -5,51 +5,54 @@
     header('Content-Type: application/json');
 
     // Récupérer les données de la requête fetch
-    $name = $_POST['name'] ?? '';
-    $pseudo = $_POST['pseudo'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
-
-    // Traitement des données
-    $response=[];
-    if (isset($name)&&isset($pseudo)&&isset($password)&&isset($email)) 
+    if($_SERVER["REQUEST_METHOD"]==="POST")
     {
-        $name=strip_tags($name);
-        $pseudo=strip_tags($pseudo);
-        $email=strip_tags($email);
-        // récupération des données dans la base de donnée
-        try 
+        $name = $_POST['name'] ?? '';
+        $pseudo = $_POST['pseudo'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
+
+        // Traitement des données
+        $response=[];
+        if (isset($name)&&isset($pseudo)&&isset($password)&&isset($email)) 
         {
-            $req=$pdo->prepare("SELECT * FROM users WHERE nom=:nom");
-            $req->execute(["nom"=>$name]);
-            $user=$req->fetch(PDO::FETCH_ASSOC);
-             
-            // si l'utilisateur n'existe pas
-            if (!$user) 
+            $name=strip_tags($name);
+            $pseudo=strip_tags($pseudo);
+            $email=strip_tags($email);
+            // récupération des données dans la base de donnée
+            try 
             {
-                $response['error']="Mot de passe invalid ou email invalid";
-            }
-            // si l'utilisateur existe 
-            else {
-                // vérifier le mot de passe
-                if (password_verify($password,$user['password_hash'])) 
-                {
-                    $_SESSION["LOGGED_USER"]=[
-                        "name"=>$user["nom"],
-                        "prenom"=>$user["prenom"],
-                        "email"=>$user["email"],
-                        "profile"=>$user["profile_picture"]
-                    ];
-                }
-                else 
+                $req=$pdo->prepare("SELECT * FROM users WHERE nom=:nom");
+                $req->execute(["nom"=>$name]);
+                $user=$req->fetch(PDO::FETCH_ASSOC);
+                
+                // si l'utilisateur n'existe pas
+                if (!$user) 
                 {
                     $response['error']="Mot de passe invalid ou email invalid";
                 }
+                // si l'utilisateur existe 
+                else {
+                    // vérifier le mot de passe
+                    if (password_verify($password,$user['password_hash'])) 
+                    {
+                        $_SESSION["LOGGED_USER"]=[
+                            "name"=>$user["nom"],
+                            "prenom"=>$user["prenom"],
+                            "email"=>$user["email"],
+                            "profile"=>$user["profile_picture"]
+                        ];
+                    }
+                    else 
+                    {
+                        $response['error']="Mot de passe invalid ou email invalid";
+                    }
+                }
+                echo json_encode($response);
+            } catch (\Throwable $th) {
+                throw $th;
+                echo json_encode($th);
             }
-            echo json_encode($response);
-        } catch (\Throwable $th) {
-            throw $th;
-            echo json_encode($th);
         }
-    }
+    } 
 ?>
