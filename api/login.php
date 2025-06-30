@@ -37,8 +37,10 @@
                     if (password_verify($password,$user['password_hash'])) 
                     {
                         $_SESSION["LOGGED_USER"]=[
+                            "id"=>$user["id"],
                             "name"=>$user["nom"],
                             "prenom"=>$user["prenom"],
+                            "pseudo"=>$user["pseudo"],
                             "email"=>$user["email"],
                             "profile"=>$user["profile_picture"]
                         ];

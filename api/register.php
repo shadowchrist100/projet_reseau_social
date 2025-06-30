@@ -50,7 +50,7 @@
                 if ($is_extension_valide) 
                 {
                     // enregistrement de l'image
-                    $file_name=$name."_profile_picture.".$file_extension;
+                    $file_name=$pseudo."_profile_picture.".$file_extension;
                     
                     // insertion dans la bd si le fichier a bien été enregistré
                     if (move_uploaded_file($image["tmp_name"],"../uploads/".$file_name)) 

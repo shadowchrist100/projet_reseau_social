@@ -8,7 +8,7 @@
         <div class="create">
             <label for="create post" class="btn btn-primary">Create</label>
             <div class="profile-photo">
-                <img src="/uploads/Lewhe_profile_picture.jpg">
+                <img class="user_profile" src="">
             </div>
         </div>
     </div>
@@ -20,11 +20,11 @@
         <div class="left">
             <a  class="profile">
                 <div class="profile-photo">
-                    <img src="/uploads/Lewhe_profile_picture.jpg" >
+                    <img class="user_profile profile-photo" src="" >
                 </div>
                 <div class="handle">
                     <h4>Diana Ayi</h4>
-                    <p class="text-muted">
+                    <p class="text-muted user_pseudo">
                         @dayi
                     </p>
                 </div>
@@ -37,7 +37,67 @@
                 <a class="menu-item">
                     <span><i class="uil uil-compass"></i></span><h3>Explore</h3>
                 </a>
-                
+                <!-- <a class="menu-item" id="notification">            
+                    <span><i class="uil uil-bell" ><small class="notification-count">9+</small></i></span><h3>Notifications</h3> -->
+                        <!-- notication popup -->
+                    <!-- <div class="notification-popup">
+                        <div>
+                            <div class="profile-photo">
+                                <img src="/assets/css/images/profile-2.jpg" alt="">
+                            </div>
+                            <div class="notification-body">
+                                <b>Keke Benjamin</b> accept your friend request
+                                <small class="text-muted">2 DAYS AGO</small>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="profile-photo">
+                                <img src="/assets/css/images/profile-3.jpg" alt="">
+                            </div>
+                            <div class="notification-body">
+                                <b>John Doe</b> commented on your post
+                                <small class="text-muted">1 DAYS AGO</small>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="profile-photo">
+                                <img src="/assets/css/images/profile-4.jpg" alt="">
+                            </div>
+                            <div class="notification-body">
+                                <b>Boris Larley</b> commented on your post
+                                <small class="text-muted">22hours AGO</small>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="profile-photo">
+                                <img src="/assets/css/images/profile-5.jpg" alt="">
+                            </div>
+                            <div class="notification-body">
+                                <b>Jack Ho</b> commented on your post
+                                <small class="text-muted">20HOURS  AGO</small>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="profile-photo">
+                                <img src="/assets/css/images/profile-6.jpg" alt="">
+                            </div>
+                            <div class="notification-body">
+                                <b>John Doe</b> commented on your post
+                                <small class="text-muted">17HOURS AGO</small>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="profile-photo">
+                                <img src="/assets/css/images/profile-7.jpg" alt="">
+                            </div>
+                            <div class="notification-body">
+                                <b>Mary Oppong</b> and <b> 234 others</b> liked your post 
+                                <small class="text-muted">56 MINUTES AGO</small>
+                            </div>
+                        </div>
+                    </div> -->
+                            <!-- --------------- END OF NOTIFICATIN POPUP---------- -->
+                <!-- </a>    -->
                 <a class="menu-item" id="messages-notifications">
                     <span><i class="uil uil-envelope-alt"> <small class="notification-count">6+</small></i></span><h3>Message</h3>
                 </a>    
@@ -91,11 +151,11 @@
             </div>
             <!-- ---------------END OF STORIES----------- -->
             <form class="create-post">
-                <div class="profile-photo">
-                    <img src="/assets/css/images/profile-1.jpg" alt="">
+                <div class="profile-photo  ">
+                    <img class="user_profile" src="/assets/css/images/profile-1.jpg" alt="">
                 </div>
-                <input type="text" placeholder="what's on your mind, Diana?" id="create-post">
-                <input type="submit" value="Post" class="btn btn-primary">
+                <input type="text" placeholder="what's on your mind, Diana?" name="post_text" id="post_text">
+                <input type="button" id="create_post" value="Post" class="btn btn-primary">
             </form>
             <div class="feeds">
                 <div class="feed">
