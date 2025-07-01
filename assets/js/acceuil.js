@@ -66,5 +66,69 @@ postImageInput.addEventListener("change", function () {
         imagePreview.style.display = "none";
     }
 });
+// charger les posts de l'utilisateur  
+// afficher les posts de l'utilisateur
+function print_posts(post) 
+{
+    const feed=document.createElement("div");
+    feed.className="feed";
+    feed.innerHTML=`
+    <div class="head">
+        <div class="user">
+            <div class="profile-photo">
+                <img  src="/uploads/${post.profile_picture}" alt="">
+            </div>
+            <div class="info">
+                <h3>${post.nom} ${post.prenom}</h3>
+                <small>${post.created_at}</small>
+            </div>
+        </div>  
+        <span class="edit">
+            <i class="uil uil-ellipsis-h"></i>
+        </span>
+    </div>
+    <div class="photo">
+        <img src="/uploads/posts/${post.image_path}" alt="">
+    </div>
+    <div class="action-button">
+        <div class="interaction-buttons">
+            <span><i class="uil uil-heart"></i></span>
+            <span><i class="uil uil-comment-dots"></i></span>
+            <span><i class="uil uil-share-alt"></i></span>
+        </div>
+        <div class="bookmark">
+            <span><i class="uil uil-bookmark-full"></i></span>
+        </div>
+    </div>
+    <div class="liked-by">
+        <span><img src="/assets/css/images/profile-10.jpg" alt=""></span>
+        <span><img src="/assets/css/images/profile-4.jpg" alt=""></span>
+        <span><img src="/assets/css/images/profile-14.jpg" alt=""></span>
+        <p>Liked by <b>Ernest Achiever</b> and <b>2,321 others</b></p>
+    </div>
+    <div class="caption">
+        <p>
+            <b>Lana Rose</b>Lorem, ipsum dolor sit amet it.  quo molestiae! Nobis rerum 
+            numquam tempora nostrum nam quae  <span class="harsh-tag">#lifestyle</span>
+        </p>
+    </div>
+    <div class=" comments text-muted">view all 277 comments </div>
+    `
+    document.querySelector(".feeds").appendChild(feed);
+}
 
-    
+function load_posts() {
+    fetch("/api/get_posts.php")
+    .then(response=>response.json())
+    .then(data=>{
+        const feed=document.getElementById("feed");
+        data.forEach(post=>{
+            // afficher les posts de l'utilisateur
+            print_posts(post);
+            // console.log(post);
+            console.log(post);
+        });
+    })
+    .catch(error=>console.error(error));
+}
+load_posts();   
