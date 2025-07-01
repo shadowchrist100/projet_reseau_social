@@ -1,11 +1,12 @@
 const user_profil=document.querySelectorAll(".user_profile");
 const user_pseudo=document.querySelectorAll(".user_pseudo");
 const create_post=document.getElementById("create_post");
-const post=document.querySelector(".create-post")
+const post=document.querySelector(".create-post");
+const postImageInput = document.getElementById("post_image");
+const imagePreview = document.getElementById("image_preview");
 fetch("/api/user.php")
 .then(response=>response.json())
 .then(data=>{
-    console.log(data)
     // enregistrer les données de l'utilisateur afin qu'il soit accessible partout
     window.user_data=data;
     // afficher la photo de profil de l'utilisateur connecté
@@ -16,15 +17,12 @@ fetch("/api/user.php")
     user_pseudo.forEach(element=>{
         element.textContent="@"+window.user_data.pseudo;
     });
-    console.log(window.user_data.name);
     
-    document.getElementById("create-post").ariaPlaceholder="What's on your mind "+ window.user_data.name
+    document.getElementById("post_text").placeholder=`What's on your mind, ${window.user_data.name}`;
 })
 .catch(error=>console.error(error))
 create_post.addEventListener("click", function () {
     // récupérer le texte du post
-    const post_text=document.getElementById("post_text").value;
-    const post_image=document.getElementById("post_image");
 
     // envoyer les informations du post au backend pour l'enregistrement
         // stockage des infos du post dans post_data
@@ -38,12 +36,35 @@ create_post.addEventListener("click", function () {
     })
     .then(response=>response.json())
     .then(data=>{
-        console.log(data);
+        if (data.success) 
+        {
+            document.getElementById("post_text").value = "";
+            postImageInput.value = "";
+            imagePreview.src = "";
+            imagePreview.style.display = "none";
+        }
+        else
+        {
+            console.log(data.error)
+        }
     })
     .catch(error=>console.error(error)
     )
-    document.getElementById("post_text").value="";
 })
 
+postImageInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+    } else {
+        imagePreview.src = "";
+        imagePreview.style.display = "none";
+    }
+});
 
     

@@ -295,7 +295,7 @@ main .container .left .profile{
     border: 3px solid var(--color-primary);
 }
 /* ===============CREATE POST================ */
-.middle .create-post{
+/* .middle .create-post{
     width: 100%;
     display: flex;
     align-items: center;
@@ -312,6 +312,42 @@ main .container .left .profile{
     background: transparent;
     color: var(--color-dark);
     margin-right: 1rem;
+} */
+ .middle .create-post {
+    width: 100%;
+    display: flex;
+    align-items: flex-start; /* pour permettre à l'aperçu de s'afficher en dessous */
+    flex-direction: column;  /* vertical */
+    margin-top: 1rem;
+    background: var(--color-white);
+    padding: 1rem var(--card-padding); /* plus d'espace */
+    border-radius: var(--border-radius);
+    gap: 0.5rem;
+}
+
+.middle .create-post input[type='text'] {
+    width: 100%;
+    min-height: 3rem; /* plus haut */
+    font-size: 1.1rem;
+    padding: 0.7rem 1rem;
+    background: transparent;
+    color: var(--color-dark);
+    margin-right: 0;
+    border: 1px solid var(--color-light);
+    border-radius: 0.5rem;
+    resize: vertical;
+}
+
+.create-post .image-preview {
+    margin-top: 0.5rem;
+    width: 100%;
+    max-width: 100%;
+    max-height: 350px;
+    object-fit: contain;      /* Affiche toute l'image sans la couper */
+    object-position: center;  /* Centre l'image dans le cadre */
+    border-radius: 0.5rem;
+    display: none;
+    background: #f3f3f3;
 }
 /* ===============FEEDS================ */
 .middle .feeds .feed{

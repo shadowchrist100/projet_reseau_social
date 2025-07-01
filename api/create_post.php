@@ -9,9 +9,9 @@
     if ($_SERVER["REQUEST_METHOD"]==="POST") 
     {
         $content=$_POST["post_text"] ?? "";
-        $image=$_FILES["image"] ?? "";
+        $image=$_FILES["post_image"] ?? "";
         $response=[];
-        if (!empty($content)) 
+        if (!empty($content) || !empty($image)) 
         {
             // échapement des données du formulaire
             $content=strip_tags($content);
@@ -26,12 +26,16 @@
                     if ($is_extension_valide) 
                     {
                         // enregistrement de l'image
-                        $file_name=$_SESSION["LOGGED_USER"]["id"]."_post_picture.".$file_extension;
+                        $file_name=$_SESSION["LOGGED_USER"]["id"]."_post_picture.".time().$file_extension;
                         
-                        // insertion dans la bd si le fichier a bien été enregistré
-                        if (move_uploaded_file($image["tmp_name"],"../uploads/posts".$file_name)) 
+                        if (move_uploaded_file($image["tmp_name"],"../uploads/posts/".$file_name)) 
                         {
+                            $response["success"]="Stockage du fichier réussie";
                         }  
+                        else 
+                        {
+                            $response["error"]="Impossible de stocker le fichier";
+                        }
                     }
                     else
                     {
@@ -49,7 +53,7 @@
                 $stmt=$req->execute([
                 "user_id"=>$_SESSION["LOGGED_USER"]["id"],
                 "content"=>$content,
-                "image"=>$image
+                "image"=>$file_name
                 ]);
 
             } catch (PDOECXCEPTION $e) 
@@ -65,6 +69,10 @@
                 $response["error"]="Echec lors de la création de la publication";
             }
             
+        }
+        else 
+        {
+            $response["error"]="Publication vide";
         }
         echo json_encode($response);
     }
