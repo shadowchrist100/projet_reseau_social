@@ -108,8 +108,7 @@ function print_posts(post)
     </div>
     <div class="caption">
         <p>
-            <b>Lana Rose</b>Lorem, ipsum dolor sit amet it.  quo molestiae! Nobis rerum 
-            numquam tempora nostrum nam quae  <span class="harsh-tag">#lifestyle</span>
+            ${post.nom} ${post.prenom} <span>${post.content}</span>
         </p>
     </div>
     <div class=" comments text-muted">view all 277 comments </div>
