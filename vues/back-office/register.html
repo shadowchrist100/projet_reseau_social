@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription Admin</title>
+    <link rel="stylesheet" href="../../assets/css/admin-auth.css">
+</head>
+<body>
+    <div class="admin-auth-container">
+        <div class="admin-auth-card">
+            <h1><i class="fas fa-user-shield"></i> Création compte Admin</h1>
+            
+            <form id="adminRegisterForm">
+                <div class="form-group">
+                    <label for="adminEmail">Email professionnel</label>
+                    <input type="email" id="adminEmail" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminPassword">Mot de passe</label>
+                    <input type="password" id="adminPassword" minlength="8" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminRole">Rôle</label>
+                    <select id="adminRole" required>
+                        <option value="admin">Administrateur</option>
+                        <option value="moderator">Modérateur</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn-admin-primary">
+                    <i class="fas fa-user-plus"></i> Créer le compte
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../../assets/js/admin/register.js"></script>
+</body>
+</html>

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tableau de Bord - Administration</title>
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>tailwind.config={theme:{extend:{colors:{primary:'#007bff',secondary:'#343a40'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <link rel="stylesheet" href="../../assets/css/admin.css">
+  <style>
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f9fa;
+    }
+    .sidebar {
+      width: 200px;
+      background-color: #343a40;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      transition: transform 0.3s ease;
+    }
+    .main-content {
+      margin-left: 200px;
+      transition: margin-left 0.3s ease;
+    }
+    .stat-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .table-container {
+      overflow-x: auto;
+    }
+    .activity-item {
+      border-left: 3px solid #007bff;
+    }
+    .nav-link {
+      transition: background-color 0.2s ease;
+    }
+    .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    .nav-link.active {
+      background-color: #007bff;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+        z-index: 40;
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .main-content {
+        margin-left: 0;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+  <!-- Sidebar -->
+  <aside class="sidebar text-white">
+    <div class="p-4 border-b border-gray-700">
+      <h1 class="text-xl font-['Pacifico']">logo</h1>
+    </div>
+    <nav class="mt-6">
+      <ul>
+        <li>
+          <a href="#" class="nav-link active flex items-center px-4 py-3 text-white">
+            <div class="w-6 h-6 flex items-center justify-center mr-3">
+              <i class="ri-dashboard-line"></i>
+            </div>
+            <span>Tableau de bord</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link flex items-center px-4 py-3 text-gray-300 hover:text-white">
+            <div class="w-6 h-6 flex items-center justify-center mr-3">
+              <i class="ri-user-line"></i>
+            </div>
+            <span>Utilisateurs</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link flex items-center px-4 py-3 text-gray-300 hover:text-white">
+            <div class="w-6 h-6 flex items-center justify-center mr-3">
+              <i class="ri-file-list-line"></i>
+            </div>
+            <span>Publications</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link flex items-center px-4 py-3 text-gray-300 hover:text-white">
+            <div class="w-6 h-6 flex items-center justify-center mr-3">
+              <i class="ri-settings-line"></i>
+            </div>
+            <span>Paramètres</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content min-h-screen pb-8">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+      <div class="flex justify-between items-center px-6 py-4">
+        <div class="flex items-center">
+          <button id="sidebar-toggle" class="mr-4 md:hidden w-8 h-8 flex items-center justify-center text-gray-500">
+            <i class="ri-menu-line ri-lg"></i>
+          </button>
+          <h2 class="text-xl font-semibold">Tableau de Bord</h2>
+        </div>
+        <div class="flex items-center">
+          <div class="mr-4 text-sm text-gray-600">
+            <span>Bonjour, </span>
+            <span class="font-medium">Administrateur</span>
+          </div>
+          <button id="logout-btn" class="!rounded-button bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 flex items-center whitespace-nowrap">
+            <div class="w-4 h-4 flex items-center justify-center mr-2">
+              <i class="ri-logout-box-line"></i>
+            </div>
+            <span>Déconnexion</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <div class="px-6 py-6">
+      <!-- Stats Cards -->
+      <div class="stats-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="stat-card p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-gray-500 font-medium">Utilisateurs</h3>
+            <div class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 text-primary">
+              <i class="ri-user-line ri-lg"></i>
+            </div>
+          </div>
+          <p class="text-3xl font-bold">1,254</p>
+          <p class="text-sm text-green-500 mt-2 flex items-center">
+            <div class="w-4 h-4 flex items-center justify-center mr-1">
+              <i class="ri-arrow-up-line"></i>
+            </div>
+            <span>12% depuis le mois dernier</span>
+          </p>
+        </div>
+
+        <div class="stat-card p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-gray-500 font-medium">Publications</h3>
+            <div class="w-10 h-10 flex items-center justify-center rounded-full bg-green-100 text-green-600">
+              <i class="ri-file-list-line ri-lg"></i>
+            </div>
+          </div>
+          <p class="text-3xl font-bold">857</p>
+          <p class="text-sm text-green-500 mt-2 flex items-center">
+            <div class="w-4 h-4 flex items-center justify-center mr-1">
+              <i class="ri-arrow-up-line"></i>
+            </div>
+            <span>8% depuis le mois dernier</span>
+          </p>
+        </div>
+
+        <div class="stat-card p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-gray-500 font-medium">Visites</h3>
+            <div class="w-10 h-10 flex items-center justify-center rounded-full bg-purple-100 text-purple-600">
+              <i class="ri-eye-line ri-lg"></i>
+            </div>
+          </div>
+          <p class="text-3xl font-bold">32,489</p>
+          <p class="text-sm text-green-500 mt-2 flex items-center">
+            <div class="w-4 h-4 flex items-center justify-center mr-1">
+              <i class="ri-arrow-up-line"></i>
+            </div>
+            <span>24% depuis le mois dernier</span>
+          </p>
+        </div>
+
+        <div class="stat-card p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-gray-500 font-medium">Taux de conversion</h3>
+            <div class="w-10 h-10 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-600">
+              <i class="ri-line-chart-line ri-lg"></i>
+            </div>
+          </div>
+          <p class="text-3xl font-bold">3.2%</p>
+          <p class="text-sm text-red-500 mt-2 flex items-center">
+            <div class="w-4 h-4 flex items-center justify-center mr-1">
+              <i class="ri-arrow-down-line"></i>
+            </div>
+            <span>1.8% depuis le mois dernier</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Main Sections -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Users Table -->
+        <div class="lg:col-span-2 bg-white rounded shadow-sm p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="text-lg font-semibold">Utilisateurs récents</h3>
+            <div class="relative">
+              <input type="text" placeholder="Rechercher..." class="pl-9 pr-4 py-2 border border-gray-300 rounded text-sm">
+              <div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center text-gray-400">
+                <i class="ri-search-line"></i>
+              </div>
+            </div>
+          </div>
+          
+          <div class="table-container">
+            <table class="w-full">
+              <thead>
+                <tr class="bg-gray-50 text-left">
+                  <th class="px-4 py-3 text-sm font-medium text-gray-500">ID</th>
+                  <th class="px-4 py-3 text-sm font-medium text-gray-500">Nom</th>
+                  <th class="px-4 py-3 text-sm font-medium text-gray-500">Email</th>
+                  <th class="px-4 py-3 text-sm font-medium text-gray-500">Date d'inscription</th>
+                  <th class="px-4 py-3 text-sm font-medium text-gray-500">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b">
+                  <td class="px-4 py-3 text-sm">#1289</td>
+                  <td class="px-4 py-3 text-sm">Thomas Dubois</td>
+                  <td class="px-4 py-3 text-sm">thomas.dubois@example.com</td>
+                  <td class="px-4 py-3 text-sm">01/07/2025</td>
+                  <td class="px-4 py-3 text-sm">
+                    <div class="flex space-x-2">
+                      <button class="!rounded-button w-8 h-8 flex items-center justify-center text-blue-600 hover:bg-blue-50">
+                        <i class="ri-edit-line"></i>
+                      </button>
+                      <button class="!rounded-button w-8 h-8 flex items-center justify-center text-red-600 hover:bg-red-50">
+                        <i class="ri-delete-bin-line"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="border-b bg-gray-50">
+                  <td class="px-4 py-3 text-sm">#1288</td>
+                  <td class="px-4 py-3 text-sm">Sophie Martin</td>
+                  <td class="px-4 py-3 text-sm">sophie.martin@example.com</td>
+                  <td class="px-4 py-3 text-sm">30/06/2025</td>
+                  <td class="px-4 py-3 text-sm">
+                    <div class="flex space-x-2">
+                      <button class="!rounded-button w-8 h-8 flex items-center justify-center text-blue-600 hover:bg-blue-50">
+                        <i class="ri-edit-line"></i>
+                      </button>
+                      <button class="!rounded-button w-8 h-8 flex items-center justify-center text-red-600 hover:bg-red-50">
+                        <i class="ri-delete-bin-line"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="border-b">
+                  <td class="px-4 py-3 text-sm">#1287</td>
+                  <td class="px-4 py-3 text-sm">Antoine Lefebvre</td>
+                  <td class="px-4 py-3 text-sm">antoine.lefebvre@example.com</td>
+                  <td class="px-4 py-3 text-sm">29/06/2025</td>
+                  <td class="px-4 py-3 text-sm">
+                    <div class="flex space-x-2">
+                      <button class="!rounded-button w-8 h-8 flex items-center justify-center text-blue-600 hover:bg-blue-50">
+                        <i class="ri-edit-line"></i>
+                      </button>
+                      <button class="!rounded-button w-8 h-8 flex items-center justify-center text-red-600 hover:bg-red-50">
+                        <i class="ri-delete-bin-line"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="border-b bg-gray-50">
+                  <td class="px-4 py-3 text-sm">#1286</td>
+                  <td class="px-4 py-3 text-sm">Camille Rousseau</td>
+                  <td class="px-4 py-3 text-sm">camille.rousseau@example.com</td>
+                  <td class="px-4 py-3 text-sm">28/06/2025</td>
+                  <td class="px-4 py-3 text-sm">
+                    <div class="flex space-x-2">
+                      <button class="!rounded-button w-8 h-8 flex items-center justify-center text-blue-600 hover:bg-blue-50">
+                        <i class="ri-edit-line"></i>
+                      </button>
+                      <button class="!rounded-button w-8 h-8 flex items-center justify-center text-red-600 hover:bg-red-50">
+                        <i class="ri-delete-bin-line"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="border-b">
+                  <td class="px-4 py-3 text-sm">#1285</td>
+                  <td class="px-4 py-3 text-sm">Julien Moreau</td>
+                  <td class="px-4 py-3 text-sm">julien.moreau@example.com</td>
+                  <td class="px-4 py-3 text-sm">27/06/2025</td>
+                  <td class="px-4 py-3 text-sm">
+                    <div class="flex space-x-2">
+                      <button class="!rounded-button w-8 h-8 flex items-center justify-center text-blue-600 hover:bg-blue-50">
+                        <i class="ri-edit-line"></i>
+                      </button>
+                      <button class="!rounded-button w-8 h-8 flex items-center justify-center text-red-600 hover:bg-red-50">
+                        <i class="ri-delete-bin-line"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="mt-4 flex justify-between items-center">
+            <p class="text-sm text-gray-500">Affichage de 1 à 5 sur 1254 entrées</p>
+            <div class="flex space-x-1">
+              <button class="!rounded-button px-3 py-1 border border-gray-300 text-gray-500 hover:bg-gray-50 text-sm">Précédent</button>
+              <button class="!rounded-button px-3 py-1 bg-primary text-white hover:bg-blue-600 text-sm">1</button>
+              <button class="!rounded-button px-3 py-1 border border-gray-300 text-gray-500 hover:bg-gray-50 text-sm">2</button>
+              <button class="!rounded-button px-3 py-1 border border-gray-300 text-gray-500 hover:bg-gray-50 text-sm">3</button>
+              <button class="!rounded-button px-3 py-1 border border-gray-300 text-gray-500 hover:bg-gray-50 text-sm">Suivant</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white rounded shadow-sm p-6">
+          <h3 class="text-lg font-semibold mb-6">Activité récente</h3>
+          
+          <div class="space-y-4">
+            <div class="activity-item pl-4 py-2">
+              <div class="flex items-start">
+                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 text-primary mr-3">
+                  <i class="ri-user-add-line"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium">Nouvel utilisateur inscrit</p>
+                  <p class="text-xs text-gray-500 mt-1">Thomas Dubois s'est inscrit</p>
+                  <p class="text-xs text-gray-400 mt-1">Il y a 5 minutes</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="activity-item pl-4 py-2">
+              <div class="flex items-start">
+                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-green-100 text-green-600 mr-3">
+                  <i class="ri-file-add-line"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium">Nouvelle publication</p>
+                  <p class="text-xs text-gray-500 mt-1">Sophie Martin a publié "Guide débutant"</p>
+                  <p class="text-xs text-gray-400 mt-1">Il y a 25 minutes</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="activity-item pl-4 py-2">
+              <div class="flex items-start">
+                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-purple-100 text-purple-600 mr-3">
+                  <i class="ri-edit-line"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium">Mise à jour de profil</p>
+                  <p class="text-xs text-gray-500 mt-1">Antoine Lefebvre a mis à jour son profil</p>
+                  <p class="text-xs text-gray-400 mt-1">Il y a 1 heure</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="activity-item pl-4 py-2">
+              <div class="flex items-start">
+                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-600 mr-3">
+                  <i class="ri-message-2-line"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium">Nouveau commentaire</p>
+                  <p class="text-xs text-gray-500 mt-1">Camille Rousseau a commenté "Article technique"</p>
+                  <p class="text-xs text-gray-400 mt-1">Il y a 2 heures</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="activity-item pl-4 py-2">
+              <div class="flex items-start">
+                <div class="w-8 h-8 flex items-center justify-center rounded-full bg-red-100 text-red-600 mr-3">
+                  <i class="ri-delete-bin-line"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium">Contenu supprimé</p>
+                  <p class="text-xs text-gray-500 mt-1">Publication "Contenu inapproprié" supprimée</p>
+                  <p class="text-xs text-gray-400 mt-1">Il y a 3 heures</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button class="!rounded-button w-full mt-6 py-2 text-sm text-primary border border-primary hover:bg-blue-50 whitespace-nowrap">Voir toutes les activités</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script id="sidebar-toggle-script">
+    document.addEventListener('DOMContentLoaded', function() {
+      const sidebarToggle = document.getElementById('sidebar-toggle');
+      const sidebar = document.querySelector('.sidebar');
+      
+      if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', function() {
+          sidebar.classList.toggle('open');
+        });
+      }
+    });
+  </script>
+
+  <script id="logout-script">
+    document.addEventListener('DOMContentLoaded', function() {
+      const logoutBtn = document.getElementById('logout-btn');
+      
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+          // Appel à la fonction de déconnexion existante
+          deconnexion();
+        });
+      }
+      
+      // Fonction de déconnexion (simulée pour correspondre au code existant)
+      function deconnexion() {
+        sessionStorage.removeItem('adminToken');
+        window.location.href = 'login.html';
+      }
+    });
+  </script>
+
+  <script id="dashboard-data-script">
+    document.addEventListener('DOMContentLoaded', function() {
+      // Simulation de récupération des données depuis l'API
+      function fetchDashboardData() {
+        // Dans un environnement réel, cela serait un appel fetch à l'API
+        try {
+          // Vérification du token d'authentification
+          const token = sessionStorage.getItem('adminToken');
+          if (!token) {
+            // Redirection vers la page de connexion si non authentifié
+            window.location.href = 'login.html';
+            return;
+          }
+          
+          // Ici, vous feriez normalement un appel fetch à votre API
+          // fetch('/api/dashboard', {
+          //   headers: {
+          //     'Authorization': `Bearer ${token}`
+          //   }
+          // })
+          // .then(response => response.json())
+          // .then(data => updateDashboard(data))
+          // .catch(error => handleError(error));
+          
+          // Pour la démonstration, nous simulons des données
+          console.log('Données du tableau de bord chargées avec succès');
+        } catch (error) {
+          console.error('Erreur lors du chargement des données:', error);
+        }
+      }
+      
+      // Fonction pour gérer les erreurs
+      function handleError(error) {
+        console.error('Erreur API:', error);
+        // Afficher un message d'erreur à l'utilisateur si nécessaire
+      }
+      
+      // Initialisation du tableau de bord
+      fetchDashboardData();
+    });
+  </script>
+  <script src="../../assets/js/admin/dashboard.js"></script>
+</body>
+</html>
