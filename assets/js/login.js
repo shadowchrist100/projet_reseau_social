@@ -75,7 +75,18 @@ login_form.addEventListener("submit", function (event) {
                 console.log("Réussite:",resultat);
                 if (!resultat['error']) 
                 {
+<<<<<<< HEAD
                     load_view("acceuil");    
+=======
+                    if (resultat["role"]==="user") 
+                    {
+                        load_view("acceuil"); 
+                    }
+                    else
+                    {
+                        load_view("dashboard");
+                    }  
+>>>>>>> 826c7878667d714b63942f4babeee226ae7a7168
                 }
             }
             catch(error)

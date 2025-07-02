@@ -4,13 +4,12 @@
 
     // Définir le type de contenu de la réponse comme JSON
     header('Content-Type: application/json');
-    
+    $response=[];
     // récupérer les informations du formulaire provenant de la requête fetch
     if ($_SERVER["REQUEST_METHOD"]==="POST") 
     {
         $content=$_POST["post_text"] ?? "";
         $image=$_FILES["post_image"] ?? "";
-        $response=[];
         if (!empty($content) || !empty($image)) 
         {
             // échapement des données du formulaire
@@ -74,6 +73,10 @@
         {
             $response["error"]="Publication vide";
         }
-        echo json_encode($response);
     }
+    else
+    {
+        $response["error"]="Methode invalide";
+    }
+    echo json_encode($response);
 ?>
