@@ -5,7 +5,8 @@
 
     if (isset($_SESSION["LOGGED_USER"])) 
     {
-        echo json_encode(['authenticated'=>true]);
+        echo json_encode(['authenticated'=>true,
+                            'role'=>$_SESSION["LOGGED_USER"]["role"]]);
     }
     else
     {

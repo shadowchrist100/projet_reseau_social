@@ -56,14 +56,15 @@
                     if (move_uploaded_file($image["tmp_name"],"../uploads/".$file_name)) 
                     {
                         try {
-                            $req=$pdo->prepare("INSERT INTO users(nom,prenom,pseudo,email,profile_picture,password_hash) VALUES (:name,:prenom,:pseudo,:email,:image,:password)");
+                            $req=$pdo->prepare("INSERT INTO users(nom,prenom,pseudo,email,profile_picture,password_hash,role) VALUES (:name,:prenom,:pseudo,:email,:image,:password,:role)");
                             $stmt=$req->execute([
                                 "name"=>$name,
                                 "prenom"=>$prenom,
                                 "pseudo"=>$pseudo,
                                 "email"=>$email,
                                 "image"=>$file_name,
-                                "password"=>$password]);
+                                "password"=>$password,
+                                "role"=>"user"]);
                         } catch (PDOECXCEPTION $e) 
                         {
                             $response["error"]=$e->getMessage();
