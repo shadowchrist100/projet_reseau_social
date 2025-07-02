@@ -43,7 +43,7 @@
                 // vérification de l'extension du fichier
                 $file_info=pathinfo($image["name"]);
                 $file_extension=$file_info["extension"];
-                $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png');
+                $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png','webp','avif');
                 $is_extension_valide=(in_array($file_extension,$extensions_autorisees) ? true:false);
 
                 // si l'extension est valide uploader l'image et insérer les infos dans la bd 
@@ -65,7 +65,7 @@
                                 "image"=>$file_name,
                                 "password"=>$password,
                                 "role"=>"user"]);
-                        } catch (PDOECXCEPTION $e) 
+                        } catch (PDOException $e) 
                         {
                             $response["error"]=$e->getMessage();
                         }
