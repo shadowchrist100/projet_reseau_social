@@ -366,6 +366,10 @@ main .container .left .profile{
     display: flex;
     gap: 1rem;
 }
+.middle .feed .content
+{
+    margin: 0.7rem;
+}
 .middle .feed .photo{
     border-radius: var(--card-border-radius);
     margin: 0.7rem 0;
@@ -500,4 +504,275 @@ margin-bottom: 1rem;
 display: flex;
 gap: 1rem;
 
+}
+/* <!-- ================================THEME CUSTOMIZATION=====================    -->
+ */
+
+ .customize-theme{
+    background: rgba(255,255,255,0.5);
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 100;
+    text-align: center;
+    display: grid;
+    place-items: center;
+    top: 0;left: 0;
+    font-size: 0.9rem;
+    display: none;
+ }
+ .customize-theme .card{
+    background: var(--color-white);
+    padding: 3rem;
+    border-radius: var(--card-border-radius);
+    width: 50%;
+    box-shadow: 0 0 1rem var(--color-primary);
+ }
+@import url('https://fonts.googleapis.com/css2? family= Poppins:wght@300;400;500;600 & family= Quicksand:wght@300;400;500;600;700 & family= Raleway:wght@100;400;500 & display=swap');
+
+:root{
+    --primary-color-hue:252;
+    --dark-color-lightness:17%;
+    --light-color-lightness:95%;
+    --white-color-lightness:100%;
+
+    --color-dark: hsl(252,30%,var(--dark-color-lightness));
+    --color-white: hsl(252,30%,var(  --white-color-lightness));
+    --color-light: hsl(252,30%,var( --light-color-lightness));
+    --color-primary: hsl(var(--primary-color-hue),75%,60%);
+    --color-secondary: hsl(252,100%,90%);
+    --color-success: hsl(120,95%,65%);
+    --color-danger: hsl(0,95%,65%);
+    --color-black: hsl(252,30%,17%);
+    --color-gray: hsl(var(--primary-color-hue),15%,65%);
+
+
+
+    --border-radius:2rem;
+    --card-border-radius:1rem;
+    --btn-padding:0.6rem 1rem;
+    --search-padding:0.6rem 1rem;
+    --card-padding:1rem;
+    --sticky-top-left:5.4rem;
+    --sticky-top-right:-18rem;
+}
+*,*::before,*::after{
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+}
+body{
+    font-family: 'Poppins',sans-serif;
+    color: var(--color-dark);
+  background: var(--color-light);
+  overflow-x: hidden;
+  background-color: #162938;
+}
+/* GENERAL STYLES */
+.container{
+    width: 80%;
+    margin: 0 auto;
+}
+.profile-photo{
+    width: 2.7rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+  overflow: hidden;
+
+}
+img{
+    display: block;
+    width: 100%;
+}
+.btn{
+    display: inline-block;
+    padding: var(--btn-padding);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 300ms ease;
+    font-size: 0.9rem;
+    border-radius: var(--border-radius);
+
+}
+.btn:hover{
+    opacity: 0.8;
+}
+.btn-primary{
+    background: var(--color-primary);
+    color: white;
+}
+.text-bold{
+font-weight: 500;
+}
+.text-muted{
+    color: var(--color-gray);
+} 
+/* NAVBAR */
+nav{
+    width: 100%;
+    background: var(--color-white);
+    padding: 0.2rem 0;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+}
+nav .container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+ .search-bar{
+    background: var(--color-light);
+    border-radius: var(--border-radius);
+    padding: var(--search-padding);
+}
+ .search-bar input[type="search"]{
+background: transparent;
+width: 30vw;
+font-size: .9rem;
+color: var(--color-dark);
+}
+ .search-bar input[type="search"]::placeholder{
+    color: var(--color-gray);
+}
+nav .create{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+}
+/* ==================MAIN================ */
+main{
+    position: relative;
+    top: 5.4rem;
+}
+main .container{
+    display: grid;
+    grid-template-columns: 18vw auto 20vw;
+    column-gap: 2rem;
+    position: relative;
+}
+/* ================left================ */
+
+main .container .left{
+    height: max-content;
+    position: sticky;
+    top: var(--sticky-top-left);
+}
+main .container .left .profile{
+    padding: var(--card-padding);
+    background: var(--color-white);
+    border-radius: var(--card-border-radius);
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    width: 100%;
+}
+/* ================SIDEBAR================ */
+.left .sidebar{
+    margin-top: 1rem;
+    background: var(--color-white);
+    border-radius: var(--card-border-radius);
+}
+.left .sidebar .menu-item{
+    display: flex;
+    align-items: center;
+    height: 4rem;
+    cursor: pointer;
+    transition: all 300 ease;
+    position: relative;
+
+}
+.left .sidebar  .menu-item:hover{
+    background: var(--color-light);
+}
+.left .sidebar i{
+    font-size: 1.4rem;
+    color: var(--color-gray);
+    margin-left: 2rem;
+    position: relative;
+}
+.left .sidebar h3{
+    margin-left: 1.5rem;
+    font-size: 1rem;
+}
+.left .sidebar .active{
+    background: var(--color-light);
+}
+.left .sidebar .active i,
+.left .sidebar .active h3{
+    color: var(--color-primary);
+}
+.left .sidebar .active::before{
+    content: "";
+    display: block;
+    width: 0.5rem;
+    height: 100%;
+    position: absolute;
+    background: var(--color-primary);
+}
+.left .sidebar .menu-item:first-child .active{
+    border-top-left-radius: var(--card-border-radius);
+    overflow: hidden;
+}
+.left .sidebar .menu-item:last-child .active{
+    border-top-left-radius: var(--card-border-radius);
+    overflow: hidden;
+}
+.left .btn{
+    margin-top: 1rem;
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+}
+/* ===============FEEDS================ */
+
+.middle .feeds .feed{
+    background: var(--color-white);
+    border-radius: var(--card-border-radius);
+    padding: var(--card-padding);
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+.feed .head{
+    display: flex;
+    justify-content: space-between;
+}
+.middle .feed .user{
+    display: flex;
+    gap: 1rem;
+}
+.middle .feed .photo{
+    border-radius: var(--card-border-radius);
+    margin: 0.7rem 0;
+    overflow: hidden;
+}
+.middle .feed .action-button{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.4rem;
+    margin: 0.6rem;
+}
+.middle  .liked-by{
+    display: flex;
+}
+.middle  .liked-by span{
+    width: 1.4rem;
+    height: 1.4rem;
+    display: block;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--color-white);
+    margin-left: -0.6rem;
+}
+.middle  .liked-by span:first-child{
+    margin: 0;
+}
+.middle  .liked-by p{
+    margin-left: 0.5rem;
 }

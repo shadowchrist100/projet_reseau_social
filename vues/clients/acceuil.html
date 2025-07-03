@@ -10,6 +10,10 @@
             <div class="profile-photo">
                 <img class="user_profile" src="">
             </div>
+            <button id="logout">
+                <h3>Déconnexion</h3><span><i class="uil uil-sign-in-alt"></i></span>
+            </button>
+            
         </div>
     </div>
 </nav>
@@ -98,9 +102,12 @@
                     </div> -->
                             <!-- --------------- END OF NOTIFICATIN POPUP---------- -->
                 <!-- </a>    -->
-                <a class="menu-item" id="messages-notifications">
+                <button class="menu-item" id="messages-notifications">
                     <span><i class="uil uil-envelope-alt"> <small class="notification-count">6+</small></i></span><h3>Message</h3>
-                </a>    
+                </button>
+                <!-- <a class="menu-item" id="messages-notifications">
+                    <span><i class="uil uil-envelope-alt"> <small class="notification-count">6+</small></i></span><h3>Message</h3>
+                </a>     -->
                 <a class="menu-item">
                     <span><i class="uil uil-bookmark"></i></span><h3>Bookmarks</h3>
                 </a>
@@ -155,8 +162,8 @@
                     <img class="user_profile" src="/assets/css/images/profile-1.jpg" alt="">
                 </div>
                 <input type="text" placeholder="what's on your mind, Diana?" name="post_text" id="post_text">
-                <label for="post_image" ></label>
-                <input type="file" id="post_image" name="post_image" accept="image/*">
+                <label for="post_image">Image</label>
+                <input style="display: none;" type="file" id="post_image" name="post_image" accept="image/*">
                 <img id="image_preview" class="image-preview" alt="">
                 <input type="button" id="create_post" value="Post" class="btn btn-primary">
             </form>
@@ -181,8 +188,8 @@
                     </div>
                     <div class="action-button">
                         <div class="interaction-buttons">
-                            <span><i class="uil uil-heart"></i></span>
-                            <span><i class="uil uil-comment-dots"></i></span>
+                            <span><i class="uil uil-heart like"></i></span>
+                            <span><i class="uil uil-comment-dots comment"></i></span>
                             <span><i class="uil uil-share-alt"></i></span>
                         </div>
                         <div class="bookmark">
