@@ -15,6 +15,7 @@ try {
         ]
     );
 } catch (PDOException $e) {
-    die("Erreur DB: " . $e->getMessage());
+    error_log("Erreur DB: " . $e->getMessage());
+    throw new Exception("Erreur de connexion à la base de données");
 }
 ?>
