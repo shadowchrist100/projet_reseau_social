@@ -1,56 +1,67 @@
 <?php
 header('Content-Type: application/json');
-require_once '../../config/database.php';
-require_once '../../utils/validation.php';
 
+// 1. Configuration de la base de données
+$host = 'localhost'; // ou votre adresse de serveur
+$dbname = 'social_network';
+$username = 'root';
+$password = '';
+
+// 2. Connexion à la base de données avec PDO
+try {
+    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    echo json_encode(['success' => false, 'message' => 'Erreur de connexion à la base de données']);
+    exit;
+}
+
+// 3. Récupération des données du formulaire
 $data = json_decode(file_get_contents('php://input'), true);
 
-// Validation
+// 4. Validation des données
+if (empty($data['firstName']) || empty($data['lastName']) || empty($data['email']) || empty($data['password']) || empty($data['role'])) {
+    echo json_encode(['success' => false, 'message' => 'Tous les champs sont requis']);
+    exit;
+}
+
 if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-    http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Email invalide']);
     exit;
 }
 
 if (strlen($data['password']) < 8) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Le mot de passe doit faire 8 caractères minimum']);
+    echo json_encode(['success' => false, 'message' => 'Le mot de passe doit contenir au moins 8 caractères']);
     exit;
 }
 
-if (!in_array($data['role'], ['admin', 'moderator'])) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Rôle invalide']);
+// 5. Vérification si l'email existe déjà
+$stmt = $conn->prepare("SELECT id FROM admins WHERE email = :email");
+$stmt->bindParam(':email', $data['email']);
+$stmt->execute();
+
+if ($stmt->rowCount() > 0) {
+    echo json_encode(['success' => false, 'message' => 'Cet email est déjà utilisé']);
     exit;
 }
 
+// 6. Hashage du mot de passe
+$hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+
+// 7. Insertion dans la base de données
 try {
-    // Vérifier si l'email existe déjà
-    $stmt = $pdo->prepare("SELECT id FROM admins WHERE email = ?");
-    $stmt->execute([$data['email']]);
+    $stmt = $conn->prepare("INSERT INTO admins (first_name, last_name, email, password, role, created_at) 
+                           VALUES (:firstName, :lastName, :email, :password, :role, NOW())");
     
-    if ($stmt->fetch()) {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'Cet email est déjà utilisé']);
-        exit;
-    }
-
-    // Hacher le mot de passe
-    $hashedPassword = password_hash($data['password'], PASSWORD_BCRYPT);
-
-    // Créer l'admin
-    $stmt = $pdo->prepare("INSERT INTO admins (email, password, role) VALUES (?, ?, ?)");
-    $stmt->execute([$data['email'], $hashedPassword, $data['role']]);
-
-    // Journalisation
-    file_put_contents('../../logs/admin_registrations.log', 
-        date('Y-m-d H:i:s') . " - Nouvel admin: " . $data['email'] . " (" . $data['role'] . ")\n", 
-        FILE_APPEND);
-
-    echo json_encode(['success' => true, 'message' => 'Compte admin créé avec succès']);
-
-} catch (PDOException $e) {
-    http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Erreur de base de données']);
+    $stmt->bindParam(':firstName', $data['firstName']);
+    $stmt->bindParam(':lastName', $data['lastName']);
+    $stmt->bindParam(':email', $data['email']);
+    $stmt->bindParam(':password', $hashedPassword);
+    $stmt->bindParam(':role', $data['role']);
+    
+    $stmt->execute();
+    
+    echo json_encode(['success' => true, 'message' => 'Compte administrateur créé avec succès']);
+} catch(PDOException $e) {
+    echo json_encode(['success' => false, 'message' => 'Erreur lors de la création du compte: ' . $e->getMessage()]);
 }
-?>

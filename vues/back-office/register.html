@@ -3,40 +3,114 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Administrateur des inscriptions</title>
+    <title>Inscription Administrateur</title>
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
     <style>
       :where([class^="ri-"])::before { content: "\f3c2"; }
       body {
-      background-color: #f9fafb;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f8fafc;
+      background: linear-gradient(135deg, #2C3E50 0%, #3A506B 100%);
       }
-      .form-group input, .form-group select {
-      transition: border-color 0.2s ease;
-      background-color: white;
+      .form-container {
+      animation: fadeIn 0.8s ease-out;
       }
-      .form-group input:focus, .form-group select:focus {
-      border-color: #3b82f6;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      .form-field {
+      animation: slideIn 0.5s ease-out backwards;
       }
-      select {
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 0.5rem center;
-      background-size: 1.5em 1.5em;
+      .form-field:nth-child(1) { animation-delay: 0.1s; }
+      .form-field:nth-child(2) { animation-delay: 0.2s; }
+      .form-field:nth-child(3) { animation-delay: 0.3s; }
+      .form-field:nth-child(4) { animation-delay: 0.4s; }
+      .form-field:nth-child(5) { animation-delay: 0.5s; }
+      .form-field:nth-child(6) { animation-delay: 0.6s; }
+      @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+      }
+      @keyframes slideIn {
+      from {
+      opacity: 0;
+      transform: translateY(20px);
+      }
+      to {
+      opacity: 1;
+      transform: translateY(0);
+      }
+      }
+      .password-strength {
+      height: 4px;
+      transition: width 0.3s ease;
+      }
+      .input-field {
+      transition: all 0.3s ease;
+      }
+      .input-field:focus {
+      transform: scale(1.01);
+      }
+      .submit-btn {
+      transition: all 0.3s ease;
+      }
+      .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+      }
+      .submit-btn:active:not(:disabled) {
+      transform: translateY(1px);
+      }
+      .spinner {
+      animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+      }
+      .field-icon {
+      transition: all 0.3s ease;
+      }
+      .input-field:focus + .field-icon {
+      color: #3498DB;
+      transform: scale(1.1);
+      }
+      .notification {
+      animation: slideDown 0.5s ease-out;
+      }
+      @keyframes slideDown {
+      from {
+      opacity: 0;
+      transform: translateY(-20px);
+      }
+      to {
+      opacity: 1;
+      transform: translateY(0);
+      }
+      }
+      .toggle-password {
+      transition: all 0.2s ease;
+      }
+      .toggle-password:hover {
+      color: #3498DB;
+      }
+      /* Hide number input arrows */
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+      }
+      input[type="number"] {
+      -moz-appearance: textfield;
       }
     </style>
     <script>
       tailwind.config = {
         theme: {
           extend: {
-            colors: { primary: "#475569", secondary: "#94a3b8" },
+            colors: { primary: "#3498DB", secondary: "#5D7FA6" },
             borderRadius: {
               none: "0px",
               sm: "4px",
@@ -55,96 +129,225 @@
     </script>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-md bg-white rounded-lg shadow-lg overflow-hidden">
-        <div class="bg-primary text-white p-6">
-            <div class="flex items-center justify-center mb-2">
-                <div class="w-12 h-12 flex items-center justify-center bg-white/20 rounded-full">
-                    <i class="ri-shield-user-line text-xl"></i>
+    <div class="form-container w-full max-w-lg bg-white/95 backdrop-blur-sm rounded-lg shadow-2xl overflow-hidden">
+        <div class="bg-[#2C3E50] p-6 relative">
+            <h1 class="text-2xl font-bold text-white text-center">
+                Inscription Administrateur
+            </h1>
+            <p class="text-[#5D7FA6] text-center mt-2">
+                Créez votre compte pour accéder au panneau d'administration
+            </p>
+            <div
+                id="notification"
+                class="notification hidden mt-4 p-3 rounded text-center text-sm font-medium"
+            ></div>
+        </div>
+        <form id="adminForm" class="p-6 space-y-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="form-field relative">
+                    <label
+                        for="adminFirstName"
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                    >Prénom</label
+                    >
+                    <div class="relative">
+                        <input
+                            type="text"
+                            id="adminFirstName"
+                            name="adminFirstName"
+                            required
+                            class="input-field w-full px-4 py-3 pl-10 pr-8 bg-gray-50 border border-gray-300 rounded focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                        />
+                        <div
+                            class="field-icon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 flex items-center justify-center"
+                        >
+                            <i class="ri-user-line"></i>
+                        </div>
+                        <div
+                            class="validation-icon absolute right-3 top-1/2 transform -translate-y-1/2 hidden w-5 h-5 flex items-center justify-center"
+                        >
+                            <i class="ri-check-line text-green-500 valid-icon hidden"></i>
+                            <i class="ri-close-line text-red-500 invalid-icon hidden"></i>
+                        </div>
+                    </div>
+                    <p class="error-message text-red-500 text-xs mt-1 hidden"></p>
+                </div>
+                <div class="form-field relative">
+                    <label
+                        for="adminLastName"
+                        class="block text-sm font-medium text-gray-700 mb-1"
+                    >Nom</label
+                    >
+                    <div class="relative">
+                        <input
+                            type="text"
+                            id="adminLastName"
+                            name="adminLastName"
+                            required
+                            class="input-field w-full px-4 py-3 pl-10 pr-8 bg-gray-50 border border-gray-300 rounded focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                        />
+                        <div
+                            class="field-icon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 flex items-center justify-center"
+                        >
+                            <i class="ri-user-line"></i>
+                        </div>
+                        <div
+                            class="validation-icon absolute right-3 top-1/2 transform -translate-y-1/2 hidden w-5 h-5 flex items-center justify-center"
+                        >
+                            <i class="ri-check-line text-green-500 valid-icon hidden"></i>
+                            <i class="ri-close-line text-red-500 invalid-icon hidden"></i>
+                        </div>
+                    </div>
+                    <p class="error-message text-red-500 text-xs mt-1 hidden"></p>
                 </div>
             </div>
-            <h1 class="text-2xl font-bold text-center">Création compte Admin</h1>
-            <p class="text-center text-white/80 mt-2">
-                Créez un nouveau compte administrateur
-            </p>
-        </div>
-        <div class="p-6">
-            <form id="adminRegisterForm" class="space-y-5">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="form-group">
-                        <label for="adminFirstName" class="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="ri-user-line text-gray-400"></i>
-                            </div>
-                            <input type="text" id="adminFirstName" class="pl-10 w-full h-11 px-4 border border-gray-300 rounded focus:ring-primary focus:border-primary" required />
-                        </div>
+            <div class="form-field relative">
+                <label
+                    for="adminEmail"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                >Email</label
+                >
+                <div class="relative">
+                    <input
+                        type="email"
+                        id="adminEmail"
+                        name="adminEmail"
+                        required
+                        class="input-field w-full px-4 py-3 pl-10 pr-8 bg-gray-50 border border-gray-300 rounded focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                    />
+                    <div
+                        class="field-icon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 flex items-center justify-center"
+                    >
+                        <i class="ri-mail-line"></i>
                     </div>
-                    <div class="form-group">
-                        <label for="adminLastName" class="block text-sm font-medium text-gray-700 mb-1">Nom</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="ri-user-line text-gray-400"></i>
-                            </div>
-                            <input type="text" id="adminLastName" class="pl-10 w-full h-11 px-4 border border-gray-300 rounded focus:ring-primary focus:border-primary" required />
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="adminEmail" class="block text-sm font-medium text-gray-700 mb-1">Email professionnel</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="ri-mail-line text-gray-400"></i>
-                        </div>
-                        <input type="email" id="adminEmail" class="pl-10 w-full h-11 px-4 border border-gray-300 rounded focus:ring-primary focus:border-primary" required />
+                    <div
+                        class="validation-icon absolute right-3 top-1/2 transform -translate-y-1/2 hidden w-5 h-5 flex items-center justify-center"
+                    >
+                        <i class="ri-check-line text-green-500 valid-icon hidden"></i>
+                        <i class="ri-close-line text-red-500 invalid-icon hidden"></i>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="adminPassword" class="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="ri-lock-line text-gray-400"></i>
-                        </div>
-                        <input type="password" id="adminPassword" minlength="8" class="pl-10 w-full h-11 px-4 border border-gray-300 rounded focus:ring-primary focus:border-primary" required />
-                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                            <button type="button" id="togglePassword" class="text-gray-400 hover:text-gray-600 focus:outline-none">
-                                <i class="ri-eye-off-line"></i>
-                            </button>
-                        </div>
+                <p class="error-message text-red-500 text-xs mt-1 hidden"></p>
+            </div>
+            <div class="form-field relative">
+                <label
+                    for="adminPassword"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                >Mot de passe</label
+                >
+                <div class="relative">
+                    <input
+                        type="password"
+                        id="adminPassword"
+                        name="adminPassword"
+                        required
+                        minlength="8"
+                        class="input-field w-full px-4 py-3 pl-10 pr-10 bg-gray-50 border border-gray-300 rounded focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                    />
+                    <div
+                        class="field-icon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 flex items-center justify-center"
+                    >
+                        <i class="ri-lock-line"></i>
                     </div>
-                    <p class="mt-1 text-xs text-gray-500">
-                        Le mot de passe doit contenir au moins 8 caractères
-                    </p>
+                    <button
+                        type="button"
+                        class="toggle-password absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 flex items-center justify-center"
+                    >
+                        <i class="ri-eye-line show-password"></i>
+                        <i class="ri-eye-off-line hide-password hidden"></i>
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label for="adminRole" class="block text-sm font-medium text-gray-700 mb-1">Rôle</label>
+                <p class="error-message text-red-500 text-xs mt-1 hidden"></p>
+                <div class="mt-2">
+                    <div class="text-xs text-gray-500 mb-1 flex justify-between">
+                        <span>Force du mot de passe:</span>
+                        <span id="passwordStrengthText">Faible</span>
+                    </div>
+                    <div class="bg-gray-200 rounded-full h-1 overflow-hidden">
+                        <div
+                            id="passwordStrength"
+                            class="password-strength bg-red-500 h-full"
+                            style="width: 0%"
+                        ></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-field relative">
+                <label
+                    for="adminRole"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                >Rôle</label
+                >
+                <div class="relative">
                     <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="ri-user-settings-line text-gray-400"></i>
+                        <div
+                            class="field-icon absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 z-10 w-5 h-5 flex items-center justify-center"
+                        >
+                            <i class="ri-shield-line"></i>
                         </div>
-                        <select id="adminRole" class="pl-10 w-full h-11 px-4 pr-8 border border-gray-300 rounded focus:ring-primary focus:border-primary" required>
-                            <option value="">Sélectionnez un rôle</option>
+                        <select
+                            id="adminRole"
+                            name="adminRole"
+                            required
+                            class="input-field appearance-none w-full px-4 py-3 pl-10 pr-10 bg-gray-50 border border-gray-300 rounded focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                        >
+                            <option value="" disabled selected>Sélectionnez un rôle</option>
                             <option value="admin">Administrateur</option>
                             <option value="moderator">Modérateur</option>
                         </select>
+                        <div
+                            class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none w-5 h-5 flex items-center justify-center"
+                        >
+                            <i class="ri-arrow-down-s-line text-gray-400"></i>
+                        </div>
                     </div>
                 </div>
-                <div class="pt-2">
-                    <button type="submit" class="w-full flex items-center justify-center bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-button transition-colors whitespace-nowrap">
-                        <i class="ri-user-add-line mr-2"></i>
-                        Créer le compte
-                    </button>
+                <p class="error-message text-red-500 text-xs mt-1 hidden"></p>
+            </div>
+            <div class="form-field pt-4">
+                <button
+                    type="submit"
+                    class="submit-btn w-full bg-primary text-white py-3 px-6 rounded-button font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all whitespace-nowrap flex items-center justify-center"
+                >
+                    <span id="submitText">S'inscrire</span>
+                    <svg
+                        id="submitSpinner"
+                        class="spinner ml-2 w-5 h-5 hidden"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <circle
+                            class="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            stroke-width="4"
+                        ></circle>
+                        <path
+                            class="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="text-center mt-6">
+                <div class="text-sm text-gray-500 mb-3">
+                    Déjà un compte administrateur ?
                 </div>
-                <div class="text-center text-sm text-gray-500 mt-4">
-                    <a href="login.html" class="text-primary hover:underline">Retour à la page de connexion</a>
-                </div>
-            </form>
-        </div>
+                <a href="login.html" class="inline-flex items-center justify-center bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-6 rounded-button transition-colors">
+                    <i class="ri-login-box-line mr-2"></i>
+                    Se connecter
+                </a>
+            </div>
+        </form>
     </div>
-
     <script>
         // Gestion de la visibilité du mot de passe
         document.addEventListener("DOMContentLoaded", function () {
-            const togglePassword = document.getElementById("togglePassword");
+            const togglePassword = document.querySelector(".toggle-password");
             const passwordInput = document.getElementById("adminPassword");
             
             togglePassword.addEventListener("click", function () {
@@ -161,7 +364,7 @@
             });
 
             // Gestion de l'inscription
-            const form = document.getElementById("adminRegisterForm");
+            const form = document.getElementById("adminForm");
             
             form.addEventListener("submit", async function (event) {
                 event.preventDefault();
