@@ -1,8 +1,17 @@
 <?php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'social_network');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+// Vérifier si les constantes ne sont pas déjà définies
+if (!defined('DB_HOST')) {
+    define('DB_HOST', 'localhost');
+}
+if (!defined('DB_NAME')) {
+    define('DB_NAME', 'social_network');
+}
+if (!defined('DB_USER')) {
+    define('DB_USER', 'root');
+}
+if (!defined('DB_PASS')) {
+    define('DB_PASS', '');
+}
 
 try {
     $pdo = new PDO(

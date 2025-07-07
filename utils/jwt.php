@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once __DIR__ . '/../config/config.php';
 
 function generateJWT($payload) {
     $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);

@@ -1,5 +1,5 @@
 <?php
-require_once 'database.php';
+require_once __DIR__ . '/../config/database.php';
 
 function logAdminAction($adminId, $action, $details = null) {
     global $pdo;

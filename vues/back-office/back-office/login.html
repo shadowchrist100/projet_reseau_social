@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connexion - Back Office</title>
+    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+      /* Modification des couleurs pour correspondre au register */
+      .login-page {
+        background: linear-gradient(135deg, #2C3E50 0%, #3A506B 100%);
+      }
+      
+      .login-header {
+        background: #2C3E50;
+      }
+      
+      .login-header p {
+        color: #5D7FA6;
+      }
+      
+      .form-group label i {
+        color: #3498DB;
+      }
+      
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        border-color: #3498DB;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+      }
+      
+      .btn-login {
+        background: #3498DB;
+      }
+      
+      .btn-login:hover {
+        background: #2980b9;
+      }
+      
+      .register-link {
+        color: #3498DB;
+      }
+      
+      .register-link:hover {
+        color: #2980b9;
+      }
+    </style>
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fas fa-shield-alt"></i>
+                <h1>Back Office</h1>
+                <p>Connexion Administrateur</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i>
+                        Nom d'utilisateur ou Email
+                    </label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Mot de passe
+                    </label>
+                    <input type="password" id="password" name="password" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword()">
+                        <i class="fas fa-eye" id="passwordToggleIcon"></i>
+                    </button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe">
+                        <span class="checkmark"></span>
+                        Se souvenir de moi
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn-login" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Se connecter
+                </button>
+            </form>
+            
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            <div id="successMessage" class="success-message" style="display: none;"></div>
+            
+            <div class="login-footer">
+                <p>&copy; 2025 Social Network - Back Office</p>
+                <div class="login-links">
+                    <a href="register.html" class="register-link">
+                        <i class="fas fa-user-plus"></i>
+                        Créer un compte administrateur
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../assets/js/admin/common.js"></script>
+    <script src="../../assets/js/admin/auth/login.js"></script>
+</body>
+</html>

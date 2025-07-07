@@ -37,7 +37,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
     />
     <style>
-        
+      :where([class^="ri-"])::before { content: "\f3c2"; }
       body {
           font-family: 'Inter', sans-serif;
           background-color: #f9fafb;
@@ -70,6 +70,7 @@
         <div
           id="loginMessage"
           class="mb-4 p-3 rounded-md text-sm hidden"
+          style="display:none;"
         ></div>
 
         <form id="adminLoginForm" class="space-y-6">
@@ -147,7 +148,6 @@
           <div>
             <button
               type="submit"
-              id="submitBtn"
               class="w-full flex justify-center py-2 px-4 border border-transparent rounded-button shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary whitespace-nowrap transition-all duration-200"
             >
               Se connecter
@@ -165,6 +165,83 @@
         </div>
       </div>
     </div>
+
+    <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    verifyAdminSession('moderator');
+
+  })
+  ;
+
+  
+</script>
+
+    <script id="passwordToggleScript">
+
+        
+      document.addEventListener("DOMContentLoaded", function () {
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordInput = document.getElementById("password");
+
+        togglePassword.addEventListener("click", function () {
+          const type =
+            passwordInput.getAttribute("type") === "password" ? "text" : "password";
+          passwordInput.setAttribute("type", type);
+
+          // Change icon based on password visibility
+          const icon = togglePassword.querySelector("i");
+          if (type === "password") {
+            icon.className = "ri-eye-line";
+          } else {
+            icon.className = "ri-eye-off-line";
+          }
+        });
+      });
+    </script>
+
+    <script id="formSubmitScript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const loginForm = document.getElementById("adminLoginForm");
+        const loginMessage = document.getElementById("loginMessage");
+
+        loginForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+
+          // Simulate form submission
+          loginMessage.style.display = "block";
+          loginMessage.className =
+            "mb-4 p-3 rounded-md text-sm bg-blue-50 text-blue-700";
+          loginMessage.textContent = "Connexion en cours...";
+
+          // This would normally be an actual API call
+          setTimeout(() => {
+            if (email && password) {
+              // Simulate successful login
+              loginMessage.className =
+                "mb-4 p-3 rounded-md text-sm bg-green-50 text-green-700";
+              loginMessage.textContent = "Connexion réussie! Redirection...";
+
+              // Redirect after successful login
+              setTimeout(() => {
+                // window.location.href = 'dashboard.html';
+                // For demo purposes, we'll just reset the form
+                loginForm.reset();
+                loginMessage.style.display = "none";
+              }, 2000);
+            } else {
+              loginMessage.className =
+                "mb-4 p-3 rounded-md text-sm bg-red-50 text-red-700";
+              loginMessage.textContent = "Veuillez remplir tous les champs.";
+            }
+          }, 1000);
+        });
+      });
+
+      
+    </script>
 
     <script src="../../assets/js/admin/auth/login.js"></script>
   </body>
