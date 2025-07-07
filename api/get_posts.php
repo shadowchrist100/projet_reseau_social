@@ -108,3 +108,48 @@
 
 // echo json_encode($response);
 ?>
+<?php
+    session_start();
+    require_once("bdd.php");
+    // Définir le type de contenu de la réponse comme JSON
+    header('Content-Type: application/json');   
+
+    $response = [];
+    if ($_SERVER["REQUEST_METHOD"]==="GET") 
+    {
+        // Requête préparée pour éviter les injections SQL
+        $query = "
+                SELECT 
+                    posts.*, 
+                    users.nom, 
+                    users.prenom, 
+                    users.pseudo, 
+                    users.profile_picture
+                FROM 
+                    posts
+                JOIN 
+                    users ON posts.user_id = users.id
+                ORDER BY 
+                    posts.created_at DESC
+            ";
+
+            $posts = $pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
+
+
+        if ($posts) {
+            foreach ($posts as $post) {
+                $response[] = $post;
+            }
+        }
+        else
+        {
+            $response["error"]="Aucune publication trouvée";
+        }
+
+    }
+    else
+    {
+        $response["error"]="Methode de reqête non autoriséé";
+    }
+    echo json_encode($response);
+?>

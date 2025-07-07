@@ -1,6 +1,7 @@
 function home() 
 {
     // récupérer les éléments du DOM
+    // récupérer les éléments du DOM
     const user_profil=document.querySelectorAll(".user_profile");
     const user_pseudo=document.querySelectorAll(".user_pseudo");
     const user_name=document.querySelectorAll(".user_name");
