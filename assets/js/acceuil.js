@@ -1,5 +1,6 @@
 function home() 
 {
+    // récupérer les éléments du DOM
     const user_profil=document.querySelectorAll(".user_profile");
     const user_pseudo=document.querySelectorAll(".user_pseudo");
     const user_name=document.querySelectorAll(".user_name");
@@ -9,6 +10,8 @@ function home()
     const imagePreview = document.getElementById("image_preview");
     const messages=document.getElementById("messages-notifications");
     const logout=document.getElementById("logout");
+    
+    //récupérer les infos de l'utilisateur connecté 
     fetch("/api/user.php")
     .then(response=>response.json())
     .then(data=>{
@@ -33,13 +36,27 @@ function home()
     })
     .catch(error=>console.error(error))
 
+    /*******Gestions des posts et création des posts  **************/
     // envoyer les informations du post au backend pour l'enregistrement
+        // afficher l'image sélectionnée dans le champ de saisie d'image
+    postImageInput.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        } else {
+            imagePreview.src = "";
+            imagePreview.style.display = "none";
+        }
+    });
     create_post.addEventListener("click", function () {
 
             // stockage des infos du post dans post_data
         const post_data=new FormData(post);
-
-    // Parcourir et afficher chaque entrée
         fetch("/api/create_post.php",{
             method:"POST",
             body:post_data,
@@ -65,24 +82,8 @@ function home()
         )
     })
 
-    // afficher l'image sélectionnée dans le champ de saisie d'image
-    postImageInput.addEventListener("change", function () {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                imagePreview.src = e.target.result;
-                imagePreview.style.display = "block";
-            };
-            reader.readAsDataURL(file);
-        } else {
-            imagePreview.src = "";
-            imagePreview.style.display = "none";
-        }
-    });
-
     // charger les posts de l'utilisateur  
-        // afficher les posts de l'utilisateur
+        // afficher les posts dans le fil d'actualité
     function print_posts(post,is_first) 
     {
         const feed=document.createElement("div");
@@ -114,13 +115,8 @@ function home()
         </div>
         <div class="action-button">
             <div class="interaction-buttons">
-                <button class="like-btn" type="button" data-post-id=${post.id} >
-                    <span><i class="uil uil-heart <i class="uim uim-heart"></i>"></i></span>
-                </button>
-                <button type="button" class="comment-btn">
-                    <span><i class="uil uil-comment-dots"></i></span>
-                </button>
-                <span><i class="uil uil-share-alt"></i></span>
+                <button class="like-btn uil uil-heart" type="button" data-post-id=${post.id}></button>
+                <button type="button" class="comment-btn uil uil-comment-dots" data-post-id=${post.id}></button>
             </div>
             <div class="bookmark">
                 <span><i class="uil uil-bookmark-full"></i></span>
@@ -154,7 +150,7 @@ function home()
             
         });
     }
-
+    // récupérer les posts depuis le backend et afficher dans le fil d'actualité
     function load_posts() {
         fetch("/api/get_posts.php")
         .then(response=>response.json())
@@ -175,6 +171,8 @@ function home()
         load_view("messages");
     });
 
+    // gérer la déconnexion de l'utilisateur
+    // ajouter un écouteur d'évènement sur le bouton de déconnexion
     logout.addEventListener("click", function () {
         fetch("/api/logout.php")
         .then(response=>response.json())
@@ -192,22 +190,18 @@ function home()
     });
 
     /*************** likes et commentaires**************** */
-    document.getElementById("feeds").addEventListener("click", function (event) {
+    document.querySelector(".feeds").addEventListener("click", function (event) {
         // vérifier si l'élément cliqué est un bouton de like
-        console.log("Clické");
-        
         if (event.target.classList.contains("like-btn")) {
-            const postId = event.target.getAttribute("data-post-id");
-            console.log(postId);
-            
+            const post_id = event.target.dataset.postId;
             // envoyer une requête pour liker le post
             const form_data = new FormData();
-            form_data.append("post_id", postId);
+            form_data.append("post_id", post_id);
             form_data.append("user_id", window.user_data.id); // ajouter l'id de l'utilisateur connecté 
             fetch("/api/like_post.php", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    Accept: "application/json"
                 },
                 body: form_data
             })
@@ -223,22 +217,5 @@ function home()
             .catch(error => console.error("Error:", error));
         }
     });
-    /* *********afficher le profil d'un utilisateur depuis un post*********/
-    // récupérer les éléments du profil de l'utilisateur
-    const user_post_ids=document.querySelectorAll(".user_post_id");
-    //ajouter un écouteur d'évènement sur les likes
-    const like=document.querySelectorAll("#like");
-    function show_profil(event) 
-    {
-        console.log(event.target);
-        
-    }
-
-    // ajout d'un écouteur d'évènement sur le profil de l'utilisateur de chaque post
-    console.log(user_post_ids);
-
-    user_post_ids.forEach(element=>{
-        element.addEventListener("click", show_profil);
-    })
 }
 home();
