@@ -89,28 +89,6 @@ class AdminUtils {
     }
   }
 
-  // Gestion de l'authentification
-  static handleUnauthorized() {
-    this.removeToken()
-    this.showNotification("Session expirée. Redirection vers la connexion...", "warning")
-    setTimeout(() => {
-      window.location.href = "login.html"
-    }, 2000)
-  }
-
-  static checkAuth() {
-    const token = this.getToken()
-    const user = this.getUser()
-
-    if (!token || !user) {
-      window.location.href = "login.html"
-      return false
-    }
-
-    this.updateUserInterface(user)
-    return true
-  }
-
   // Notifications
   static showNotification(message, type = "info", duration = 5000) {
     // Supprimer les notifications existantes
@@ -336,6 +314,21 @@ class AdminUtils {
       }
       clearTimeout(timeout)
       timeout = setTimeout(later, wait)
+    }
+  }
+
+  static redirectByRole(user = null) {
+    if (!user) {
+      user = this.getUser ? this.getUser() : null;
+    }
+    if (!user) return;
+
+    if (user.role === "admin") {
+      window.location.href = "dashboard-admin.html";
+    } else if (user.role === "moderator") {
+      window.location.href = "dashboard-moderator.html";
+    } else {
+      window.location.href = "dashboard.html";
     }
   }
 }

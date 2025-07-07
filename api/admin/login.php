@@ -1,87 +1,53 @@
 <?php
-require_once __DIR__ . '/../../config/config.php';
-require_once __DIR__ . '/../../config/database.php';
-require_once __DIR__ . '/../../utils/auth.php';
-require_once __DIR__ . '/../../utils/security.php';
-require_once __DIR__ . '/../../utils/logging.php';
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(['error' => 'Méthode non autorisée']);
-    exit();
-}
+header('Content-Type: application/json');
+error_reporting(0); // Désactive l'affichage des erreurs
 
 try {
+    // Vérification méthode POST
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        throw new Exception('Méthode non autorisée', 405);
+    }
+
+    // Récupération des données JSON
     $input = json_decode(file_get_contents('php://input'), true);
-    
-    if (!$input) {
-        $input = $_POST;
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        throw new Exception('Format de données invalide', 400);
     }
-    
-    $username = Security::sanitizeInput($input['username'] ?? '');
-    $password = $input['password'] ?? '';
-    
-    if (empty($username) || empty($password)) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Nom d\'utilisateur et mot de passe requis']);
-        exit();
+
+    // Validation des données
+    if (empty($input['email']) || empty($input['password'])) {
+        throw new Exception('Email et mot de passe requis', 400);
     }
+
+    // Connexion DB (adaptez à votre configuration)
+    require_once '../../config/database.php';
     
-    // Rate limiting
-    $clientIP = Security::getClientIP();
-    if (!Security::rateLimitCheck($clientIP . '_login', 5, 300)) {
-        http_response_code(429);
-        echo json_encode(['error' => 'Trop de tentatives de connexion. Réessayez dans 5 minutes.']);
-        exit();
-    }
-    
-    // Vérification des identifiants - adapter à la structure existante
-    $stmt = $pdo->prepare("SELECT * FROM admins WHERE (username = ? OR email = ?) AND is_active = 1");
-    $stmt->execute([$username, $username]);
+    // Requête préparée
+    $stmt = $pdo->prepare("SELECT id, password, role FROM admins WHERE email = ? LIMIT 1");
+    $stmt->execute([$input['email']]);
     $admin = $stmt->fetch();
-    
-    if (!$admin || !Auth::verifyPassword($password, $admin['password'])) {
-        http_response_code(401);
-        echo json_encode(['error' => 'Identifiants invalides']);
-        exit();
+
+    // Vérification mot de passe
+    if (!$admin || !password_verify($input['password'], $admin['password'])) {
+        throw new Exception('Identifiants incorrects', 401);
     }
-    
-    // Mise à jour de la dernière connexion
-    $stmt = $pdo->prepare("UPDATE admins SET last_login = NOW() WHERE id = ?");
-    $stmt->execute([$admin['id']]);
-    
-    // Génération du token JWT
-    $payload = [
-        'id' => $admin['id'],
-        'username' => $admin['username'] ?? $admin['email'],
-        'email' => $admin['email'],
-        'role' => $admin['role'],
-        'first_name' => $admin['first_name'],
-        'last_name' => $admin['last_name']
-    ];
-    
-    $token = JWT::encode($payload);
-    
-    // Log de l'action
-    Logger::logAdminAction($admin['id'], 'LOGIN', 'admin', $admin['id'], 'Connexion réussie');
-    
+
+    // Réponse succès
     echo json_encode([
         'success' => true,
-        'token' => $token,
-        'admin' => [
+        'token' => base64_encode(json_encode([
             'id' => $admin['id'],
-            'username' => $admin['username'] ?? $admin['email'],
-            'email' => $admin['email'],
             'role' => $admin['role'],
-            'first_name' => $admin['first_name'],
-            'last_name' => $admin['last_name'],
-            'avatar' => $admin['avatar'] ?? null
-        ]
+            'exp' => time() + 3600
+        ])),
+        'role' => $admin['role']
     ]);
-    
+
 } catch (Exception $e) {
-    Logger::log('ERROR', 'Erreur login admin: ' . $e->getMessage());
-    http_response_code(500);
-    echo json_encode(['error' => 'Erreur interne du serveur']);
+    http_response_code($e->getCode() ?: 500);
+    echo json_encode([
+        'success' => false,
+        'message' => $e->getMessage()
+    ]);
 }
 ?>
