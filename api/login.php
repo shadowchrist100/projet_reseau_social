@@ -22,14 +22,14 @@
             // récupération des données dans la base de donnée
             try 
             {
-                $req=$pdo->prepare("SELECT * FROM users WHERE nom=:nom");
-                $req->execute(["nom"=>$name]);
+                $req=$pdo->prepare("SELECT * FROM users WHERE pseudo=:pseudo");
+                $req->execute(["pseudo"=>$pseudo]);
                 $user=$req->fetch(PDO::FETCH_ASSOC);
                 
                 // si l'utilisateur n'existe pas
                 if (!$user) 
                 {
-                    $response['error']="Mot de passe invalid ou email invalid";
+                    $response['error']="Mot de passe invalid ou email invalid user";
                 }
                 // si l'utilisateur existe 
                 else {
@@ -49,7 +49,7 @@
                     }
                     else 
                     {
-                        $response['error']="Mot de passe invalid ou email invalid";
+                        $response['error']="Mot de passe invalid ou email invalid password";
                     }
                 }
                 echo json_encode($response);

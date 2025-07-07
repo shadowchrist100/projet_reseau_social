@@ -90,10 +90,12 @@ function init_register()
                     });
                     const resultat=await form_send.json();
                     // afficher la réponse du back end si il y a d'erreur
-                    document.getElementById("form-error").innerHTML=`<span>${resultat['error']}</span>`
-                    console.log("Réussite:",resultat);
+                    if (resultat["error"]) 
+                    {
+                        document.getElementById("form-error").innerHTML=`<span>${resultat['error']}</span>`
+                    }
                     // si il n'y a  pas d'erreur
-                    if (!resultat['error']) 
+                    if (resultat['success']) 
                     {
                         // on connecte l'utilisateur 
                         const connect=await fetch("/api/login.php",{
@@ -107,10 +109,16 @@ function init_register()
                         if (!connect_result['error']) 
                         {
                             load_view("acceuil");
-                        }    
+                        } 
+                        else
+                        {
+                            console.log(connect_result);
+                            
+                        }   
                     }
 
-                } catch (error) 
+                }
+                catch (error) 
                 {
                     console.error(error);    
                 }

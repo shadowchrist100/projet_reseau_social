@@ -1,7 +1,8 @@
 function home() 
 {
-        const user_profil=document.querySelectorAll(".user_profile");
+    const user_profil=document.querySelectorAll(".user_profile");
     const user_pseudo=document.querySelectorAll(".user_pseudo");
+    const user_name=document.querySelectorAll(".user_name");
     const create_post=document.getElementById("create_post");
     const post=document.querySelector(".create-post");
     const postImageInput = document.getElementById("post_image");
@@ -13,15 +14,21 @@ function home()
     .then(data=>{
         // enregistrer les données de l'utilisateur afin qu'il soit accessible partout
         window.user_data=data;
+        
         // afficher la photo de profil de l'utilisateur connecté
         user_profil.forEach(element => {
         element.src="/uploads/"+window.user_data.profile;
         });
+        
         // afficher le pseudo de l'utilisateur connecté
         user_pseudo.forEach(element=>{
             element.textContent="@"+window.user_data.pseudo;
         });
         
+        // afficher le nom de l'utilisateur connecté
+        user_name.forEach(element=>{
+            element.textContent=window.user_data.name+" "+window.user_data.prenom;
+        })
         document.getElementById("post_text").placeholder=`What's on your mind, ${window.user_data.name}`;
     })
     .catch(error=>console.error(error))
@@ -33,7 +40,6 @@ function home()
         const post_data=new FormData(post);
 
     // Parcourir et afficher chaque entrée
-
         fetch("/api/create_post.php",{
             method:"POST",
             body:post_data,
@@ -46,8 +52,8 @@ function home()
                 postImageInput.value = "";
                 imagePreview.src = "";
                 imagePreview.style.display = "none";
-                // afficher le post dans le fil d'actualité
                 
+                // afficher le post dans le fil d'actualité
                 print_posts(data.post,true);
             }
             else
@@ -76,22 +82,24 @@ function home()
     });
 
     // charger les posts de l'utilisateur  
-    // afficher les posts de l'utilisateur
+        // afficher les posts de l'utilisateur
     function print_posts(post,is_first) 
     {
         const feed=document.createElement("div");
         feed.className="feed";
         feed.innerHTML=`
         <div class="head">
-            <div class="user">
-                <div class="profile-photo">
-                    <img  src="/uploads/${post.profile_picture}" alt="">
+            <button class="user_post_id" post_id=${post.id} type="button">
+                <div class="user">
+                    <div class="profile-photo">
+                        <img  src="/uploads/${post.profile_picture}" alt="">
+                    </div>
+                    <div class="info">
+                        <h3>${post.nom} ${post.prenom}</h3>
+                        <small>${post.created_at}</small>
+                    </div>
                 </div>
-                <div class="info">
-                    <h3>${post.nom} ${post.prenom}</h3>
-                    <small>${post.created_at}</small>
-                </div>
-            </div>  
+            </button>  
             <span class="edit">
                 <i class="uil uil-ellipsis-h"></i>
             </span>
@@ -106,8 +114,12 @@ function home()
         </div>
         <div class="action-button">
             <div class="interaction-buttons">
-                <span><i class="uil uil-heart"></i></span>
-                <span><i class="uil uil-comment-dots"></i></span>
+                <button class="like-btn" type="button" data-post-id=${post.id} >
+                    <span><i class="uil uil-heart <i class="uim uim-heart"></i>"></i></span>
+                </button>
+                <button type="button" class="comment-btn">
+                    <span><i class="uil uil-comment-dots"></i></span>
+                </button>
                 <span><i class="uil uil-share-alt"></i></span>
             </div>
             <div class="bookmark">
@@ -128,6 +140,19 @@ function home()
         <div class=" comments text-muted">view all 277 comments </div>
         `
         is_first===true? document.querySelector(".feeds").insertBefore(feed,document.querySelector(".feeds").firstChild):document.querySelector(".feeds").appendChild(feed);
+        const user_post_id=document.querySelector(".user_post_id");
+
+        // ajouter un écouteur d'évènement sur le profil de l'utilisateur du post
+        user_post_id.addEventListener("click", function (event) {
+           
+            // récupérer l'id de l'utilisateur du post
+            const post_id=event.target.id;
+           
+            // charger la vue du profil de l'utilisateur
+            console.log(post_id);
+            load_view("profil");
+            
+        });
     }
 
     function load_posts() {
@@ -138,7 +163,7 @@ function home()
             data.forEach(post=>{
                 // afficher les posts de l'utilisateur
                 print_posts(post,false);
-                // console.log(post);
+                
             });
         })
         .catch(error=>console.error(error));
@@ -165,5 +190,55 @@ function home()
         })
         .catch(error=>console.error(error));
     });
+
+    /*************** likes et commentaires**************** */
+    document.getElementById("feeds").addEventListener("click", function (event) {
+        // vérifier si l'élément cliqué est un bouton de like
+        console.log("Clické");
+        
+        if (event.target.classList.contains("like-btn")) {
+            const postId = event.target.getAttribute("data-post-id");
+            console.log(postId);
+            
+            // envoyer une requête pour liker le post
+            const form_data = new FormData();
+            form_data.append("post_id", postId);
+            form_data.append("user_id", window.user_data.id); // ajouter l'id de l'utilisateur connecté 
+            fetch("/api/like_post.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: form_data
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("Post liked successfully");
+                    // mettre à jour l'interface utilisateur si nécessaire
+                } else {
+                    console.error("Error liking post:", data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    });
+    /* *********afficher le profil d'un utilisateur depuis un post*********/
+    // récupérer les éléments du profil de l'utilisateur
+    const user_post_ids=document.querySelectorAll(".user_post_id");
+    //ajouter un écouteur d'évènement sur les likes
+    const like=document.querySelectorAll("#like");
+    function show_profil(event) 
+    {
+        console.log(event.target);
+        
+    }
+
+    // ajout d'un écouteur d'évènement sur le profil de l'utilisateur de chaque post
+    console.log(user_post_ids);
+
+    user_post_ids.forEach(element=>{
+        element.addEventListener("click", show_profil);
+    })
 }
 home();
