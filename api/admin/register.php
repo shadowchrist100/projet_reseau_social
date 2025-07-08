@@ -20,7 +20,7 @@ try {
 $data = json_decode(file_get_contents('php://input'), true);
 
 // 4. Validation des données
-if (empty($data['firstName']) || empty($data['lastName']) || empty($data['email']) || empty($data['password']) || empty($data['role'])) {
+if (empty($data['firstName']) || empty($data['lastName']) || empty($data['username']) || empty($data['email']) || empty($data['password']) || empty($data['role'])) {
     echo json_encode(['success' => false, 'message' => 'Tous les champs sont requis']);
     exit;
 }
@@ -35,13 +35,14 @@ if (strlen($data['password']) < 8) {
     exit;
 }
 
-// 5. Vérification si l'email existe déjà
-$stmt = $conn->prepare("SELECT id FROM admins WHERE email = :email");
+// 5. Vérification si l'email ou le username existe déjà
+$stmt = $conn->prepare("SELECT id FROM admins WHERE email = :email OR username = :username");
 $stmt->bindParam(':email', $data['email']);
+$stmt->bindParam(':username', $data['username']);
 $stmt->execute();
 
 if ($stmt->rowCount() > 0) {
-    echo json_encode(['success' => false, 'message' => 'Cet email est déjà utilisé']);
+    echo json_encode(['success' => false, 'message' => 'Cet email ou ce nom d\'utilisateur est déjà utilisé']);
     exit;
 }
 
@@ -50,11 +51,12 @@ $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
 
 // 7. Insertion dans la base de données
 try {
-    $stmt = $conn->prepare("INSERT INTO admins (first_name, last_name, email, password, role, created_at) 
-                           VALUES (:firstName, :lastName, :email, :password, :role, NOW())");
+    $stmt = $conn->prepare("INSERT INTO admins (first_name, last_name, username, email, password, role, created_at) 
+                           VALUES (:firstName, :lastName, :username, :email, :password, :role, NOW())");
     
     $stmt->bindParam(':firstName', $data['firstName']);
     $stmt->bindParam(':lastName', $data['lastName']);
+    $stmt->bindParam(':username', $data['username']);
     $stmt->bindParam(':email', $data['email']);
     $stmt->bindParam(':password', $hashedPassword);
     $stmt->bindParam(':role', $data['role']);
