@@ -125,6 +125,8 @@ function home()
         </div>
         <div class="liked-by" id=${post.id} >
             
+        <div class="liked-by" id=${post.id} >
+            
         </div>
         <div class="caption">
             <p>
