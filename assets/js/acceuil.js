@@ -122,11 +122,8 @@ function home()
                 <span><i class="uil uil-bookmark-full"></i></span>
             </div>
         </div>
-        <div class="liked-by">
-            <span><img src="/assets/css/images/profile-10.jpg" alt=""></span>
-            <span><img src="/assets/css/images/profile-4.jpg" alt=""></span>
-            <span><img src="/assets/css/images/profile-14.jpg" alt=""></span>
-            <p>Liked by <b>Ernest Achiever</b> and <b>2,321 others</b></p>
+        <div class="liked-by" id=${post.id} >
+            
         </div>
         <div class="caption">
             <p>
@@ -136,6 +133,7 @@ function home()
         <div class=" comments text-muted">view all 277 comments </div>
         `
         is_first===true? document.querySelector(".feeds").insertBefore(feed,document.querySelector(".feeds").firstChild):document.querySelector(".feeds").appendChild(feed);
+        get_users_likes(post.id);
         const user_post_id=document.querySelector(".user_post_id");
 
         // ajouter un écouteur d'évènement sur le profil de l'utilisateur du post
@@ -164,7 +162,30 @@ function home()
         })
         .catch(error=>console.error(error));
     }
-    load_posts();   
+    load_posts();  
+
+    // récupération des utilisateurs ayant liké un post
+    function get_users_likes(post_id)
+    {
+        console.log(post_id);
+        
+        fetch(`api/get_users_likes.php?post_id=${post_id}`)
+        .then(response=>response.json())
+        .then(data=>{
+            const liked_by=document.getElementById(post_id);
+            if (data.success && liked_by && Array.isArray(data.likes)) 
+            {
+                liked_by.innerHTML=data.likes.map(user=>`<span><img src="/uploads/${user.profile_picture}"title="${user.nom} ${user.prenom}" alt=""></span> liked by ${user.nom} ${user.prenom}`).join("");
+                
+            }
+            else
+            {
+                console.log("Echec de récupération")
+            }
+        })
+        .catch(error=>console.error(error)
+        );
+    } 
 
     // afficher les messages
     messages.addEventListener("click", function () {
@@ -174,7 +195,7 @@ function home()
     // gérer la déconnexion de l'utilisateur
     // ajouter un écouteur d'évènement sur le bouton de déconnexion
     logout.addEventListener("click", function () {
-        fetch("/api/logout.php")
+        fetch("api/logout.php")
         .then(response=>response.json())
         .then(data=>{
             if (data.success) 
@@ -193,12 +214,12 @@ function home()
     document.querySelector(".feeds").addEventListener("click", function (event) {
         // vérifier si l'élément cliqué est un bouton de like
         if (event.target.classList.contains("like-btn")) {
+            // récupération de l'id du post
             const post_id = event.target.dataset.postId;
             // envoyer une requête pour liker le post
             const form_data = new FormData();
             form_data.append("post_id", post_id);
-            form_data.append("user_id", window.user_data.id); // ajouter l'id de l'utilisateur connecté 
-            fetch("/api/like_post.php", {
+            fetch("api/like_post.php", {
                 method: "POST",
                 headers: {
                     Accept: "application/json"
@@ -215,6 +236,12 @@ function home()
                 }
             })
             .catch(error => console.error("Error:", error));
+        }
+        else if(event.target.classList.contains("comment-btn"))
+        {
+            // récupération de l'id du post
+            const post_id=event.target.dataset.postId;
+            // envoyer une requête pour enregistrer le commentaire
         }
     });
 }
