@@ -5,8 +5,10 @@
     header('Content-Type: application/json');   
 
     $response = [];
+    // vérification de la méthode de requête 
     if ($_SERVER["REQUEST_METHOD"]==="POST")
     {
+        // si l'utilisateur n'est pas connecté
         if (!isset($_SESSION["LOGGED_USER"])) 
         {
             http_response_code(401);
@@ -14,25 +16,20 @@
             exit;
         }
         $post_id=$_POST["post_id"] ?? "";
-        $user_id=$_POST["user_id"] ?? "";
-        if (!empty($post_id) && !empty($user_id)) 
+        
+        // vérification du contenu envoyé
+        if (!empty($post_id)) 
         {
+            // formatage des données
             $post_id=strip_tags($post_id);
-            $user_id=strip_tags($user_id);
             try 
             {
+                // enregistrement des données du like dans la table likes
                 $req=$pdo->prepare("INSERT INTO likes(post_id,user_id) VALUES(:post_id,:user_id)");
-                $stmt=$req->execute(["post_id"=>$post_id,"user_id"=>$user_id]);
+                $stmt=$req->execute(["post_id"=>$post_id,"user_id"=>$_SESSION["LOGGED_USER"]["id"]]);
                 if ($stmt) 
                 {
                     $response["success"]="Like bien appliqué";
-                    try 
-                    {
-                        $req=$pdo->querry("SELECT user_id FROM posts WHERE post_id=:post_id ORDER BY DESC");
-                        $users=$req->fetchAll(PDO::FETCH_ASSOC);
-                    } catch (\Throwable $th) {
-                        //throw $th;
-                    }
                 }
                 else
                 {
