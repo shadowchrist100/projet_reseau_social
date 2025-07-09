@@ -400,6 +400,13 @@ main .container .left .profile{
 .middle  .liked-by p{
     margin-left: 0.5rem;
 }
+.likes-by img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
 /* <!-- -----------Right------------ --> */
 main .container .right{
     height: max-content;
