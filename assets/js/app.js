@@ -3,13 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(response => response.json())
     .then(data => 
     {
-        if (data.authenticated && data.role=="user") 
+        if (data.authenticated) 
         {
             load_view("acceuil");
-        }
-        else if(data.authenticated && data.role=="admin")
-        {
-            load_view("dashboard");
         }
         else
         {

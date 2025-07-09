@@ -63,8 +63,7 @@
                                 "pseudo"=>$pseudo,
                                 "email"=>$email,
                                 "image"=>$file_name,
-                                "password"=>$password,
-                                "role"=>"user"]);
+                                "password"=>$password,]);
                         } catch (PDOException $e) 
                         {
                             $response["error"]=$e->getMessage();
