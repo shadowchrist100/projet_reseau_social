@@ -167,16 +167,33 @@ function home()
     // récupération des utilisateurs ayant liké un post
     function get_users_likes(post_id)
     {
-        console.log(post_id);
-        
         fetch(`api/get_users_likes.php?post_id=${post_id}`)
         .then(response=>response.json())
         .then(data=>{
+            // récupération de la balise contenant les personnes ayant liké le post
             const liked_by=document.getElementById(post_id);
             if (data.success && liked_by && Array.isArray(data.likes)) 
             {
-                liked_by.innerHTML=data.likes.map(user=>`<span><img src="/uploads/${user.profile_picture}"title="${user.nom} ${user.prenom}" alt=""></span> liked by ${user.nom} ${user.prenom}`).join("");
+                // on récupére chaque élément du tableau likes sous forme d'objer user dont on affiche la photo de profil
+                liked_by.innerHTML=data.likes.map(user=>`<span><img src="/uploads/${user.profile_picture}"title="${user.nom} ${user.prenom}" alt=""></span>`).join("");
+                const text = document.createElement("p");
                 
+                const likes = data.likes;
+                // en fonction du nombre de personnes ayant liké on affiche un message
+                if (likes.length === 1) 
+                {
+                    text.innerHTML = `Liked by <b>${likes[0].nom} ${likes[0].prenom}</b>`;
+                } 
+                else if (likes.length === 2) 
+                {
+                    text.innerHTML = `Liked by <b>${likes[0].nom} ${likes[0].prenom}</b> and <b>${likes[1].nom} ${likes[1].prenom}</b>`;
+                } 
+                else if (likes.length >= 3) 
+                {
+                    const others = likes.length - 1;
+                    text.innerHTML = `Liked by <b>${likes[0].nom} ${likes[0].prenom}</b> and <b>${others} others</b>`;
+                }
+                liked_by.appendChild(text);
             }
             else
             {
@@ -230,7 +247,11 @@ function home()
             .then(data => {
                 if (data.success) {
                     console.log("Post liked successfully");
-                    // mettre à jour l'interface utilisateur si nécessaire
+                    // mettre à jour l'interface utilisateur 
+                    // const like=document.querySelector(".like-btn uil uil-heart");
+                    // like.classList.remove("like-btn uil uil-heart");
+                    // like.classList.add("");
+                    
                 } else {
                     console.error("Error liking post:", data.error);
                 }
