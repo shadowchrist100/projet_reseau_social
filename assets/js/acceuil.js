@@ -88,7 +88,6 @@ function home()
     function print_posts(post,is_first) 
     {
         const like_color= post.liked_by_user? "red": "black";
-        console.log(post.liked_by_user);
         
         const feed=document.createElement("div");
         feed.className="feed";
@@ -120,11 +119,15 @@ function home()
         <div class="action-button">
             <div class="interaction-buttons">
                 <button class="like-button uil uil-heart-sign" type="button" data-post-id=${post.id} style="color:${like_color} "></button>
-                <button type="button" class="comment-btn uil uil-comment-dots" data-post-id=${post.id}></button>
+                <button type="button" class="comment-button uil uil-comment-dots" data-post-id=${post.id}></button>
             </div>
             <div class="bookmark">
                 <span><i class="uil uil-bookmark-full"></i></span>
             </div>
+        </div>
+        <div class="comment-form-container" data-post-id="${post.id}" style="display: none;">
+            <textarea class="comment-text" data-post-id="${post.id}" placeholder="Écrire un commentaire..."></textarea>
+            <button type="button" class="send-comment-btn" data-post-id="${post.id}">Publier</button>
         </div>
         <div class="liked-by" id=${post.id} >
             
@@ -134,7 +137,9 @@ function home()
                 ${post.nom} ${post.prenom} <span></span>
             </p>
         </div>
-        <div class=" comments text-muted">view all 277 comments </div>
+        <button type="button" class=" comments text-muted">view all  comments </button>
+        <div class="comments" data-post-id="${post.id}" style="display: none;">
+        </div>
         `
         is_first===true? document.querySelector(".feeds").insertBefore(feed,document.querySelector(".feeds").firstChild):document.querySelector(".feeds").appendChild(feed);
         get_users_likes(post.id);
@@ -286,13 +291,8 @@ function home()
                         console.log("Post liked successfully");
                         
                         // mis à jour l'interface utilisateur 
-                        const likes_btn=document.querySelectorAll(".uil-heart-sign");
-                        likes_btn.forEach(like_btn => {
-                            if (like_btn.getAttribute("data-post-id")===post_id) 
-                            {
-                                like_btn.style.color="red";
-                            }
-                        });
+                        const like_btn=document.querySelector(`.uil-heart-sign[data-post-id="${post_id}"]`);
+                        like_btn.style.color="red";
                         
                     } else {
                         console.error("Error liking post:", data.error);
@@ -302,11 +302,56 @@ function home()
             }
             
         }
-        else if(event.target.classList.contains("like-button"))
+        else if(event.target.classList.contains("comment-button"))
         {
             // récupération de l'id du post
             const post_id=event.target.dataset.postId;
-            // envoyer une requête pour enregistrer le commentaire
+
+            // récupérer le champ commentaire du post sélectionner
+            const form_container=document.querySelector(`.comment-form-container[data-post-id="${post_id}"]`);
+            
+            // afficher le champ de saisie du formulaire ou le fermer si il était déja là
+            form_container.style.display=(form_container.style.display==="none")? "block":"none";
+    
+        }
+        else if(event.target.classList.contains("send-comment-btn"))
+        {
+            // récupération de l'id du post
+            const post_id=event.target.dataset.postId;
+
+            // récupération du commentaire
+            const comment_content=document.querySelector(`.comment-text[data-post-id="${post_id}"]`).value;
+            document.querySelector(`.comment-text[data-post-id="${post_id}"]`).value="";
+            
+            // fermetture du champ
+            document.querySelector(`.comment-form-container[data-post-id="${post_id}"]`).style.display="none";
+
+            /*********envoi des données du commentaire au backend*******/
+            const form_data=new FormData();
+            form_data.append("post_id",post_id);
+            form_data.append("comment",comment_content);
+            console.log(comment_content);
+            fetch("api/create_comment.php",{
+                method:"POST",
+                headers:{
+                    Accept:"application/json"
+                },
+                body:form_data
+            })
+            .then(response=>response.json())
+            .then(data=>{
+                if (data.success) 
+                {
+                    console.log("commentaire bien ajoutée");
+                        
+                }
+                else
+                {
+                    console.log(data.error);
+                    
+                }
+            })
+            .catch(error=>console.error(error));
         }
     });
 }
