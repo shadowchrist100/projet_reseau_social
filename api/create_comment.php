@@ -17,10 +17,10 @@
 
         // récupération des données 
         $post_id=$_POST["post_id"] ?? "";
-        $content=$_POST["post_comment"] ?? "";
+        $content=$_POST["comment"] ?? "";
 
         // si les données ne sont pas vides 
-        if (!empty($post) && !empty($content)) 
+        if (!empty($post_id) && !empty($content)) 
         {
             // formatage des données
             $post_id=strip_tags($post_id);
