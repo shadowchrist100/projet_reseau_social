@@ -406,7 +406,18 @@ main .container .left .profile{
   border-radius: 50%;
   margin-right: 4px;
 }
-
+.like-button
+{
+    width: 20px;
+    height: 20px;
+    size: 2px ;
+}
+/* .like-button #like
+{
+    color: red;
+    width: 10px;
+    height: 10px;
+} */
 /* <!-- -----------Right------------ --> */
 main .container .right{
     height: max-content;

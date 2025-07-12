@@ -24,20 +24,42 @@
             $post_id=strip_tags($post_id);
             try 
             {
-                // enregistrement des données du like dans la table likes
-                $req=$pdo->prepare("INSERT INTO likes(post_id,user_id) VALUES(:post_id,:user_id)");
-                $stmt=$req->execute(["post_id"=>$post_id,"user_id"=>$_SESSION["LOGGED_USER"]["id"]]);
-                if ($stmt) 
+                // vérifier si l'utilisateur a déja liké le post
+                $req = $pdo->prepare("SELECT user_id FROM likes WHERE post_id = :post_id");
+                $req->execute(["post_id" => $post_id]);
+                $users = $req->fetchAll(PDO::FETCH_ASSOC);
+                $has_liked=in_array($_SESSION["LOGGED_USER"]["id"], array_column($users,"user_id"));
+                if ($has_liked) 
                 {
-                    $response["success"]="Like bien appliqué";
+                    $req=$pdo->prepare("DELETE  FROM likes WHERE user_id=:user_id AND post_id=:post_id");
+                    $req->execute(["user_id"=>$_SESSION["LOGGED_USER"]["id"],"post_id"=>$post_id]);
+                    $response["success"]="Like bien supprimé";
                 }
                 else
                 {
-                    $response["error"]="Impossible d'enregistré le like";
+                    try 
+                    {
+                        // enregistrement des données du like dans la table likes
+                        $req=$pdo->prepare("INSERT INTO likes(post_id,user_id) VALUES(:post_id,:user_id)");
+                        $stmt=$req->execute(["post_id"=>$post_id,"user_id"=>$_SESSION["LOGGED_USER"]["id"]]);
+                        if ($stmt) 
+                        {
+                            $response["success"]="Like bien appliqué";
+                        }
+                        else
+                        {
+                            $response["error"]="Impossible d'enregistré le like";
+                        }
+                    } 
+                    catch (PDOException $e) 
+                    {
+                        $response["error"]=$e->getMessage();
+                    } 
                 }
-            } catch (PDOException $e) {
+            } catch (PDOException $e) 
+            {
                 $response["error"]=$e->getMessage();
-            } 
+            }
         }
         else {
             $response["error"]="Données vides";

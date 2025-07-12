@@ -77,14 +77,7 @@ function init_login()
                     console.log("Réussite:",resultat);
                     if (!resultat['error']) 
                     {
-                        if (resultat["role"]==="user") 
-                        {
-                            load_view("acceuil"); 
-                        }
-                        else
-                        {
-                            load_view("dashboard");
-                        }  
+                        load_view("acceuil");
                     }
                 }
                 catch(error)
