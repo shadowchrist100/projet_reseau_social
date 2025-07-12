@@ -1,5 +1,6 @@
 function home() 
 {
+    let has_liked="";
     // récupérer les éléments du DOM
     // récupérer les éléments du DOM
     const user_profil=document.querySelectorAll(".user_profile");
@@ -87,6 +88,9 @@ function home()
         // afficher les posts dans le fil d'actualité
     function print_posts(post,is_first) 
     {
+        const like_color= post.liked_by_user? "red": "black";
+        console.log(post.liked_by_user);
+        
         const feed=document.createElement("div");
         feed.className="feed";
         feed.innerHTML=`
@@ -116,7 +120,7 @@ function home()
         </div>
         <div class="action-button">
             <div class="interaction-buttons">
-                <button class="like-btn uil uil-heart" type="button" data-post-id=${post.id}></button>
+                <button class="like-button uil uil-heart-sign" type="button" data-post-id=${post.id} style="color:${like_color} "></button>
                 <button type="button" class="comment-btn uil uil-comment-dots" data-post-id=${post.id}></button>
             </div>
             <div class="bookmark">
@@ -167,45 +171,6 @@ function home()
     }
     load_posts();  
 
-    // récupération des utilisateurs ayant liké un post
-    function get_users_likes(post_id)
-    {
-        fetch(`api/get_users_likes.php?post_id=${post_id}`)
-        .then(response=>response.json())
-        .then(data=>{
-            // récupération de la balise contenant les personnes ayant liké le post
-            const liked_by=document.getElementById(post_id);
-            if (data.success && liked_by && Array.isArray(data.likes)) 
-            {
-                // on récupére chaque élément du tableau likes sous forme d'objer user dont on affiche la photo de profil
-                liked_by.innerHTML=data.likes.map(user=>`<span><img src="/uploads/${user.profile_picture}"title="${user.nom} ${user.prenom}" alt=""></span>`).join("");
-                const text = document.createElement("p");
-                
-                const likes = data.likes;
-                // en fonction du nombre de personnes ayant liké on affiche un message
-                if (likes.length === 1) 
-                {
-                    text.innerHTML = `Liked by <b>${likes[0].nom} ${likes[0].prenom}</b>`;
-                } 
-                else if (likes.length === 2) 
-                {
-                    text.innerHTML = `Liked by <b>${likes[0].nom} ${likes[0].prenom}</b> and <b>${likes[1].nom} ${likes[1].prenom}</b>`;
-                } 
-                else if (likes.length >= 3) 
-                {
-                    const others = likes.length - 1;
-                    text.innerHTML = `Liked by <b>${likes[0].nom} ${likes[0].prenom}</b> and <b>${others} others</b>`;
-                }
-                liked_by.appendChild(text);
-            }
-            else
-            {
-                console.log("Echec de récupération")
-            }
-        })
-        .catch(error=>console.error(error)
-        );
-    } 
 
     // afficher les messages
     messages.addEventListener("click", function () {
@@ -231,37 +196,116 @@ function home()
     });
 
     /*************** likes et commentaires**************** */
+
+        // récupération des utilisateurs ayant liké un post
+    function get_users_likes(post_id)
+    {
+        fetch(`api/get_users_likes.php?post_id=${post_id}`)
+        .then(response=>response.json())
+        .then(data=>{
+            // récupération de la balise contenant les personnes ayant liké le post
+            const liked_by=document.getElementById(post_id);
+            if (data.success && liked_by && Array.isArray(data.likes)) 
+            {
+                
+                // on récupére ceux qui ont liké  sauf l'utilisateur actuel
+                const likes_sans_user= data.likes.filter(user => user.user_id !== window.user_data.id);    
+                
+                // on vérifie si l'utilisateur a déja liké une fois 
+                has_liked = data.likes.some(user => user.user_id === window.user_data.id);
+
+                // on récupére chaque élément du tableau likes sous forme d'objer user dont on affiche la photo de profil
+                liked_by.innerHTML=data.likes.filter(user => user.user_id !== window.user_data.id).map(user => `<span><img src="/uploads/${user.profile_picture}" title="${user.nom} ${user.prenom}" alt=""></span>`).join("");
+            
+                const text = document.createElement("p"); //va contenir le nom de ceux ayant liké
+                
+                const likes = data.likes;
+                // en fonction du nombre de personnes ayant liké on affiche un message
+
+                if (has_liked && likes_sans_user.length === 0) 
+                {
+                    text.innerHTML = `Liked by <b>you</b>`;
+                } 
+                else if (has_liked && likes_sans_user.length === 1) 
+                {
+                    const other = likes_sans_user[0];
+                    text.innerHTML = `Liked by <b>you</b> and <b>${other.nom} ${other.prenom}</b>`;
+                } 
+                else if (has_liked && likes_sans_user.length > 1) 
+                {
+                    text.innerHTML = `Liked by <b>you</b> and <b>${likes_sans_user.length} others</b>`;
+                } 
+                else if (!has_liked && likes_sans_user.length === 1) 
+                {
+                    const other = likes_sans_user[0];
+                    text.innerHTML = `Liked by <b>${other.nom} ${other.prenom}</b>`;
+                } 
+                else if (!has_liked && likes_sans_user.length > 1) 
+                {
+                    text.innerHTML = `Liked by <b>${likes_sans_user[0].nom} ${likes_sans_user[0].prenom}</b> and <b>${likes_sans_user.length - 1} others</b>`;
+                }
+
+                liked_by.appendChild(text);
+            }
+            else
+            {
+                console.log("Echec de récupération")
+            }
+        })
+        .catch(error=>console.error(error)
+        );
+    } 
+
     document.querySelector(".feeds").addEventListener("click", function (event) {
+        
         // vérifier si l'élément cliqué est un bouton de like
-        if (event.target.classList.contains("like-btn")) {
+        if (event.target.classList.contains("like-button")) 
+        {
             // récupération de l'id du post
             const post_id = event.target.dataset.postId;
-            // envoyer une requête pour liker le post
-            const form_data = new FormData();
-            form_data.append("post_id", post_id);
-            fetch("api/like_post.php", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json"
-                },
-                body: form_data
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log("Post liked successfully");
-                    // mettre à jour l'interface utilisateur 
-                    // const like=document.querySelector(".like-btn uil uil-heart");
-                    // like.classList.remove("like-btn uil uil-heart");
-                    // like.classList.add("");
-                    
-                } else {
-                    console.error("Error liking post:", data.error);
-                }
-            })
-            .catch(error => console.error("Error:", error));
+            
+            // si l'utilisateur avait déja liké
+            if (has_liked) 
+            {
+                document.querySelector("like-btn").style.color="";
+            }
+            // si l'utilisateur veut liker pour la première fois
+            else
+            {
+                // envoyer une requête pour liker le post
+                const form_data = new FormData();
+                
+                form_data.append("post_id", post_id);
+                fetch("api/like_post.php", {
+                    method: "POST",
+                    headers: {
+                        Accept: "application/json"
+                    },
+                    body: form_data
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log("Post liked successfully");
+                        
+                        // mis à jour l'interface utilisateur 
+                        const likes_btn=document.querySelectorAll(".uil-heart-sign");
+                        likes_btn.forEach(like_btn => {
+                            if (like_btn.getAttribute("data-post-id")===post_id) 
+                            {
+                                like_btn.style.color="red";
+                            }
+                        });
+                        
+                    } else {
+                        console.error("Error liking post:", data.error);
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            }
+            
         }
-        else if(event.target.classList.contains("comment-btn"))
+        else if(event.target.classList.contains("like-button"))
         {
             // récupération de l'id du post
             const post_id=event.target.dataset.postId;

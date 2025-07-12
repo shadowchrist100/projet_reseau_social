@@ -27,7 +27,13 @@
 
 
         if ($posts) {
-            foreach ($posts as $post) {
+            foreach ($posts as $post) 
+            {
+                // vérifier si l'utilisateur a liké le post
+                $req = $pdo->prepare("SELECT user_id FROM likes WHERE post_id = :post_id");
+                $req->execute(["post_id" => $post["id"]]);
+                $users = $req->fetchAll(PDO::FETCH_ASSOC);
+                $post["liked_by_user"] = in_array($_SESSION["LOGGED_USER"]["id"], array_column($users, "user_id"));
                 $response[] = $post;
             }
         }
