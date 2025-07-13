@@ -180,7 +180,7 @@ function home()
 
     // afficher les messages
     messages.addEventListener("click", function () {
-        load_view("messages");
+        load_view("chat");
     });
 
     // gérer la déconnexion de l'utilisateur
