@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatApp - Application de Chat</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/invitation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <p>Chargement...</p>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app" class="app-container" style="display: none;">
+        <!-- Login Form -->
+        <div id="login-section" class="wrapper">
+            <section class="form login">
+                <header>ChatApp</header>
+                <form id="login-form">
+                    <div class="error-text"></div>
+                    <div class="field input">
+                        <label>Adresse Email</label>
+                        <input type="text" name="email" placeholder="Entrez votre email" required>
+                    </div>
+                    <div class="field input">
+                        <label>Mot de passe</label>
+                        <input type="password" name="password" placeholder="Entrez votre mot de passe" required>
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="field button">
+                        <input type="submit" value="Se connecter">
+                    </div>
+                </form>
+                <div class="link">Pas encore inscrit ? <a href="#" id="show-signup">S'inscrire maintenant</a></div>
+            </section>
+        </div>
+
+        <!-- Signup Form -->
+        <div id="signup-section" class="wrapper" style="display: none;">
+            <section class="form signup">
+                <header>ChatApp</header>
+                <form id="signup-form" enctype="multipart/form-data">
+                    <div class="error-text"></div>
+                    <div class="name-details">
+                        <div class="field input">
+                            <label>Prénom</label>
+                            <input type="text" name="fname" placeholder="Prénom" required>
+                        </div>
+                        <div class="field input">
+                            <label>Nom</label>
+                            <input type="text" name="lname" placeholder="Nom" required>
+                        </div>
+                    </div>
+                    <div class="field input">
+                        <label>Adresse Email</label>
+                        <input type="text" name="email" placeholder="Entrez votre email" required>
+                    </div>
+                    <div class="field input">
+                        <label>Mot de passe</label>
+                        <input type="password" name="password" placeholder="Entrez un nouveau mot de passe" required>
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="field image">
+                        <label>Sélectionner une image</label>
+                        <input type="file" name="image" accept="image/x-png,image/gif,image/jpeg,image/jpg" required>
+                    </div>
+                    <div class="field button">
+                        <input type="submit" value="Continuer vers le chat">
+                    </div>
+                </form>
+                <div class="link">Déjà inscrit ? <a href="#" id="show-login">Se connecter maintenant</a></div>
+            </section>
+        </div>
+
+        <!-- Users List -->
+        <div id="users-section" class="wrapper" style="display: none;">
+            <section class="users">
+                <header>
+                    <div class="content">
+                        <img id="current-user-img" src="" alt="">
+                        <div class="details">
+                            <span id="current-user-name"></span>
+                            <p>En ligne</p>
+                        </div>
+                    </div>
+                    <a href="#" id="logout-btn" class="logout">Déconnexion</a>
+                </header>
+                <div class="search">
+                    <span class="text">Sélectionnez un utilisateur pour commencer à discuter</span>
+                    <input type="text" placeholder="Entrez un nom pour rechercher...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="users-list" id="users-list">
+                    <!-- Users will be loaded here -->
+                </div>
+            </section>
+        </div>
+
+        <!-- Chat Area -->
+        <div id="chat-section" class="wrapper" style="display: none;">
+            <section class="chat-area">
+                <header>
+                    <a href="#" id="back-to-users" class="back-icon"><i class="fas fa-arrow-left"></i></a>
+                    <img id="chat-user-img" src="" alt="">
+                    <div class="details">
+                        <span id="chat-user-name"></span>
+                        <p>En ligne</p>
+                    </div>
+                </header>
+                <div class="chat-box" id="chat-box">
+                    <!-- Messages will be loaded here -->
+                </div>
+                <form action="#" class="typing-area" id="typing-form">
+                    <input type="text" class="incoming_id" name="incoming_id" hidden>
+                    <input type="text" name="message" class="input-field" placeholder="Tapez un message ici..."
+                        autocomplete="off">
+                    <button><i class="fab fa-telegram-plane"></i></button>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="javascript/pass-show-hide.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
