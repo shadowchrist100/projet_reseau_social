@@ -7,44 +7,53 @@
     $response = [];
     if ($_SERVER["REQUEST_METHOD"]==="GET") 
     {
-        // Requête préparée pour éviter les injections SQL
-        $query = "
-                SELECT 
-                    comments.*, 
-                    users.nom, 
-                    users.prenom, 
-                    users.pseudo, 
-                    users.profile_picture,
-                    posts.user_id,
-                FROM 
-                    comments
-                JOIN 
-                    users ON comments.user_id = users.id
-                ORDER BY 
-                    comments.created_at DESC
-                WHERE
-                    comments.post_id=:post_id
-            ";
+        $post_id=$_GET["post_id"];
+        if (!empty($post_id)) 
+        {
+            $post_id=strip_tags($post_id);
+            // Requête préparée pour éviter les injections SQL
 
-            $posts = $pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
-
-
-        if ($posts) {
-            foreach ($posts as $post) 
+            try 
             {
-                // vérifier si l'utilisateur a liké le post
-                $req = $pdo->prepare("SELECT user_id FROM likes WHERE post_id = :post_id");
-                $req->execute(["post_id" => $post["id"]]);
-                $users = $req->fetchAll(PDO::FETCH_ASSOC);
-                $post["liked_by_user"] = in_array($_SESSION["LOGGED_USER"]["id"], array_column($users, "user_id"));
-                $response[] = $post;
+                 // Récuperation des commentaires pour le post ainsi que les informations de l'utilisateur ayant posté
+                $query = "
+                    SELECT 
+                        comments.*, 
+                        users.nom, 
+                        users.prenom, 
+                        users.pseudo, 
+                        users.profile_picture
+                    FROM 
+                        comments
+                    JOIN 
+                        users ON comments.user_id = users.id
+                    WHERE 
+                        comments.post_id = :post_id
+                    ORDER BY 
+                        comments.created_at DESC
+                ";
+                $stmt=$pdo->prepare($query);
+                $stmt->execute(["post_id"=>$post_id]);
+                $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                if ($stmt) 
+                {
+                    $response["success"]=TRUE;
+                    $response["comments"]=$comments;
+                }
+                else
+                {
+                    $response["error"]="Pas de commentaire trouvée";
+                }
+                
+            } catch (PDOException $e) 
+            {
+                $response["error"]=$e->getMessage();
             }
         }
         else
         {
-            $response["error"]="Aucune publication trouvée";
+            $response["error"]="Post vide";
         }
-
     }
     else
     {

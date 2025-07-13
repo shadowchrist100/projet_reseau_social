@@ -41,8 +41,9 @@
                 $likes=$req->fetchAll(PDO::FETCH_ASSOC);
                 $response["success"]=true;
                 $response["likes"]=$likes;
-            } catch (PDOException ) {
-                //throw $th;
+            } catch (PDOException $e) 
+            {
+                $response["error"]=$e->getMessage();
             }
         }
         else

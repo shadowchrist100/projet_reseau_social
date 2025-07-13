@@ -137,8 +137,12 @@ function home()
                 ${post.nom} ${post.prenom} <span></span>
             </p>
         </div>
+        <div class="recent_comment comment">
+            
+        </div>
         <button type="button" class=" comments text-muted">view all  comments </button>
-        <div class="comments" data-post-id="${post.id}" style="display: none;">
+        <div class="comments-container " data-post-id="${post.id}" style="display: none;">
+            
         </div>
         `
         is_first===true? document.querySelector(".feeds").insertBefore(feed,document.querySelector(".feeds").firstChild):document.querySelector(".feeds").appendChild(feed);
@@ -258,6 +262,37 @@ function home()
         );
     } 
 
+        // afficher les commentaires d'un post
+        function print_comments(comment, is_first,post_id) 
+        {
+            // affichage du commentaire le plus récent 
+            if (is_first) 
+            {
+                document.querySelector(".recent_comment").innerHTML=`
+                    <img  src="/uploads/${comment.profile_picture}" alt="profile">
+                    <div class="comment-content">
+                        <strong>${comment.nom} ${comment.prenom}</strong>
+                        <p>${comment.content}</p>
+                        <small>${comment.created_at}</small>
+                    </div>
+                `  ;  
+            }   
+            else
+            {
+                const div_comment=document.createElement("div");
+                div_comment.className="comment"
+                div_comment.innerHTML=`
+                    <img  src="/uploads/${comment.profile_picture}" alt="profile">
+                    <div class="comment-content">
+                        <strong>${comment.nom} ${comment.prenom}</strong>
+                        <p>${comment.content}</p>
+                        <small>${comment.created_at}</small>
+                    </div>
+                `
+                // ajout du commentaire dans la div des commentaires du post concerné
+                document.querySelector(`.comments-container[data-post-id="${post_id}"]`).appendChild(div_comment);
+            }
+        }
     document.querySelector(".feeds").addEventListener("click", function (event) {
         
         // vérifier si l'élément cliqué est un bouton de like
@@ -302,6 +337,7 @@ function home()
             }
             
         }
+        // si l'utilisateur clic sur le bouton du commentaire
         else if(event.target.classList.contains("comment-button"))
         {
             // récupération de l'id du post
@@ -314,6 +350,7 @@ function home()
             form_container.style.display=(form_container.style.display==="none")? "block":"none";
     
         }
+        // si l'utilisateur click sur  publier
         else if(event.target.classList.contains("send-comment-btn"))
         {
             // récupération de l'id du post
@@ -352,6 +389,36 @@ function home()
                 }
             })
             .catch(error=>console.error(error));
+        }
+        // si l'utilisateur souhaite afficher tous les commentaires
+        else if (event.target.classList.contains("comments")) {
+            
+            // récupérer le container des commentaires
+            const comments=(event.target).nextElementSibling;
+            // récupérer l'id du post
+            const post_id=comments.dataset.postId;
+            
+            // requête pour récupérer les commentaires du post concerné
+            fetch(`api/get_comments.php?post_id=${post_id}`)
+            .then(response=>response.json())
+            .then(data=>{
+                if (data.success) 
+                {
+                    data.comments.forEach((comment,index) => {
+                        if (index ===0) 
+                        {
+                            print_comments(comment,true,post_id);
+                        }
+                        else
+                        {
+                            print_comments(comment,false,post_id);
+                        }
+                        
+                    });
+
+                }
+            })
+            
         }
     });
 }
