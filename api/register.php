@@ -56,7 +56,7 @@
                     if (move_uploaded_file($image["tmp_name"],"../uploads/".$file_name)) 
                     {
                         try {
-                            $req=$pdo->prepare("INSERT INTO users(nom,prenom,pseudo,email,profile_picture,password_hash,role) VALUES (:name,:prenom,:pseudo,:email,:image,:password,:role)");
+                            $req=$pdo->prepare("INSERT INTO users(nom,prenom,pseudo,email,profile_picture,password_hash) VALUES (:name,:prenom,:pseudo,:email,:image,:password)");
                             $stmt=$req->execute([
                                 "name"=>$name,
                                 "prenom"=>$prenom,
@@ -64,17 +64,18 @@
                                 "email"=>$email,
                                 "image"=>$file_name,
                                 "password"=>$password,]);
-                        } catch (PDOException $e) 
+                            if ($stmt) 
+                            {
+                                $response["success"]="Votre compte a été crée avec success";
+                            }
+                            else 
+                            {
+                                $response["error"]="Echec lors de la création du compte";
+                            }
+                        } 
+                        catch (PDOException $e) 
                         {
-                            $response["error"]=$e->getMessage();
-                        }
-                        if ($stmt) 
-                        {
-                            $response["success"]="Votre compte a été crée avec success";
-                        }
-                        else 
-                        {
-                            $response["error"]="Echec lors de la création du compte";
+                            $response["error"].=$e->getMessage();
                         }
                     }
                     else 
