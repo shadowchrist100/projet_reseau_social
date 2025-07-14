@@ -1,17 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="IE-edge">
-        <link rel="stylesheet"
-            href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
-        <title>Document</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
+        <title>ChatApp - Réseau Social</title>
+        <style>
+            /* Styles de base pour éviter le FOUC (Flash of Unstyled Content) */
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: #f5f5f5;
+            }
+            
+            #app {
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            .initial-loading {
+                text-align: center;
+                color: #333;
+            }
+            
+            .initial-loading .spinner {
+                width: 50px;
+                height: 50px;
+                border: 5px solid #f3f3f3;
+                border-top: 5px solid #007bff;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 20px;
+            }
+            
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
     </head>
     <body>
         <div id="app">
-            
+            <div class="initial-loading">
+                <div class="spinner"></div>
+                <p>Chargement de l'application...</p>
+            </div>
         </div>
-        <script src="/assets/js/app.js"></script>
+        
+        <!-- Script principal SPA -->
+        <script src="/assets/js/spa.js"></script>
     </body>
 </html>
