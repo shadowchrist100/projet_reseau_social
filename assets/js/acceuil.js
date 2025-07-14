@@ -93,10 +93,10 @@ function home()
         feed.className="feed";
         feed.innerHTML=`
         <div class="head">
-            <button class="user_post_id" post_id=${post.id} type="button">
+            <button class="user_post_id user" post_id=${post.id} type="button">
                 <div class="user">
                     <div class="profile-photo">
-                        <img  src="/uploads/${post.profile_picture}" alt="">
+                        <img class="profil" src="/uploads/${post.profile_picture}" alt="">
                     </div>
                     <div class="info">
                         <h3>${post.nom} ${post.prenom}</h3>
@@ -149,17 +149,6 @@ function home()
         get_users_likes(post.id);
         const user_post_id=document.querySelector(".user_post_id");
 
-        // ajouter un écouteur d'évènement sur le profil de l'utilisateur du post
-        user_post_id.addEventListener("click", function (event) {
-           
-            // récupérer l'id de l'utilisateur du post
-            const post_id=event.target.id;
-           
-            // charger la vue du profil de l'utilisateur
-            console.log(post_id);
-            load_view("profil");
-            
-        });
     }
     // récupérer les posts depuis le backend et afficher dans le fil d'actualité
     function load_posts() {
@@ -418,6 +407,24 @@ function home()
 
                 }
             })
+            
+        }
+        // afficher le profil d'un utilisateur depuis un de ses posts
+        else if (event.target.classList.contains("user_post_id")) {
+              // ajouter un écouteur d'évènement sur le profil de l'utilisateur du post
+           
+            // récupérer l'id de l'utilisateur du post
+            const post_id=event.target.id;
+           
+            // charger la vue du profil de l'utilisateur
+            console.log(post_id);
+            load_view("profil");
+        }
+        else
+        {
+            console.log(event.target);
+            
+            console.log("rien cliqué");
             
         }
     });

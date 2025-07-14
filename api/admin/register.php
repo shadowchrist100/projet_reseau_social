@@ -8,13 +8,26 @@ $username = 'root';
 $password = '';
 
 // 2. Connexion à la base de données avec PDO
+// try {
+//     $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+//     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// } catch(PDOException $e) {
+//       echo json_encode([
+//         'success' => false,
+//         'message' => 'Erreur de connexion à la base de données',
+//         'details' => $e->getMessage()
+//     ]);
+//     exit;
+//     echo json_encode(['success' => false, 'message' => 'Erreur de connexion à la base de données']);
+//     exit;
+// }
 try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $conn = new PDO('mysql:host=127.0.0.1;dbname=social_network;charset=utf8',
+    'root', '');
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Erreur de connexion à la base de données']);
-    exit;
-}
+    } catch (PDOException $e) {
+    echo "Erreur de connexion : " . $e->getMessage();
+    }
 
 // 3. Récupération des données du formulaire
 $data = json_decode(file_get_contents('php://input'), true);
