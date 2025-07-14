@@ -1,5 +1,8 @@
 function profil()
 {
+    const user_id = localStorage.getItem("view_user_id"); // => "3"
+    console.log(user_id);
+    
     // récupérer les éléments du DOM
     const user_profil=document.querySelectorAll(".user_profile");
     const user_pseudo=document.querySelectorAll(".user_pseudo");
