@@ -43,12 +43,12 @@
         }
         else
         {
-            $response["error"]="Aucun utilisateur sélectionné";
+            $response["error"].="Aucun utilisateur sélectionné";
         }
     }
     else
     {
-        $response["error"]="Methode invalide";
+        $response["error"].="Methode invalide";
     }
     echo json_encode($response)
 ?>

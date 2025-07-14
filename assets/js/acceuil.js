@@ -147,7 +147,6 @@ function home()
         `
         is_first===true? document.querySelector(".feeds").insertBefore(feed,document.querySelector(".feeds").firstChild):document.querySelector(".feeds").appendChild(feed);
         get_users_likes(post.id);
-        const user_post_id=document.querySelector(".user_post_id");
 
     }
     // récupérer les posts depuis le backend et afficher dans le fil d'actualité
@@ -155,7 +154,6 @@ function home()
         fetch("/api/get_posts.php")
         .then(response=>response.json())
         .then(data=>{
-            const feed=document.getElementById("feed");
             data.forEach(post=>{
                 // afficher les posts de l'utilisateur
                 print_posts(post,false);
