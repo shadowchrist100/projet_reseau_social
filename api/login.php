@@ -42,10 +42,8 @@
                             "prenom"=>$user["prenom"],
                             "pseudo"=>$user["pseudo"],
                             "email"=>$user["email"],
-                            "profile"=>$user["profile_picture"],
-                            "role"=>$user["role"]
+                            "profile"=>$user["profile_picture"]
                         ];
-                        $response['role']=$_SESSION["LOGGED_USER"]["role"];
                     }
                     else 
                     {

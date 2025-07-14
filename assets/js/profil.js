@@ -1,5 +1,3 @@
-const { use } = require("react");
-
 function profil()
 {
     // récupération de l'id de l'utilisateur dont on veut voir le profil

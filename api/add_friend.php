@@ -33,6 +33,7 @@
                     (sender_id = :other AND receiver_id = :me)
                 ");
                 $req->execute(["me"=>$_SESSION["LOGGED_USER"]["id"],"other"=>$user_id]);
+                
                 // si la requête renvoi des valeurs alors une demande existe déja
                 if ($req->fetch()) 
                 {
@@ -42,10 +43,11 @@
                 {
                     try 
                     {
-                        // enregistrement des données de la demande dans la table friendships
-                        $req=$pdo->prepare("INSERT INTO friendships(sender_id,receiver_id,status) VALUES(:me,other,:status)");
-                        $stmt=$req->execute(["me"=>$_SESSION["LOGGED_USER"]["id"],"other"=>$user_id,"status"=>"pending"]);
 
+                        // enregistrement des données de la demande dans la table friendships
+                        $req=$pdo->prepare("INSERT INTO friendships(sender_id,receiver_id,status) VALUES(:me,:other,:status)");
+                        $stmt=$req->execute(["me"=>$_SESSION["LOGGED_USER"]["id"],"other"=>$user_id,"status"=>"pending"]);
+                       
                         if ($stmt) 
                         {
                             $response["success"]="Demande bien ajouté";
@@ -56,7 +58,8 @@
                         }
                     } catch (PDOException $e) 
                     {
-                        $response["error"]=$e>getMessage();
+                        $response["error"] = $e->getMessage();
+
                     }
                 }
                 
