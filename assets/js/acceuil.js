@@ -414,6 +414,7 @@ function home()
         }
         // afficher le profil d'un utilisateur depuis un de ses posts
         else if (event.target.closest(".user")) {
+            // enregistrement de l'id de l'utilisateur ayant fais le post
             const user_id = event.target.closest(".user").dataset.userId;
             localStorage.setItem("view_user_id", user_id);
 
