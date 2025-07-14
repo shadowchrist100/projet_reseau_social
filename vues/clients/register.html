@@ -1,0 +1,61 @@
+<div class="wrapper">
+    <div class="form-box login">
+        <h2>Inscription</h2>
+        <form action="" method="post" enctype="multipart/form-data">
+            <div id="form-error"></div>
+            <div class="input-box">
+                <span class="icon"></span>
+                <input type="text" id="register-name" name="name"   required placeholder="" >
+                <label>Nom</label>
+                <div class="nom error-message"></div>
+            </div>
+            <div class="input-box">
+                <span class="icon"></span>
+                <input type="text" id="register-firstname" name="prenom"  required placeholder="" >
+                <label>Prenom</label>
+                <div class="prenom error-message"></div>
+            </div>
+            <div class="input-box">
+                <span class="icon"><i class=""></i></span>
+                <input type="text" name="pseudo"  id="register-pseudo"  required placeholder="">
+                <label>Pseudo</label>
+                <div class="pseudo error-message"></div>
+            </div>
+            <div class="input-box">
+                <span class="icon"><i class=""></i></span>
+                <input type="email"  id="register-email" name="email"  required placeholder="">
+                <label >Email</label>
+                <div class="mail error-message"></div>
+            </div>
+            <div class="input-box">
+                <span class="input-group-text icon"><i class="bi bi-image"></i></span>
+                <input type="file" class="form-control" id="register-image" name="image" placeholder="Veillez uploader une image" required>
+            </div>
+            <div class="input-box">
+                <span class="icon"><i class=""></i></span>
+                <input id="register-password" type="password"  name="password" required >
+                <label >Mot de passe</label>
+                <div class="password error-message"></div>
+            </div>
+            <div class="input-box">
+                <span class="icon"><i class=""></i></span>
+                <input id="register-password_confirm" type="password"  name="password_confirm" required >
+                <label >Confirmé Mot de passe</label>
+                <div class="password_confirm error-message"></div>
+            </div>
+            <div class="remember-forgot">
+                <div>
+                    <label for="remember" class="">
+                        <input type="checkbox" class="" name="remember">J'accepte les termes d'usage
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="btn" >S'inscrire</button>
+            <div class="login-register">
+                <p>
+                    J'ai déja un compte <button class="login-button" type="button">Se connecter</button> 
+                </p>
+            </div>
+        </form>
+    </div>
+</div>

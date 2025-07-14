@@ -1,0 +1,162 @@
+<nav>
+    <div class="container">
+        <h2 class="log">chatAPP</h2>
+        <div class="search-bar">
+            <i class="uil uil-search"></i>
+            <input type="search" placeholder="Search fo creators,inspirations,and projects">
+        </div>
+        <div class="create">
+            <label for="create post" class="btn btn-primary">Create</label>
+            <div class="profile-photo">
+                <img class="user_profile" src="">
+            </div>
+            <button id="logout">
+                <h3>Déconnexion</h3><span><i class="uil uil-sign-in-alt"></i></span>
+            </button>
+            
+        </div>
+    </div>
+</nav>
+<!-- ---------------MAIN----------- -->
+<main>
+    <div class="container">
+        <!-- ---------------   LEFT ----------- -->
+        <div class="left">
+            <a  class="profile">
+                <div class="profile-photo">
+                    <img class="user_profile profile-photo" src="" >
+                </div>
+                <div class="handle">
+                    <h4 class="user_name"></h4>
+                    <p class="text-muted user_pseudo">
+                        
+                    </p>
+                </div>
+            </a>
+                <!-------------SIDEBAR---- -->
+            <div class="sidebar">
+                <a class="menu-item active">
+                    <span><i class="uil uil-home"></i></span><h3>Home</h3>
+                </a>
+                <a class="menu-item">
+                    <span><i class="uil uil-compass"></i></span><h3>Explore</h3>
+                </a>
+                
+                <button class="menu-item" id="messages-notifications">
+                    <span><i class="uil uil-envelope-alt"> <small class="notification-count">6+</small></i></span><h3>Message</h3>
+                </button>
+                <!-- <a class="menu-item" id="messages-notifications">
+                    <span><i class="uil uil-envelope-alt"> <small class="notification-count">6+</small></i></span><h3>Message</h3>
+                </a>     -->
+                <a class="menu-item">
+                    <span><i class="uil uil-bookmark"></i></span><h3>Bookmarks</h3>
+                </a>
+                <a class="menu-item" id="theme">
+                    <span><i class="uil uil-palette"></i></span><h3>Theme</h3>
+                </a>   
+                <a class="menu-item">
+                    <span><i class="uil uil-setting"></i></span><h3>Settings</h3>
+                </a>
+                        <!-- --------------- END OF SIDEBAR ----------- -->
+                <label for="create-post" class="btn btn-primary">Create-Post</label>
+            </div>
+        </div>
+        <!-- --------------- MIDDLE ----------- -->
+        <div class="middle">
+           
+            <form class="create-post">
+                <div class="profile-photo  ">
+                    <img class="user_profile" src="" alt="">
+                </div>
+                <input type="text" placeholder="" name="post_text" id="post_text">
+                <label for="post_image">Image<i class="uim uim-image"></i></label>
+                <input style="display: none;" type="file" id="post_image" name="post_image" accept="image/*">
+                <img id="image_preview" class="image-preview" alt="">
+                <input type="button" id="create_post" value="Post" class="btn btn-primary">
+            </form>
+            <div class="feeds">
+                <!-- <div class="feed">
+                    <div class="head">
+                        <div class="user">
+                            <div class="profile-photo">
+                                <img src="/assets/css/images/profile-13.jpg" alt="">
+                            </div>
+                            <div class="ingo">
+                                <h3>Lana Rose</h3>
+                                <small>Dubai,15 Minutes AGO</small>
+                            </div>
+                        </div>  
+                        <span class="edit">
+                            <i class="uil uil-ellipsis-h"></i>
+                        </span>
+                    </div>
+                    <div class="photo">
+                        <img src="/assets/images/feed-1.jpg" alt="">
+                    </div>
+                    <div class="action-button">
+                        <div class="interaction-buttons">
+                            <span><i class="uil uil-heart like"></i></span>
+                            <span><i class="uil uil-comment-dots comment"></i></span>
+                            <span><i class="uil uil-share-alt"></i></span>
+                        </div>
+                        <div class="bookmark">
+                            <span><i class="uil uil-bookmark-full"></i></span>
+                        </div>
+                    </div>
+                    <div class="liked-by">
+                        <span><img src="/assets/css/images/profile-10.jpg" alt=""></span>
+                        <span><img src="/assets/css/images/profile-4.jpg" alt=""></span>
+                        <span><img src="/assets/css/images/profile-14.jpg" alt=""></span>
+                        <p>Liked by <b>Ernest Achiever</b> and <b>2,321 others</b></p>
+                    </div>
+                    <div class="caption">
+                        <p>
+                            <b>Lana Rose</b>Lorem, ipsum dolor sit amet it.  quo molestiae! Nobis rerum 
+                            numquam tempora nostrum nam quae  <span class="harsh-tag">#lifestyle</span>
+                        </p>
+                    </div>
+                    <div class=" comments text-muted">view all 277 comments </div>
+                </div>
+            </div> -->
+        </div>
+        <!-- <div class="right">
+            <div class="friend-request">
+                <h4>Requests</h4>
+                <div class="request">
+                    <div class="info">
+                        <div class="profile-photo">
+                            <img src="/uploads/Lewhe_profile_picture.jpg" alt="">
+                        </div>
+                        <div>
+                            <h5>Haji Bintu</h5>
+                            <p class="text-muted">
+                                8 mutual friends
+                            </p>
+                        </div>
+                    </div>
+                    <div class="action">
+                        <button class="btn btn-primary">Accept</button>
+                        <button class="btn ">Decline</button>
+                    </div>
+                </div>
+                <div class="request">
+                    <div class="info">
+                        <div class="profile-photo">
+                            <img src="/uploads/Lewhe_profile_picture.jpg" alt="">
+                        </div>
+                        <div>
+                            <h5>Jo Bintu</h5>
+                            <p class="text-muted">
+                                8 mutual friends
+                            </p>
+                        </div>
+                    </div>
+                    <div class="action">
+                        <button class="btn btn-primary">Accept</button>
+                        <button class="btn ">Decline</button>
+                    </div>
+                </div> 
+            </div>
+        </div> -->
+    </div>
+</main>

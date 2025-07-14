@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Administrateur - Back Office</title>
+    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar Administrateur -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-shield-alt"></i>
+                <h2>Administration</h2>
+            </div>
+            
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="currentUserName">Administrateur</span>
+                    <span class="user-role" id="currentUserRole">Administrateur</span>
+                </div>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="active">
+                    <a href="dashboard-admin.html">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="users.html">
+                        <i class="fas fa-users"></i>
+                        Utilisateurs
+                    </a>
+                </li>
+                <li>
+                    <a href="articles.html">
+                        <i class="fas fa-newspaper"></i>
+                        Articles
+                    </a>
+                </li>
+                <li>
+                    <a href="admins.html">
+                        <i class="fas fa-user-shield"></i>
+                        Administrateurs
+                    </a>
+                </li>
+                <li>
+                    <a href="moderators.html">
+                        <i class="fas fa-user-cog"></i>
+                        Modérateurs
+                    </a>
+                </li>
+                <li>
+                    <a href="system-settings.html">
+                        <i class="fas fa-cogs"></i>
+                        Paramètres Système
+                    </a>
+                </li>
+                <li>
+                    <a href="analytics.html">
+                        <i class="fas fa-chart-line"></i>
+                        Analytiques
+                    </a>
+                </li>
+                <li>
+                    <a href="security.html">
+                        <i class="fas fa-lock"></i>
+                        Sécurité
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Déconnexion
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <h1>
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard Administrateur
+                </h1>
+                <div class="header-actions">
+                    <div class="system-status">
+                        <span class="status-indicator online">
+                            <i class="fas fa-circle"></i>
+                            Système Opérationnel
+                        </span>
+                    </div>
+                    <button class="btn btn-refresh" onclick="loadAdminDashboard()">
+                        <i class="fas fa-sync-alt"></i>
+                        Actualiser
+                    </button>
+                </div>
+            </header>
+            
+            <div class="content-body">
+                <!-- Stats Cards Administrateur -->
+                <div class="stats-grid admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalUsers">0</h3>
+                            <p>Utilisateurs Total</p>
+                            <span class="stat-change positive" id="newUsers">+0 cette semaine</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalArticles">0</h3>
+                            <p>Articles Total</p>
+                            <span class="stat-change positive" id="articlesToday">+0 aujourd'hui</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalAdmins">0</h3>
+                            <p>Équipe Admin</p>
+                            <span class="stat-change" id="activeAdmins">0 actifs</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="systemLoad">0%</h3>
+                            <p>Charge Système</p>
+                            <span class="stat-change" id="serverStatus">Optimal</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Métriques Avancées -->
+                <div class="advanced-metrics">
+                    <div class="metric-card">
+                        <h4><i class="fas fa-chart-line"></i> Croissance</h4>
+                        <div class="metric-value">
+                            <span class="value" id="growthRate">+12.5%</span>
+                            <span class="period">ce mois</span>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <h4><i class="fas fa-eye"></i> Engagement</h4>
+                        <div class="metric-value">
+                            <span class="value" id="engagementRate">78.3%</span>
+                            <span class="period">utilisateurs actifs</span>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <h4><i class="fas fa-shield-alt"></i> Sécurité</h4>
+                        <div class="metric-value">
+                            <span class="value" id="securityScore">95/100</span>
+                            <span class="period">score sécurité</span>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <h4><i class="fas fa-database"></i> Stockage</h4>
+                        <div class="metric-value">
+                            <span class="value" id="storageUsed">2.3GB</span>
+                            <span class="period">utilisés</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Actions Administrateur -->
+                <div class="admin-actions-section">
+                    <h3><i class="fas fa-tools"></i> Actions Administrateur</h3>
+                    <div class="admin-actions-grid">
+                        <div class="action-card">
+                            <i class="fas fa-user-plus"></i>
+                            <h4>Créer Administrateur</h4>
+                            <p>Ajouter un nouvel administrateur</p>
+                            <button class="btn btn-primary" onclick="openCreateAdminModal()">
+                                Créer
+                            </button>
+                        </div>
+                        
+                        <div class="action-card">
+                            <i class="fas fa-user-cog"></i>
+                            <h4>Gérer Modérateurs</h4>
+                            <p>Ajouter/supprimer des modérateurs</p>
+                            <button class="btn btn-secondary" onclick="window.location.href='moderators.html'">
+                                Gérer
+                            </button>
+                        </div>
+                        
+                        <div class="action-card">
+                            <i class="fas fa-cogs"></i>
+                            <h4>Paramètres Système</h4>
+                            <p>Configurer les paramètres</p>
+                            <button class="btn btn-info" onclick="window.location.href='system-settings.html'">
+                                Configurer
+                            </button>
+                        </div>
+                        
+                        <div class="action-card">
+                            <i class="fas fa-download"></i>
+                            <h4>Sauvegarde</h4>
+                            <p>Créer une sauvegarde système</p>
+                            <button class="btn btn-warning" onclick="createBackup()">
+                                Sauvegarder
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Graphiques Administrateur */
+                <div class="charts-section admin-charts">
+                    <div class="chart-container">
+                        <h3>Évolution de la Plateforme</h3>
+                        <canvas id="platformChart"></canvas>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>Répartition des Utilisateurs</h3>
+                        <canvas id="usersChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Alertes et Notifications */
+                <div class="alerts-section">
+                    <h3><i class="fas fa-bell"></i> Alertes Système</h3>
+                    <div class="alerts-container" id="systemAlerts">
+                        <!-- Alerts will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Activité Récente */
+                <div class="activity-section admin-activity">
+                    <div class="activity-card">
+                        <h3>
+                            <i class="fas fa-user-plus"></i>
+                            Nouveaux Utilisateurs
+                        </h3>
+                        <div class="activity-list" id="recentUsers">
+                            <!-- Users will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <h3>
+                            <i class="fas fa-newspaper"></i>
+                            Articles Récents
+                        </h3>
+                        <div class="activity-list" id="recentArticles">
+                            <!-- Articles will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="activity-card">
+                        <h3>
+                            <i class="fas fa-shield-alt"></i>
+                            Activité Admin
+                        </h3>
+                        <div class="activity-list" id="adminActivity">
+                            <!-- Admin activity will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Logs Système */
+                <div class="system-logs-section">
+                    <h3>
+                        <i class="fas fa-terminal"></i>
+                        Logs Système Récents
+                    </h3>
+                    <div class="logs-container" id="systemLogs">
+                        <!-- System logs will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal Création Administrateur -->
+    <div id="createAdminModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Créer un Nouvel Administrateur</h3>
+                <span class="close" onclick="closeModal('createAdminModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="createAdminForm" class="modal-form">
+                    <div class="form-group">
+                        <label for="adminUsername">Nom d'utilisateur</label>
+                        <input type="text" id="adminUsername" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="adminEmail">Email</label>
+                        <input type="email" id="adminEmail" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="adminFirstName">Prénom</label>
+                        <input type="text" id="adminFirstName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="adminLastName">Nom</label>
+                        <input type="text" id="adminLastName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="adminRole">Rôle</label>
+                        <select id="adminRole" required>
+                            <option value="moderator">Modérateur</option>
+                            <option value="admin">Administrateur</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="adminPassword">Mot de passe temporaire</label>
+                        <input type="password" id="adminPassword" required>
+                        <small class="form-help">L'utilisateur devra changer ce mot de passe à la première connexion</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('createAdminModal')">Annuler</button>
+                <button class="btn btn-primary" onclick="createAdmin()">Créer</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../assets/js/admin/common.js"></script>
+    <script src="../../assets/js/admin/dashboard-admin.js"></script>
+</body>
+</html>

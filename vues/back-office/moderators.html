@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Modérateurs</title>
+    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .moderators-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 30px;
+        }
+        .moderators-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            color: #333;
+        }
+        .moderator-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            align-items: center;
+        }
+        .moderator-card {
+            display: flex;
+            align-items: center;
+            background: #f7f7f7;
+            border-radius: 10px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+            padding: 16px 28px;
+            min-width: 420px;
+            max-width: 700px;
+            width: 100%;
+            gap: 24px;
+        }
+        .moderator-card:hover {
+            box-shadow: 0 4px 16px rgba(0,123,255,0.15);
+        }
+        .moderator-card img.avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #007bff;
+            background: #fff;
+        }
+        .moderator-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 180px;
+            flex: 1;
+            gap: 2px;
+        }
+        .moderator-info strong {
+            font-size: 1.1rem;
+            color: #007bff;
+        }
+        .moderator-info small {
+            color: #444;
+            font-size: 0.98rem;
+        }
+        .moderator-actions {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+        }
+        .btn-supprimer, .btn-promouvoir {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.98rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-supprimer {
+            background: #dc3545;
+            color: #fff;
+        }
+        .btn-supprimer:hover {
+            background: #b52a37;
+        }
+        .btn-promouvoir {
+            background: #007bff;
+            color: #fff;
+        }
+        .btn-promouvoir:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar Administrateur (copiée depuis dashboard-admin.html) -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-shield-alt"></i>
+                <h2>Administration</h2>
+            </div>
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="currentUserName">Administrateur</span>
+                    <span class="user-role" id="currentUserRole">Administrateur</span>
+                </div>
+            </div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="dashboard-admin.html">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="users.html">
+                        <i class="fas fa-users"></i>
+                        Utilisateurs
+                    </a>
+                </li>
+                <li>
+                    <a href="articles.html">
+                        <i class="fas fa-newspaper"></i>
+                        Articles
+                    </a>
+                </li>
+                <li>
+                    <a href="admins.html">
+                        <i class="fas fa-user-shield"></i>
+                        Administrateurs
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="moderators.html">
+                        <i class="fas fa-user-cog"></i>
+                        Modérateurs
+                    </a>
+                </li>
+                <li>
+                    <a href="system-settings.html">
+                        <i class="fas fa-cogs"></i>
+                        Paramètres Système
+                    </a>
+                </li>
+                <li>
+                    <a href="analytics.html">
+                        <i class="fas fa-chart-line"></i>
+                        Analytiques
+                    </a>
+                </li>
+                <li>
+                    <a href="security.html">
+                        <i class="fas fa-lock"></i>
+                        Sécurité
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Déconnexion
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- Contenu principal -->
+        <main class="main-content">
+            <div class="moderators-container">
+                <h1 class="moderators-title"><i class="fas fa-user-cog"></i> Liste des Modérateurs</h1>
+                <div id="moderatorsList" class="moderator-list">
+                    <!-- Les modérateurs seront chargés ici -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('../../api/admin/get_moderators.php')
+            .then(response => response.json())
+            .then(data => {
+                const list = document.getElementById('moderatorsList');
+                list.innerHTML = '';
+                if (data.success && data.moderators.length > 0) {
+                    data.moderators.forEach(mod => {
+                        list.innerHTML += `
+                            <div class="moderator-card">
+                                <img src="${mod.avatar && mod.avatar.trim() !== '' ? mod.avatar : '../../assets/images/ava.jpeg'}" alt="Avatar" class="avatar">
+                                <div class="moderator-info">
+                                    <strong>${mod.username}</strong>
+                                    <small>${mod.email}</small>
+                                    <small>Inscrit le ${new Date(mod.created_at).toLocaleDateString()}</small>
+                                </div>
+                                <div class="moderator-actions">
+                                    <button class="btn-supprimer" onclick="deleteModerator(${mod.id})">Supprimer</button>
+                                    <button class="btn-promouvoir" onclick="promoteModerator(${mod.id})">Promouvoir admin</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    list.innerHTML = '<p>Aucun modérateur trouvé.</p>';
+                }
+            })
+            .catch(() => {
+                document.getElementById('moderatorsList').innerHTML = '<p>Erreur lors du chargement des modérateurs.</p>';
+            });
+    });
+
+    function deleteModerator(id) {
+        if(confirm("Voulez-vous vraiment supprimer ce modérateur ?")) {
+            fetch('../../api/admin/delete_moderator.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id: id})
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    alert("Modérateur supprimé !");
+                    location.reload();
+                } else {
+                    alert("Erreur : " + data.error);
+                }
+            });
+        }
+    }
+
+    function promoteModerator(id) {
+        if(confirm("Promouvoir ce modérateur en administrateur ?")) {
+            fetch('../../api/admin/promote_moderator.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id: id})
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    alert("Modérateur promu administrateur !");
+                    location.reload();
+                } else {
+                    alert("Erreur : " + data.error);
+                }
+            });
+        }
+    }
+    </script>
+</body>
+</html>

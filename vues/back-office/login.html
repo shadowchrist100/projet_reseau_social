@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connexion - Back Office</title>
+    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+      /* Modification des couleurs pour correspondre au register */
+      .login-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #2C3E50 0%, #3A506B 100%);
+        font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+      }
+      .login-container {
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+        padding: 24px 0;
+      }
+      .login-card {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(44,62,80,0.18), 0 1.5px 4px rgba(52,152,219,0.08);
+        overflow: hidden;
+        padding: 0 32px 32px 32px;
+        transition: box-shadow 0.2s;
+      }
+      .login-card:hover {
+        box-shadow: 0 12px 40px rgba(44,62,80,0.22), 0 2px 8px rgba(52,152,219,0.12);
+      }
+      .login-header {
+        background: #2C3E50;
+        padding: 32px 0 18px 0;
+        text-align: center;
+        border-radius: 0 0 18px 18px;
+        margin: -32px -32px 24px -32px;
+      }
+      .login-header i {
+        font-size: 2.5rem;
+        color: #3498DB;
+        margin-bottom: 8px;
+      }
+      .login-header h1 {
+        color: #fff;
+        font-size: 2.1rem;
+        margin: 0 0 6px 0;
+        letter-spacing: 1px;
+      }
+      .login-header p {
+        color: #5D7FA6;
+        font-size: 1.1rem;
+        margin: 0;
+      }
+      .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        position: relative;
+      }
+      .form-group.password-group {
+        margin-bottom: 0;
+      }
+      .form-group.password-group input {
+        padding-right: 44px;
+      }
+      .form-group label {
+        font-weight: 500;
+        color: #2C3E50;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .form-group label i {
+        color: #3498DB;
+        font-size: 1.1rem;
+      }
+      .form-group input {
+        padding: 11px 40px 11px 13px;
+        border: 1.5px solid #dbe6f3;
+        border-radius: 7px;
+        font-size: 1rem;
+        background: #f7fafc;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        outline: none;
+      }
+      .form-group input:focus {
+        border-color: #3498DB;
+        box-shadow: 0 0 0 2px rgba(52,152,219,0.13);
+        background: #fff;
+      }
+      .password-toggle {
+        bottom: 4cm;
+        position: absolute;
+        right: 10px;
+        top: 60%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #b0b8c1;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 4px;
+        transition: color 0.2s, background 0.2s;
+        z-index: 2;
+        outline: none;
+      }
+      .password-toggle:focus {
+        color: #3498DB;
+        background: rgba(52,152,219,0.08);
+        border-radius: 50%;
+      }
+      .password-toggle:hover {
+        color: #3498DB;
+      }
+      .btn-login {
+        background: linear-gradient(90deg, #3498DB 60%, #2980b9 100%);
+        color: #fff;
+        border: none;
+        border-radius: 7px;
+        padding: 13px 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 8px;
+        box-shadow: 0 2px 8px rgba(52,152,219,0.08);
+        transition: background 0.2s, box-shadow 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .btn-login:hover {
+        background: linear-gradient(90deg, #2980b9 60%, #3498DB 100%);
+        box-shadow: 0 4px 16px rgba(52,152,219,0.13);
+      }
+      .error-message, .success-message {
+        display: none;
+        margin-top: 10px;
+        padding: 10px 15px;
+        border-radius: 6px;
+        font-size: 1rem;
+        text-align: center;
+      }
+      .error-message {
+        background: #ffeaea;
+        color: #c0392b;
+        border: 1px solid #e74c3c;
+        display: none;
+      }
+      .success-message {
+        background: #eafaf1;
+        color: #27ae60;
+        border: 1px solid #2ecc71;
+        display: none;
+      }
+      .login-footer {
+        margin-top: 24px;
+        text-align: center;
+        color: #7b8ca5;
+        font-size: 0.98rem;
+      }
+      .login-links {
+        margin-top: 10px;
+      }
+      .register-link {
+        color: #3498DB;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      .register-link:hover {
+        color: #2980b9;
+        text-decoration: underline;
+      }
+      @media (max-width: 600px) {
+        .login-container {
+          max-width: 98vw;
+          padding: 0 6px;
+        }
+        .login-card {
+          padding: 0 10px 24px 10px;
+        }
+        .login-header {
+          margin: -32px -10px 18px -10px;
+        }
+      }
+    </style>
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fas fa-shield-alt"></i>
+                <h1>Back Office</h1>
+                <p>Connexion Administrateur</p>
+            </div>
+            
+            <form class="login-form"  method="post" id="adminLoginForm">
+                <div class="form-group">
+                    <label for="email">
+                        <i class="fas fa-user"></i>
+                        Nom d'utilisateur ou Email
+                    </label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group password-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Mot de passe
+                    </label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                    <button type="button" class="password-toggle" aria-label="Afficher ou masquer le mot de passe" tabindex="0" onclick="togglePassword()">
+                        <i class="fas fa-eye" id="passwordToggleIcon"></i>
+                    </button>
+                </div>
+                
+                
+                <button type="submit" class="btn-login" id="submitBtn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Se connecter
+                </button>
+            </form>
+            
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            <div id="successMessage" class="success-message" style="display: none;"></div>
+            
+            <div class="login-footer">
+                <p>&copy; 2025 Social Network - Back Office</p>
+                <div class="login-links">
+                    <a href="register.html" class="register-link">
+                        <i class="fas fa-user-plus"></i>
+                        Créer un compte administrateur
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../assets/js/admin/common.js"></script>
+    <script src="../../assets/js/admin/auth/login.js"></script>
+</body>
+</html>

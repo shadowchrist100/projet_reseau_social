@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil de [Nom] | ChatApp</title>
+    <link rel="stylesheet" href="/assets/css/style_profil.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="profile-container">
+        <!-- En-tête du profil -->
+        <header class="profile-header">
+            <div class="cover-photo">
+                <div class="profile-actions">
+                    <button class="btn btn-edit"><i class="fas fa-camera"></i> Modifier photo</button>
+                    <button class="btn btn-settings"><i class="fas fa-cog"></i></button>
+                </div>
+            </div>
+            
+            <div class="profile-info">
+                <div class="profile-picture">
+                    <img class="user_profile" src="/assets/images/default-profile.jpg" alt="Photo de profil" id="user-avatar">
+                </div>
+                
+                <div class="profile-details">
+                    <h1 class="user_name" id="user-name">Jean Dupont</h1>
+                    <p class="user-title" id="user-title">Développeur Full-Stack</p>
+                    <p class="user-location"><i class="fas fa-map-marker-alt"></i> <span id="user-location">Paris, France</span></p>
+                    
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="friend-count">245</span>
+                            <span class="stat-label">Amis</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="post-count">56</span>
+                            <span class="stat-label">Publications</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="follower-count">1.2K</span>
+                            <span class="stat-label">Abonnés</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-actions">
+                        <button class="btn btn-primary"><i class="fas fa-user-plus"></i> Ajouter ami</button>
+                        <button class="btn btn-secondary"><i class="fas fa-envelope"></i> Message</button>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="profile-nav">
+                <ul>
+                    <li class="active"><a href="#"><i class="fas fa-newspaper"></i> Publications</a></li>
+                    <li><a href="#"><i class="fas fa-info-circle"></i> Informations</a></li>
+                    <li><a href="#"><i class="fas fa-images"></i> Photos</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Amis</a></li>
+                    <li><a href="#"><i class="fas fa-video"></i> Vidéos</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <!-- Contenu principal -->
+        <main class="profile-content">
+            <aside class="profile-sidebar">
+                <section class="about-section">
+                    <h3><i class="fas fa-user"></i> À propos</h3>
+                    <ul>
+                        <li><i class="fas fa-briefcase"></i> <span id="user-job">Développeur chez TechCorp</span></li>
+                        <li><i class="fas fa-graduation-cap"></i> <span id="user-education">École Polytechnique</span></li>
+                        <li><i class="fas fa-home"></i> <span id="user-city">Vit à Paris</span></li>
+                        <li><i class="fas fa-heart"></i> <span id="user-relationship">En couple</span></li>
+                        <li><i class="fas fa-calendar"></i> <span id="user-joined">Membre depuis juin 2018</span></li>
+                    </ul>
+                </section>
+                
+                <section class="photos-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-images"></i> Photos</h3>
+                        <a href="#">Voir tout</a>
+                    </div>
+                    <div class="photo-grid">
+                        <img src="/assets/images/photo1.jpg" alt="Photo 1">
+                        <img src="/assets/images/photo2.jpg" alt="Photo 2">
+                        <img src="/assets/images/photo3.jpg" alt="Photo 3">
+                        <img src="/assets/images/photo4.jpg" alt="Photo 4">
+                        <img src="/assets/images/photo5.jpg" alt="Photo 5">
+                        <img src="/assets/images/photo6.jpg" alt="Photo 6">
+                    </div>
+                </section>
+                
+                <section class="friends-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-users"></i> Amis</h3>
+                        <a href="#">Voir tout</a>
+                    </div>
+                    <div class="friends-grid">
+                        <div class="friend-item">
+                            <img src="/assets/images/friend1.jpg" alt="Amie 1">
+                            <span>Marie Durand</span>
+                        </div>
+                        <div class="friend-item">
+                            <img src="/assets/images/friend2.jpg" alt="Amie 2">
+                            <span>Paul Martin</span>
+                        </div>
+                        <div class="friend-item">
+                            <img src="/assets/images/friend3.jpg" alt="Amie 3">
+                            <span>Sophie Lambert</span>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+            
+            <div class="profile-main">
+                <section class="create-post">
+                    <div class="post-input">
+                        <img src="/assets/images/default-profile.jpg" alt="Votre photo">
+                        <input type="text" placeholder="Quoi de neuf, Jean ?">
+                    </div>
+                    <div class="post-options">
+                        <button><i class="fas fa-video"></i> Vidéo</button>
+                        <button><i class="fas fa-image"></i> Photo</button>
+                        <button><i class="fas fa-smile"></i> Humeur</button>
+                    </div>
+                </section>
+                
+                <section class="posts-section">
+                    <article class="post">
+                        <div class="post-header">
+                            <img src="/assets/images/friend1.jpg" alt="Photo ami">
+                            <div class="post-author">
+                                <h4>Marie Durand</h4>
+                                <span class="post-time">2 heures</span>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <p>Super journée à la plage aujourd'hui ! ☀️🏖️ #été #vacances</p>
+                            <img src="/assets/images/post1.jpg" alt="Photo plage">
+                        </div>
+                        <div class="post-actions">
+                            <button><i class="far fa-thumbs-up"></i> J'aime</button>
+                            <button><i class="far fa-comment"></i> Commenter</button>
+                            <button><i class="fas fa-share"></i> Partager</button>
+                        </div>
+                    </article>
+                    
+                    <article class="post">
+                        <div class="post-header">
+                            <img src="/assets/images/default-profile.jpg" alt="Photo profil">
+                            <div class="post-author">
+                                <h4>Jean Dupont</h4>
+                                <span class="post-time">Hier</span>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <p>Juste terminé ce nouveau projet ! Merci à toute l'équipe pour le travail accompli. 🚀 #coding #success</p>
+                        </div>
+                        <div class="post-actions">
+                            <button><i class="far fa-thumbs-up"></i> J'aime</button>
+                            <button><i class="far fa-comment"></i> Commenter</button>
+                            <button><i class="fas fa-share"></i> Partager</button>
+                        </div>
+                    </article>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

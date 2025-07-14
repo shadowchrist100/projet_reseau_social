@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Utilisateurs - Back Office</title>
+    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #2C3E50 0%, #3A506B 100%);
+        }
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background: #2C3E50;
+            color: #fff;
+            transition: width 0.2s;
+        }
+        .main-content {
+            flex: 1;
+            background: #fff;
+            padding: 32px;
+            min-width: 0;
+            overflow-x: auto;
+        }
+        .content-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 18px;
+            margin-bottom: 24px;
+        }
+        .content-header h1 {
+            font-size: 2rem;
+            color: #2C3E50;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .search-box {
+            position: relative;
+        }
+        .search-box input {
+            padding: 8px 36px 8px 14px;
+            border-radius: 8px;
+            border: 1.5px solid #d1d5db;
+            background: #f3f4f6;
+            font-size: 1rem;
+            transition: border 0.2s;
+        }
+        .search-box input:focus {
+            border: 1.5px solid #3498DB;
+            outline: none;
+        }
+        .search-box i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #5D7FA6;
+        }
+        .btn.btn-refresh {
+            background: #3498DB;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 18px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn.btn-refresh:hover {
+            background: #217dbb;
+        }
+        .filters-section {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 18px;
+        }
+        .filter-group label {
+            font-weight: 500;
+            color: #2C3E50;
+            margin-right: 6px;
+        }
+        .filter-group select {
+            border-radius: 6px;
+            border: 1.5px solid #d1d5db;
+            padding: 5px 12px;
+            background: #f3f4f6;
+            font-size: 1rem;
+        }
+        .table-container {
+            background: #f8fafc;
+            border-radius: 12px;
+            box-shadow: 0 1px 6px rgba(44,62,80,0.06);
+            padding: 18px;
+            overflow-x: auto;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: transparent;
+            min-width: 900px;
+        }
+        .data-table th, .data-table td {
+            padding: 12px 10px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .data-table th {
+            background: #3498DB;
+            color: #fff;
+            font-weight: 600;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        .data-table tr {
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            transition: background 0.2s;
+        }
+        .data-table tr:hover {
+            background: #eaf6ff;
+        }
+        .data-table tr:last-child {
+            border-bottom: none;
+        }
+        .data-table td {
+            color: #2C3E50;
+            font-size: 0.98rem;
+        }
+        .data-table td .btn {
+            margin-right: 4px;
+        }
+        .data-table td .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #3498DB;
+            background: #fff;
+        }
+        .data-table th input[type=\"checkbox\"], .data-table td input[type=\"checkbox\"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #3498DB;
+            vertical-align: middle;
+        }
+        .pagination-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 18px;
+        }
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn.btn-sm {
+            background: #5D7FA6;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 5px 14px;
+            font-size: 0.98rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn.btn-sm:hover {
+            background: #2C3E50;
+        }
+        .bulk-actions {
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 10px 18px;
+            margin-top: 18px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .btn-warning {
+            background: #f39c12;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-size: 0.98rem;
+            cursor: pointer;
+        }
+        .btn-warning:hover {
+            background: #c87f0a;
+        }
+        .btn-success {
+            background: #27ae60;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-size: 0.98rem;
+            cursor: pointer;
+        }
+        .btn-success:hover {
+            background: #1e8449;
+        }
+        .btn-danger {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-size: 0.98rem;
+            cursor: pointer;
+        }
+        .btn-danger:hover {
+            background: #b93a2b;
+        }
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .main-content {
+                padding: 16px 4px;
+                margin: 16px 0 16px 0;
+            }
+            .sidebar {
+                min-width: 60px;
+                width: 60px;
+            }
+        }
+        @media (max-width: 900px) {
+            .data-table {
+                min-width: 700px;
+            }
+        }
+        @media (max-width: 700px) {
+            .admin-layout {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                min-width: 0;
+                height: auto;
+                box-shadow: none;
+                position: static;
+            }
+            .main-content {
+                margin: 0;
+                border-radius: 0;
+                padding: 8px 2px;
+            }
+            .data-table {
+                min-width: 500px;
+            }
+            .filters-section {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        /* Responsive : tablette */
+        @media (max-width: 1000px) {
+            .sidebar {
+                width: 60px;
+                min-width: 60px;
+                text-align: center;
+            }
+            .main-content {
+                padding: 16px 4px;
+            }
+            .content-header h1 {
+                font-size: 1.2rem;
+            }
+            .data-table {
+                min-width: 700px;
+            }
+        }
+        /* Pour le tableau : scroll horizontal sur mobile */
+        .table-container {
+            overflow-x: auto;
+        }
+        .data-table {
+            width: 100%;
+            min-width: 900px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-shield-alt"></i>
+                <h2>Administration</h2>
+            </div>
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="currentUserName">Administrateur</span>
+                    <span class="user-role" id="currentUserRole">Administrateur</span>
+                </div>
+            </div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="dashboard-admin.html">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="users.html">
+                        <i class="fas fa-users"></i>
+                        Utilisateurs
+                    </a>
+                </li>
+                <li>
+                    <a href="articles.html">
+                        <i class="fas fa-newspaper"></i>
+                        Articles
+                    </a>
+                </li>
+                <li>
+                    <a href="admins.html">
+                        <i class="fas fa-user-shield"></i>
+                        Administrateurs
+                    </a>
+                </li>
+                <li>
+                    <a href="moderators.html">
+                        <i class="fas fa-user-cog"></i>
+                        Modérateurs
+                    </a>
+                </li>
+                <li>
+                    <a href="system-settings.html">
+                        <i class="fas fa-cogs"></i>
+                        Paramètres Système
+                    </a>
+                </li>
+                <li>
+                    <a href="analytics.html">
+                        <i class="fas fa-chart-line"></i>
+                        Analytiques
+                    </a>
+                </li>
+                <li>
+                    <a href="security.html">
+                        <i class="fas fa-lock"></i>
+                        Sécurité
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Déconnexion
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <h1>
+                    <i class="fas fa-users"></i>
+                    Gestion des Utilisateurs
+                </h1>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <input type="text" id="searchUsers" placeholder="Rechercher un utilisateur...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <button class="btn btn-refresh" onclick="loadUsers()">
+                        <i class="fas fa-sync-alt"></i>
+                        Actualiser
+                    </button>
+                </div>
+            </header>
+            
+            <div class="content-body">
+                <!-- Filters -->
+                <div class="filters-section">
+                    <div class="filter-group">
+                        <label>Statut:</label>
+                        <select id="statusFilter">
+                            <option value="">Tous</option>
+                            <option value="1">Actifs</option>
+                            <option value="0">Inactifs</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Vérification:</label>
+                        <select id="verifiedFilter">
+                            <option value="">Tous</option>
+                            <option value="1">Vérifiés</option>
+                            <option value="0">Non vérifiés</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Date d'inscription:</label>
+                        <select id="dateFilter">
+                            <option value="">Toutes</option>
+                            <option value="today">Aujourd'hui</option>
+                            <option value="week">Cette semaine</option>
+                            <option value="month">Ce mois</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Users Table -->
+                <div class="table-container">
+                    <table class="data-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" id="selectAll">
+                                </th>
+                                <th>Avatar</th>
+                                <th>Nom d'utilisateur</th>
+                                <th>Nom complet</th>
+                                <th>Email</th>
+                                <th>Statut</th>
+                                <th>Vérification</th>
+                                <th>Dernière connexion</th>
+                                <th>Date d'inscription</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination-container">
+                    <div class="pagination-info">
+                        <span id="paginationInfo">Affichage de 0 à 0 sur 0 utilisateurs</span>
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="btn btn-sm" id="prevPage" onclick="changePage(-1)">
+                            <i class="fas fa-chevron-left"></i>
+                            Précédent
+                        </button>
+                        <span id="pageNumbers"></span>
+                        <button class="btn btn-sm" id="nextPage" onclick="changePage(1)">
+                            Suivant
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Bulk Actions -->
+                <div class="bulk-actions" id="bulkActions" style="display: none;">
+                    <span id="selectedCount">0 utilisateur(s) sélectionné(s)</span>
+                    <button class="btn btn-warning" onclick="bulkAction('deactivate')">
+                        <i class="fas fa-ban"></i>
+                        Désactiver
+                    </button>
+                    <button class="btn btn-success" onclick="bulkAction('activate')">
+                        <i class="fas fa-check"></i>
+                        Activer
+                    </button>
+                    <button class="btn btn-danger" onclick="bulkAction('delete')">
+                        <i class="fas fa-trash"></i>
+                        Supprimer
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- User Details Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Détails de l'utilisateur</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- User details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Fermer</button>
+                <button class="btn btn-primary" id="saveUserBtn" onclick="saveUser()">Sauvegarder</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../assets/js/admin/common.js"></script>
+    <script src="../../assets/js/admin/users.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<div class="chat-container">
+    <div class="chat-header">
+        <h2>Messages</h2>
+        <button class="back-btn" onclick="load_view('acceuil')">
+            <i class="uil uil-arrow-left"></i> Retour
+        </button>
+    </div>
+    
+    <div class="chat-wrapper">
+        <section class="users-list">
+            <header>
+                <div class="content">
+                    <img src="" alt="" class="current-user-img">
+                    <div class="details">
+                        <span class="current-user-name"></span>
+                        <p class="status">En ligne</p>
+                    </div>
+                </div>
+            </header>
+            <div class="search">
+                <span class="text">Sélectionner un utilisateur pour commencer le chat</span>
+                <input type="text" placeholder="Entrer le nom pour rechercher...">
+                <button><i class="uil uil-search"></i></button>
+            </div>
+            <div class="users-list-container">
+                <!-- Liste des utilisateurs sera chargée ici -->
+            </div>
+        </section>
+        
+        <section class="chat-area" style="display: none;">
+            <header class="chat-header">
+                <div class="content">
+                    <img src="" alt="" class="chat-user-img">
+                    <div class="details">
+                        <span class="chat-user-name"></span>
+                        <p class="status">En ligne</p>
+                    </div>
+                </div>
+                <button class="back-to-users">
+                    <i class="uil uil-arrow-left"></i>
+                </button>
+            </header>
+            <div class="chat-box">
+                <!-- Messages seront chargés ici -->
+            </div>
+            <form class="typing-area">
+                <input type="text" class="incoming_id" name="incoming_id" hidden>
+                <input type="text" name="message" class="input-field" placeholder="Tapez un message ici..." autocomplete="off">
+                <button><i class="uil uil-message"></i></button>
+            </form>
+        </section>
+    </div>
+</div> 
