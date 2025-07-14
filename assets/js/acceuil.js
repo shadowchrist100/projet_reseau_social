@@ -414,7 +414,9 @@ function home()
         }
         // afficher le profil d'un utilisateur depuis un de ses posts
         else if (event.target.closest(".user")) {
-           
+            const user_id = event.target.closest(".user").dataset.userId;
+            localStorage.setItem("view_user_id", user_id);
+
             // charger la vue du profil de l'utilisateur
             load_view("profil");
         }
