@@ -1,5 +1,6 @@
 FROM php:8.2-apache
 
+RUN mkdir /var/www/html/uploads 
 
 # Installe PDO MySQL
 RUN docker-php-ext-install pdo pdo_mysql
