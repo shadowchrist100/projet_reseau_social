@@ -94,12 +94,12 @@ function home()
         feed.innerHTML=`
         <div class="head">
             <button class="user_post_id user" post_id=${post.id} type="button">
-                <div class="user">
+                <div class="user" data-user-id="${post.user_id}">
                     <div class="profile-photo">
                         <img class="profil" src="/uploads/${post.profile_picture}" alt="">
                     </div>
                     <div class="info">
-                        <h3>${post.nom} ${post.prenom}</h3>
+                        <h3 class="post_user_name">${post.nom} ${post.prenom}</h3>
                         <small>${post.created_at}</small>
                     </div>
                 </div>
@@ -283,7 +283,10 @@ function home()
             }
         }
     document.querySelector(".feeds").addEventListener("click", function (event) {
-        
+        // récupération de l'élément sélectionné
+        const target = event.target;
+
+        // récupérer 
         // vérifier si l'élément cliqué est un bouton de like
         if (event.target.classList.contains("like-button")) 
         {
@@ -410,14 +413,9 @@ function home()
             
         }
         // afficher le profil d'un utilisateur depuis un de ses posts
-        else if (event.target.classList.contains("user_post_id")) {
-              // ajouter un écouteur d'évènement sur le profil de l'utilisateur du post
-           
-            // récupérer l'id de l'utilisateur du post
-            const post_id=event.target.id;
+        else if (event.target.closest(".user")) {
            
             // charger la vue du profil de l'utilisateur
-            console.log(post_id);
             load_view("profil");
         }
         else
