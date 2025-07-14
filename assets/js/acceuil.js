@@ -2,7 +2,6 @@ function home()
 {
     let has_liked="";
     // récupérer les éléments du DOM
-    // récupérer les éléments du DOM
     const user_profil=document.querySelectorAll(".user_profile");
     const user_pseudo=document.querySelectorAll(".user_pseudo");
     const user_name=document.querySelectorAll(".user_name");
@@ -130,8 +129,6 @@ function home()
             <textarea class="comment-text" data-post-id="${post.id}" placeholder="Écrire un commentaire..."></textarea>
             <button type="button" class="send-comment-btn" data-post-id="${post.id}">Publier</button>
         </div>
-        <div class="liked-by" id=${post.id} >
-            
         <div class="liked-by" id=${post.id} >
             
         </div>
