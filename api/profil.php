@@ -34,6 +34,11 @@
                     $req=$pdo->prepare("SELECT * FROM users WHERE id=:user_id");
                     $req->execute(["user_id"=>$user_id]);
                     $user=$req->fetch(PDO::FETCH_ASSOC);
+                    // faire une requête pour savoir l'état de la relation entre l'utilisateur et celui dont on veut voir le profil
+                    $req=$pdo->prepare("SELECT status FROM friendships WHERE (sender_id=:me AND receiver_id=:other) OR (sender_id=:other AND receiver_id=:me) LIMIT 1") ;
+                    $req->execute(["me"=>$_SESSION["LOGGED_USER"]["id"],"other"=>$user_id]);
+                    $status=$req->fetch(PDO::FETCH_ASSOC);
+                    $user["status"]=$status["status"] ?? "none";
                     $response["user"]=$user;
                 } catch (PDOException $e) 
                 {

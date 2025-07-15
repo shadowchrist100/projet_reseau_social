@@ -36,7 +36,7 @@ function home()
         document.getElementById("post_text").placeholder=`What's on your mind, ${window.user_data.name}`;
     })
     .catch(error=>console.error(error))
-
+    
     /*******Gestions des posts et création des posts  **************/
     // envoyer les informations du post au backend pour l'enregistrement
         // afficher l'image sélectionnée dans le champ de saisie d'image
@@ -416,15 +416,12 @@ function home()
             const user_id = event.target.closest(".user").dataset.userId;
             localStorage.setItem("view_user_id", user_id);
 
+            // enregistrer les infos de l'utilisateur connecté
+            
+            localStorage.setItem("user_data",JSON.stringify(window.user_data));
+
             // charger la vue du profil de l'utilisateur
             load_view("profil");
-        }
-        else
-        {
-            console.log(event.target);
-            
-            console.log("rien cliqué");
-            
         }
     });
 }

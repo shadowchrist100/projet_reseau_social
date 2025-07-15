@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amis | MonRéseauSocial</title>
+    <link rel="stylesheet" href="/assets/css/friends.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+   <div class="profile-container">
+        <!-- En-tête du profil -->
+        <header class="profile-header">
+            <div class="cover-photo">
+                <div class="profile-actions">
+                    <button class="btn btn-edit"><i class="fas fa-camera"></i> Modifier photo</button>
+                    <button class="btn btn-settings"><i class="fas fa-cog"></i></button>
+                </div>
+            </div>
+            
+            <div class="profile-info">
+                <div class="profile-picture">
+                    <img class="user_profile" src="/assets/images/default-profile.jpg" alt="Photo de profil" id="user-avatar">
+                </div>
+                
+                <div class="profile-details">
+                    <h1 class="user_name" id="user-name">Jean Dupont</h1>
+                    <p class="user-title" id="user-title">Développeur Full-Stack</p>
+                    <p class="user-location"><i class="fas fa-map-marker-alt"></i> <span id="user-location">Paris, France</span></p>
+                    
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="friend-count">245</span>
+                            <span class="stat-label">Amis</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="post-count">56</span>
+                            <span class="stat-label">Publications</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="follower-count">1.2K</span>
+                            <span class="stat-label">Abonnés</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-actions">
+                        <button class="add_friend btn btn-primary" data-post-id=""><i class="fas fa-user-plus"></i><span class="add_friend_btn_text">Ajouter ami</span></button>
+                        <button class="message btn btn-secondary"><i class="fas fa-envelope"></i>Message</button>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="profile-nav">
+                <ul>
+                    <li ><a href="#"><i class="fas fa-newspaper"></i>Acceuil</a></li>
+                    <li ><a href="#"><i class="fas fa-newspaper"></i> Publications</a></li>
+                    <li><a href="#"><i class="fas fa-images"></i> Photos</a></li>
+                    <li class="active"><a class="friend_link" href="#"><i class="fas fa-users"></i> Amis</a></li>
+                </ul>
+            </nav>
+    <div class="friends-container">
+        <!-- En-tête -->
+        <header class="friends-header">
+            <h1><i class="fas fa-users"></i> Amis</h1>
+            
+            <div class="friends-search">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Rechercher des amis">
+                </div>
+                
+                <div class="filter-options">
+                    <button class="filter-btn active">Tous les amis</button>
+                    <button class="filter-btn">Amis récents</button>
+                    <button class="filter-btn">Amis proches</button>
+                    <div class="dropdown">
+                        <button class="filter-btn">
+                            Trier par <i class="fas fa-caret-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="#">Ordre alphabétique</a>
+                            <a href="#">Date d'ajout</a>
+                            <a href="#">Plus récent</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Contenu principal -->
+        <main class="friends-content">
+            <div class="friends-grid">
+                <!-- Ami 1 -->
+                <div class="friend-card">
+                    <div class="friend-avatar">
+                        <img src="/assets/images/friend1.jpg" alt="Marie Durand">
+                        <button class="friend-action"><i class="fas fa-user-minus"></i></button>
+                    </div>
+                    <div class="friend-info">
+                        <h3>Marie Durand</h3>
+                        <p>15 amis en commun</p>
+                        <div class="friend-actions">
+                            <button class="btn btn-primary"><i class="fas fa-comment"></i> Message</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ami 2 -->
+                <div class="friend-card">
+                    <div class="friend-avatar">
+                        <img src="/assets/images/friend2.jpg" alt="Paul Martin">
+                        <button class="friend-action"><i class="fas fa-user-minus"></i></button>
+                    </div>
+                    <div class="friend-info">
+                        <h3>Paul Martin</h3>
+                        <p>8 amis en commun</p>
+                        <div class="friend-actions">
+                            <button class="btn btn-primary"><i class="fas fa-comment"></i> Message</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ami 3 -->
+                <div class="friend-card">
+                    <div class="friend-avatar">
+                        <img src="/assets/images/friend3.jpg" alt="Sophie Lambert">
+                        <button class="friend-action"><i class="fas fa-user-minus"></i></button>
+                    </div>
+                    <div class="friend-info">
+                        <h3>Sophie Lambert</h3>
+                        <p>23 amis en commun</p>
+                        <div class="friend-actions">
+                            <button class="btn btn-primary"><i class="fas fa-comment"></i> Message</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Plus d'amis... -->
+                <div class="friend-card">
+                    <div class="friend-avatar">
+                        <img src="/assets/images/friend4.jpg" alt="Thomas Leroy">
+                        <button class="friend-action"><i class="fas fa-user-minus"></i></button>
+                    </div>
+                    <div class="friend-info">
+                        <h3>Thomas Leroy</h3>
+                        <p>5 amis en commun</p>
+                        <div class="friend-actions">
+                            <button class="btn btn-primary"><i class="fas fa-comment"></i> Message</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="friend-card">
+                    <div class="friend-avatar">
+                        <img src="/assets/images/friend5.jpg" alt="Laura Petit">
+                        <button class="friend-action"><i class="fas fa-user-minus"></i></button>
+                    </div>
+                    <div class="friend-info">
+                        <h3>Laura Petit</h3>
+                        <p>12 amis en commun</p>
+                        <div class="friend-actions">
+                            <button class="btn btn-primary"><i class="fas fa-comment"></i> Message</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="friend-card">
+                    <div class="friend-avatar">
+                        <img src="/assets/images/friend6.jpg" alt="Marc Dubois">
+                        <button class="friend-action"><i class="fas fa-user-minus"></i></button>
+                    </div>
+                    <div class="friend-info">
+                        <h3>Marc Dubois</h3>
+                        <p>7 amis en commun</p>
+                        <div class="friend-actions">
+                            <button class="btn btn-primary"><i class="fas fa-comment"></i> Message</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pagination
+            <div class="pagination">
+                <button class="pagination-btn"><i class="fas fa-chevron-left"></i></button>
+                <span class="current-page">1</span>
+                <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+            </div> -->
+        </main>
+    </div>
+</body>
+</html>
