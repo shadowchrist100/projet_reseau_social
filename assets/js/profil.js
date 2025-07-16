@@ -12,6 +12,8 @@ function profil()
     const add_friend=document.querySelector(".add_friend");
     const add_friend_btn_text=document.querySelector(".add_friend_btn_text");
     const friend_link=document.querySelector(".friend_link");
+    const photo_link=document.querySelector(".photo_link");
+    const acceuil_link=document.querySelector(".acceuil_link");
     const message=document.querySelector(".message");
     // récupération des infos de l'utilisateur dont on veut voir le profil
     fetch(`api/profil.php?user_id="${user_id}"`)
@@ -37,12 +39,16 @@ function profil()
         {
             // retirer le bouton d'ajour d'ami
             add_friend.remove();
+            
+            //afficher le champ de post
+            document.querySelector(".create-post").style.display("none"); 
         }
         else
         {
             // mettre à jour le bouton d'ajout d'ami
             friend_request_stat(user_profil_data.status);
         }
+        document.getElementById("post_text").placeholder=`Quoi de neuf,${window.user_data.name} ? `;
     })
     .catch(error=>console.error(error));
  
@@ -59,7 +65,7 @@ function profil()
         feed.className="post";
         feed.innerHTML=`
         <div class="post-header">
-            <img class="profil" src="/uploads/${post.profile_picture}" alt="photo">
+            <img class="profil" src="uploads/${post.profile_picture}" alt="photo">
             <div class="post-author">
                 <h4>${post.nom} ${post.prenom}</h4>
                 <span class="post-time">${post.created_at}</span>
@@ -91,15 +97,29 @@ function profil()
             else
             {
                 data.forEach(post=>{
-                    // afficher les posts de l'utilisateur
+                    // afficher les posts de l'utilisateur et de ses amis
                     print_posts(post);
-                
+                    if (post.image_path) 
+                    {
+                        // afficher les images poster par l'utilisateur 
+                        show_pictures(post.image_path);   
+                    }
                 });
             }
         })
         .catch(error=>console.error(error));
     }
     load_posts();
+
+    function show_pictures(image) 
+    {
+        const img=document.createElement("img");
+        img.src = `uploads/posts/${image}`;
+        img.alt = "post photo";
+        
+        document.querySelector(".photo-grid").appendChild(img);
+    }
+    
 
     // function get_users_likes(post_id)
     // {
@@ -189,6 +209,18 @@ function profil()
         load_view("friend");
     });
 
+    // afficher les photos quand on click sur le bouton photos
+    photo_link.addEventListener("click", function (event) {
+        event.preventDefault();
+        load_view("photo");
+    })
+
+    // afficher la page d'acceuil
+    acceuil_link.addEventListener("click", function(event){
+        event.preventDefault();
+        load_view("acceuil");
+    })
+
     add_friend.addEventListener("click",function() 
     {
         const form_data=new FormData()
@@ -202,9 +234,10 @@ function profil()
         })
         .then(response=> response.json())
         .then(data=>{
+            
             if (data.success) 
             {
-                friend_request_stat("Demande en cours");
+                friend_request_stat("pending");
             }
         })
         .catch(error=>console.error(error)); 
@@ -217,7 +250,6 @@ function profil()
         if (data.success) 
         {
             const friends=data.friends
-            console.log(friends);
             friends.forEach(friend =>{
                 show_friend(friend);
             })

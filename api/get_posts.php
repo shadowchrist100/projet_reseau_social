@@ -10,22 +10,42 @@
         // Requête préparée pour éviter les injections SQL
         $query = "
                 SELECT 
-                    posts.*, 
-                    users.nom, 
-                    users.prenom, 
-                    users.pseudo, 
-                    users.profile_picture
-                FROM 
-                    posts
-                JOIN 
-                    users ON posts.user_id = users.id
-                ORDER BY 
-                    posts.created_at DESC
+                    p.id AS id,
+                    p.content AS content,
+                    p.image_path,
+                    p.created_at AS created_at,
+
+                    u.id AS user_id,
+                    u.nom AS nom,
+                    u.prenom AS prenom,
+                    u.profile_picture AS profile_picture,
+
+                    c.id AS comment_id,
+                    c.content AS comment_content,
+                    c.created_at AS comment_created_at,
+                    
+                    cu.id AS comment_user_id,
+                    cu.nom AS comment_nom,
+                    cu.prenom AS comment_prenom,
+                    cu.profile_picture AS comment_profile
+
+                FROM posts p
+
+                JOIN users u ON p.user_id = u.id
+
+                LEFT JOIN comments c ON c.id = (
+                    SELECT id FROM comments
+                    WHERE post_id = p.id
+                    ORDER BY created_at DESC
+                    LIMIT 1
+                )
+
+                LEFT JOIN users cu ON c.user_id = cu.id
+
+                ORDER BY p.created_at DESC
+
             ";
-
             $posts = $pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
-
-
         if ($posts) {
             foreach ($posts as $post) 
             {

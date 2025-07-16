@@ -24,7 +24,7 @@
                 </div>
                 
                 <div class="profile-details">
-                    <h1 class="user_name" id="user-name">Jean Dupont</h1>
+                    <h1 class="user_name" id="user-name"></h1>
                     <p class="user-title" id="user-title">Développeur Full-Stack</p>
                     <p class="user-location"><i class="fas fa-map-marker-alt"></i> <span id="user-location">Paris, France</span></p>
                     
@@ -52,9 +52,9 @@
             
             <nav class="profile-nav">
                 <ul>
-                    <li ><a href="#"><i class="fas fa-users logo-icon circle"></i>Acceuil</a></li>
+                    <li ><a class="acceuil_link" href="#"><i class="fas fa-users logo-icon circle"></i>Acceuil</a></li>
                     <li class="active"><a href="#"><i class="fas fa-newspaper"></i> Publications</a></li>
-                    <li><a href="#"><i class="fas fa-images"></i> Photos</a></li>
+                    <li><a class="photo_link" href="#"><i class="fas fa-images"></i> Photos</a></li>
                     <li><a class="friend_link" href="#"><i class="fas fa-users"></i> Amis</a></li>
                 </ul>
             </nav>
@@ -80,12 +80,12 @@
                         <a href="#">Voir tout</a>
                     </div>
                     <div class="photo-grid">
-                        <img src="/assets/images/photo1.jpg" alt="Photo 1">
+                        <!-- <img src="/assets/images/photo1.jpg" alt="Photo 1">
                         <img src="/assets/images/photo2.jpg" alt="Photo 2">
                         <img src="/assets/images/photo3.jpg" alt="Photo 3">
                         <img src="/assets/images/photo4.jpg" alt="Photo 4">
                         <img src="/assets/images/photo5.jpg" alt="Photo 5">
-                        <img src="/assets/images/photo6.jpg" alt="Photo 6">
+                        <img src="/assets/images/photo6.jpg" alt="Photo 6"> -->
                     </div>
                 </section>
                 
@@ -112,10 +112,10 @@
             </aside>
             
             <div class="profile-main">
-                <section class="create-post">
+                <section class="create-post" style="display: none;" >
                     <div class="post-input">
-                        <img src="/assets/images/default-profile.jpg" alt="Votre photo">
-                        <input type="text" placeholder="Quoi de neuf, Jean ?">
+                        <img class="user_profile" src="/assets/images/default-profile.jpg" alt="Votre photo">
+                        <input id="post_text" type="text" placeholder="">
                     </div>
                     <div class="post-options">
                         <button><i class="fas fa-video"></i> Vidéo</button>

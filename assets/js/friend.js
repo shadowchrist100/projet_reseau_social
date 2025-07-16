@@ -11,7 +11,7 @@ function friend()
     const user_name=document.querySelectorAll(".user_name");
     const add_friend=document.querySelector(".add_friend");
     const add_friend_btn_text=document.querySelector(".add_friend_btn_text");
-    const friend_link=document.querySelector(".friend_link");
+    const publications_link=document.querySelector(".publications_link");
     const message=document.querySelector(".message");
     // récupération des infos de l'utilisateur dont on veut voir le profil
     fetch(`api/profil.php?user_id="${user_id}"`)
@@ -47,6 +47,24 @@ function friend()
         }
     })
     .catch(error=>console.error(error));
+
+    // afficher message quand on click sur message
+    message.addEventListener("click", function(){
+        load_view("chat");
+    });
+
+    // afficher les amis quand l'utilisateur click sur le bouton ami
+    publications_link.addEventListener("click", function(event) {
+        // empêcher le lien de se déclencher
+        event.preventDefault();
+        load_view("profil");
+    });
+
+    // afficher les photos quand on click sur le bouton photos
+    photo_link.addEventListener("click", function (event) {
+        event.preventDefault();
+        load_view("photo");
+    })
 
     function friend_request_stat(status) 
     {

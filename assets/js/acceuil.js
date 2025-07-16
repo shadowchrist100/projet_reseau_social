@@ -33,7 +33,18 @@ function home()
         user_name.forEach(element=>{
             element.textContent=window.user_data.name+" "+window.user_data.prenom;
         })
-        document.getElementById("post_text").placeholder=`What's on your mind, ${window.user_data.name}`;
+        document.getElementById("post_text").placeholder=`Quoi de neuf,${window.user_data.name} ? `;
+
+        // récupérer les requêtes d'amis
+        fetch(`api/get_friends_requests.php?user_id=${window.user_data.id}`)
+        .then(response=>response.json())
+        .then(data=>{
+            if (data.success) 
+            {
+                const requests=data.friends_requests;    
+                
+            }
+        })
     })
     .catch(error=>console.error(error))
     
@@ -88,7 +99,15 @@ function home()
     function print_posts(post,is_first) 
     {
         const like_color= post.liked_by_user? "red": "black";
-        
+
+        const comment={
+            "content":post.comment_content,
+            "created_at":post.comment_created_at,
+            "nom":post.comment_nom,
+            "prenom":post.comment_prenom,
+            "profile_picture":post.comment_profile
+        };
+        const show_recent_comment = (comment && comment.content) ? "block" : "none";
         const feed=document.createElement("div");
         feed.className="feed";
         feed.innerHTML=`
@@ -137,13 +156,11 @@ function home()
                 ${post.nom} ${post.prenom} <span></span>
             </p>
         </div>
-        <div class="recent_comment comment">
-            
-        </div>
-        <button type="button" class=" comments text-muted">view all  comments </button>
         <div class="comments-container " data-post-id="${post.id}" style="display: none;">
             
         </div>
+        <button type="button" class=" comments text-muted">view all  comments </button>
+        
         `
         is_first===true? document.querySelector(".feeds").insertBefore(feed,document.querySelector(".feeds").firstChild):document.querySelector(".feeds").appendChild(feed);
         get_users_likes(post.id);
@@ -157,7 +174,6 @@ function home()
             data.forEach(post=>{
                 // afficher les posts de l'utilisateur
                 print_posts(post,false);
-                
             });
         })
         .catch(error=>console.error(error));
@@ -250,36 +266,25 @@ function home()
     } 
 
         // afficher les commentaires d'un post
-        function print_comments(comment, is_first,post_id) 
+    function print_comments(comment,post_id) 
+    {   
+        
         {
-            // affichage du commentaire le plus récent 
-            if (is_first) 
-            {
-                document.querySelector(".recent_comment").innerHTML=`
-                    <img  src="/uploads/${comment.profile_picture}" alt="profile">
-                    <div class="comment-content">
-                        <strong>${comment.nom} ${comment.prenom}</strong>
-                        <p>${comment.content}</p>
-                        <small>${comment.created_at}</small>
-                    </div>
-                `  ;  
-            }   
-            else
-            {
-                const div_comment=document.createElement("div");
-                div_comment.className="comment"
-                div_comment.innerHTML=`
-                    <img  src="/uploads/${comment.profile_picture}" alt="profile">
-                    <div class="comment-content">
-                        <strong>${comment.nom} ${comment.prenom}</strong>
-                        <p>${comment.content}</p>
-                        <small>${comment.created_at}</small>
-                    </div>
-                `
-                // ajout du commentaire dans la div des commentaires du post concerné
-                document.querySelector(`.comments-container[data-post-id="${post_id}"]`).appendChild(div_comment);
-            }
+            const div_comment=document.createElement("div");
+            div_comment.className="comment"
+            div_comment.innerHTML=`
+                <img  src="/uploads/${comment.profile_picture}" alt="profile">
+                <div class="comment-content">
+                    <strong>${comment.nom} ${comment.prenom}</strong>
+                    <p>${comment.content}</p>
+                    <small>${comment.created_at}</small>
+                </div>
+            `
+            // ajout du commentaire dans la div des commentaires du post concerné
+            document.querySelector(`.comments-container[data-post-id="${post_id}"]`).appendChild(div_comment);
+            document.querySelector(`.comments-container[data-post-id="${post_id}"]`).style.display="block";
         }
+    }
     document.querySelector(".feeds").addEventListener("click", function (event) {
         // récupération de l'élément sélectionné
         const target = event.target;
@@ -294,7 +299,10 @@ function home()
             // si l'utilisateur avait déja liké
             if (has_liked) 
             {
-                document.querySelector("like-btn").style.color="";
+                // mis à jour l'interface utilisateur 
+                const like_btn=document.querySelector(`.uil-heart-sign[data-post-id="${post_id}"]`);
+                like_btn.style.color="black";
+                has_liked=false;
             }
             // si l'utilisateur veut liker pour la première fois
             else
@@ -318,6 +326,7 @@ function home()
                         // mis à jour l'interface utilisateur 
                         const like_btn=document.querySelector(`.uil-heart-sign[data-post-id="${post_id}"]`);
                         like_btn.style.color="red";
+                        has_liked=true;
                         
                     } else {
                         console.error("Error liking post:", data.error);
@@ -384,7 +393,7 @@ function home()
         else if (event.target.classList.contains("comments")) {
             
             // récupérer le container des commentaires
-            const comments=(event.target).nextElementSibling;
+            const comments=(event.target).previousElementSibling;
             // récupérer l'id du post
             const post_id=comments.dataset.postId;
             
@@ -394,18 +403,9 @@ function home()
             .then(data=>{
                 if (data.success) 
                 {
-                    data.comments.forEach((comment,index) => {
-                        if (index ===0) 
-                        {
-                            print_comments(comment,true,post_id);
-                        }
-                        else
-                        {
-                            print_comments(comment,false,post_id);
-                        }
-                        
+                    data.comments.forEach((comment) => {
+                        print_comments(comment,post_id);
                     });
-
                 }
             })
             
@@ -424,5 +424,6 @@ function home()
             load_view("profil");
         }
     });
+
 }
 home();

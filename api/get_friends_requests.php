@@ -1,28 +1,27 @@
 <?php
     session_start();
     require_once("bdd.php");
-
     // Définir le type de contenu de la réponse comme JSON
-    header('Content-Type: application/json');   
+    header('Content-Type: application/json');
 
-    $response=[];
-    if ($_SERVER["REQUEST_METHOD"]==="GET") 
+    // Récupérer les données de la requête fetch
+    if($_SERVER["REQUEST_METHOD"]==="GET")
     {
-        // si l'utilisateur n'est pas connecté
         if (!isset($_SESSION["LOGGED_USER"])) 
         {
             http_response_code(401);
             echo json_encode(["error" => "Utilisateur non connecté"]);
             exit;
         }
-        $user_id=$_GET["user_id"] ?? "";        
-        // si les données ne sont pas vides
+        $user_id=$_GET["user_id"] ?? "";  
+        $response=[];
+       // si les données ne sont pas vides
         if (!empty($user_id)) 
         {
             // formatage des données
             $user_id=strip_tags($user_id);
 
-            // récupérer les amis de l'utilisateur
+                // récupérer les demandes d'amis envoyés à l'utilisateur
             try {
                 $query = "
                     SELECT 
@@ -35,21 +34,20 @@
                         friendships
                     JOIN 
                         users ON 
-                        (friendships.receiver_id = users.id AND friendships.sender_id = :user_id) OR
-                        (friendships.sender_id = users.id AND friendships.sender_id = :user_id)
+                        (friendships.receiver_id = :user_id AND friendships.sender_id = users.id)
                     WHERE 
-                        status='accepted'";
+                        status='pending'";
                 $req=$pdo->prepare($query);
                 $req->execute(["user_id"=>$user_id]);
-                $friends=$req->fetchAll(PDO::FETCH_ASSOC);
-                if ($friends) 
+                $friends_requests=$req->fetchAll(PDO::FETCH_ASSOC);
+                if ($friends_requests) 
                 {
                     $response["success"]=true;
-                    $response["friends"]=$friends;
+                    $response["friends_requests"]=$friends_requests;
                 }
                 else
                 {
-                    $response["error"]="Aucun ami trouvé";
+                    $response["error"]="Aucun requête d'ami  trouvée";
                 }
             } catch (PDOException $e) 
             {
