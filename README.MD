@@ -1,13 +1,20 @@
 # 🌐 Mon Réseau Social
 
 Un projet collaboratif de création d'un réseau social simple et moderne en PHP, HTML, CSS (via Tailwind CSS) et JavaScript.
+---
+
+## 🌍 Accès en ligne
+
+➡️ [Cliquer ici pour accéder à la version hébergée du projet](https://projet-reseau-social-zjw0.onrender.com)
+
+
+---
 
 ## 🧰 Technologies utilisées
 
 - ✅ PHP 8+
 - ✅ MySQL / MariaDB
 - ✅ HTML5
-- ✅ Tailwind CSS
 - ✅ JavaScript (Vanilla JS)
 - ✅ Git & GitHub (pour la gestion de projet)
 
@@ -86,12 +93,10 @@ mon-reseau-social/
 
 ## 🤝 Membres de l’équipe
 
-| Nom               | Rôle                     |
-|----------------   |--------------------------|
-| Abel LEWHE        | Développeur fullstack / coordonnateur |
-| WINGNANNOU d'Alex | Backend PHP / API        |
-| ...               | Frontend Tailwind / HTML |
-| ...               | QA & documentation       |
+| Nom               | Rôle                                  |
+|----------------   |--------------------------             |
+| Abel LEWHE        | Backend PHP/API / coordonnateur       |
+| WINGNANNOU d'Alex | Backend PHP / API                     |
 
 ---
 
