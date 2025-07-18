@@ -15,6 +15,8 @@ function profil()
     const photo_link=document.querySelector(".photo_link");
     const acceuil_link=document.querySelector(".acceuil_link");
     const message=document.querySelector(".message");
+    const show_friend_btn=document.querySelector(".show-friends");
+    const show_photo_btn=document.querySelector(".show-photos");
     // récupération des infos de l'utilisateur dont on veut voir le profil
     fetch(`api/profil.php?user_id="${user_id}"`)
     .then(response=>response.json())
@@ -41,7 +43,7 @@ function profil()
             add_friend.remove();
             
             //afficher le champ de post
-            document.querySelector(".create-post").style.display("none"); 
+            document.querySelector(".create-post").style.display="block"; 
         }
         else
         {
@@ -104,6 +106,8 @@ function profil()
                         // afficher les images poster par l'utilisateur 
                         show_pictures(post.image_path);   
                     }
+                    // enregistrer les photos de l'utilisateur connecté
+                    localStorage.setItem("user_photos",JSON.stringify(data));
                 });
             }
         })
@@ -209,6 +213,19 @@ function profil()
         load_view("friend");
     });
 
+    show_friend_btn.addEventListener("click", function(event){
+        // empêcher le lien de se déclencher
+        event.preventDefault();
+        load_view("friend");
+    })
+
+    // 
+    show_photo_btn.addEventListener("click",function(event){
+        // empêcher le lien de se déclencher
+        event.preventDefault();
+        load_view("photo");
+    })
+    
     // afficher les photos quand on click sur le bouton photos
     photo_link.addEventListener("click", function (event) {
         event.preventDefault();
@@ -253,9 +270,8 @@ function profil()
             friends.forEach(friend =>{
                 show_friend(friend);
             })
-            // enregistrer les amis de l'utilisateur
-            const user_friends=data.friends;
-
+            // enregistrer les amis de l'utilisateur connecté
+            localStorage.setItem("user_friends",JSON.stringify(data.friends));
         }
         else
         {
@@ -264,21 +280,12 @@ function profil()
     function show_friend (friend)
     {
         const friend_card=document.createElement("div");
-        friend_card.className="friend-card";
+        friend_card.className="friend-item";
         friend_card.innerHTML=`
-            <div class="friend-avatar">
-                <img src="uploads/${friend.profile_picture}" alt="">
-                <button class="friend-action"><i class="fas fa-user-minus"></i></button>
-            </div>
-            <div class="friend-info">
-                <h3>${friend.nom} ${friend.nom}</h3>
-                <p>15 amis en commun</p>
-                <div class="friend-actions">
-                    <button class="btn btn-primary"><i class="fas fa-comment"></i> Message</button>
-                </div>
-            </div>
+            <img src="uploads/${friend.profile_picture}" alt="">
+            <span>${friend.nom} ${friend.nom}</span>
         `
-        document.querySelector(".friends-gird").appendChild(friend_card);
+        document.querySelector(".friends-grid").appendChild(friend_card);
     }
 }
 profil();

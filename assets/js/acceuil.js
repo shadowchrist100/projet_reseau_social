@@ -41,8 +41,11 @@ function home()
         .then(data=>{
             if (data.success) 
             {
-                const requests=data.friends_requests;    
-                
+                const requests=data.friends_requests;   
+                console.log(requests);
+                requests.forEach(request=>{
+                    show_friend_requests(request)
+                })
             }
         })
     })
@@ -417,7 +420,6 @@ function home()
             localStorage.setItem("view_user_id", user_id);
 
             // enregistrer les infos de l'utilisateur connecté
-            
             localStorage.setItem("user_data",JSON.stringify(window.user_data));
 
             // charger la vue du profil de l'utilisateur
@@ -425,5 +427,56 @@ function home()
         }
     });
 
+    function show_friend_requests(request)
+    {
+        const div_request=document.createElement("div");
+        div_request.className="request";
+        div_request.innerHTML=`
+             <div class="info">
+                        <div class="profile-photo">
+                            <img src="/uploads/${request.profile_picture}" alt="">
+                        </div>
+                        <div>
+                            <h5>${request.nom} ${request.prenom}</h5>
+                            <p class="text-muted">
+                                8 mutual friends
+                            </p>
+                        </div>
+                    </div>
+                    <div class="action">
+                        <button class="accept-btn btn btn-primary" data-id=${request.id} >Accept</button>
+                        <button class="decline-btn btn" data-id=${request.id} >Decline</button>
+                    </div>
+        `
+        document.querySelector(".friend-request").appendChild(div_request);
+    }
+
+    document.querySelector(".friend-request").addEventListener("click", function(event){
+        // récupérer l'élément sélectionné
+        const target=event.target;
+        
+        if (target.classList.contains("accept-btn")) 
+        {
+            fetch(`api/friend_request_answer.php?user_id=${event.target.dataset.id}&ans=TRUE`)
+            .then(response=> response.json())
+            .then(data=>{
+                event.target.textContent="Ajouté"
+                document.querySelector(`.decline-btn[data-id="${event.target.dataset.id}"]`).remove()
+            })
+            .catch(error=>console.error(error)
+            );
+        }
+        else if(target.classList.contains("decline-btn"))
+        {
+            fetch(`api/friend_request_answer.php?user_id="${event.target.dataset.id}"&&ans="FALSE"`)
+            .then(response=> response.json())
+            .then(data=>{
+                 document.querySelector(`.accepted-btn[data-id="${event.target.dataset.id}"]`).remove()
+                event.target.textContent="Rejetée"
+            })
+            .catch(error=>console.error(error)
+            );
+        }
+    })
 }
 home();
